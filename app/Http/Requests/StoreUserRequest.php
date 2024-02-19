@@ -31,7 +31,8 @@ class StoreUserRequest extends FormRequest
             'phone' => [
                 'required',
                 'unique:users',
-                'regex:/^[0-9]+$/',
+                // 'regex:/^[0-9]+$/',
+                'numeric',
                 'min:8',
             ],
             'password' => [
@@ -39,13 +40,21 @@ class StoreUserRequest extends FormRequest
                 'min:6',
                 'confirmed',
             ],
+            'role' => [
+                'required_if:role,company',
+                'string',
+            ],
+            'tax_number' => [
+                'required_if:role,company',
+                'numeric',
+            ]
         ];
     }
 
     public function messages(): array
     {
         return [
-            'phone.regex' => 'phone number must me only numbers',
+            // 'phone.regex' => 'phone number must me only numbers',
         ];
     }
 }

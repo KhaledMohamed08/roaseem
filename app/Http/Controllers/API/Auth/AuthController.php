@@ -28,7 +28,7 @@ class AuthController extends Controller
             return ApiResponse::success(
                 [
                     'phone' => $phone,
-                    'otp' => $otp,
+                    // 'otp' => $otp,
                 ],
                 'OTP Sent Successfully',
                 200
@@ -41,7 +41,8 @@ class AuthController extends Controller
         }
     }
 
-    public function regenerateOTP(Request $request){
+    public function regenerateOTP(Request $request)
+    {
         $request->validate([
             'phone' => 'required|numeric',
         ]);
@@ -52,7 +53,7 @@ class AuthController extends Controller
         return ApiResponse::success(
             [
                 'phone' => $phone,
-                'otp' => $otp,
+                // 'otp' => $otp,
             ],
             'OTP Regenrated Successfully',
             200
@@ -89,33 +90,64 @@ class AuthController extends Controller
         $validatedData = $request->validated();
         $validatedData['password'] = Hash::make($validatedData['password']);
 
-        $otp = Otp::where('phone', $request['phone'])->first();
-        if ($otp->used_at != null) {
-            $user = User::create([
+        if (!$request->has('role') || $request['role'] === 'user') {
+            $otp = Otp::where('phone', $validatedData['phone'])->first();
+
+            if ($otp && $otp->used_at != null) {
+                $userData = [
+                    'name' => $validatedData['name'],
+                    'email' => $validatedData['email'],
+                    'phone' => $validatedData['phone'],
+                    'password' => $validatedData['password'],
+                    'role' => 'user',
+                ];
+
+                $user = User::create($userData);
+                $otp->update(['user_id' => $user->id]);
+
+                $token = $user->createToken('user_token')->plainTextToken;
+
+                return ApiResponse::success(
+                    [
+                        'user' => new UserResource($user),
+                        'token' => $token,
+                    ],
+                    'User Created Successfully',
+                    200
+                );
+            }
+
+            // Return response indicating the need to verify the phone number
+            return ApiResponse::error('Please verify your phone number before registering.', 400);
+        } else {
+            // For company or other roles, proceed without phone verification
+            $userData = [
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'phone' => $validatedData['phone'],
                 'password' => $validatedData['password'],
-            ]);
-            $otp->update([
-                'user_id' => $user->id,
-            ]);
+            ];
+
+            if ($request->has('role') && $validatedData['role'] === 'company') {
+                $userData['role'] = $validatedData['role'];
+                $userData['tax_number'] = $validatedData['tax_number'];
+                $message = 'Company Created Successfully';
+            } else {
+                $message = 'User Created Successfully';
+            }
+
+            $user = User::create($userData);
             $token = $user->createToken('user_token')->plainTextToken;
 
             return ApiResponse::success(
                 [
                     'user' => new UserResource($user),
-                    'token' => $token
+                    'token' => $token,
                 ],
-                'User Created Successfully',
-                200,
+                $message,
+                200
             );
         }
-
-        return ApiResponse::error(
-            'This Phone Number Is Not Verified!',
-            400,
-        );
     }
 
     public function login(Request $request)
@@ -126,7 +158,8 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+            $userId = Auth::id();
+            $user = User::find($userId);
             $token = $user->createToken('user_token')->plainTextToken;
 
             return ApiResponse::success(

@@ -25,7 +25,7 @@ class User extends Authenticatable
         'password',
         // 'otp',
         // 'is_verified',
-        'type',
+        'role',
         'tax_number',
 
     ];
@@ -75,5 +75,10 @@ class User extends Authenticatable
     public function scopeCompanies($query)
     {
         return $query->where('role', 'company');
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Unit::class, 'favorites', 'user_id', 'unit_id')->withTimestamps();
     }
 }

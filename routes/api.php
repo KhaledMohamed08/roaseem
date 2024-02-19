@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Favorite\FavoriteController;
+use App\Http\Controllers\API\Home\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,10 +21,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Global Routes
+Route::get('home', [HomeController::class, 'index'])->name('home');
+
 // Auth Protected Routes
 Route::middleware('auth:sanctum')->group( function () {
     // Auth Routes
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    // Favorite Routes
+    Route::get('favorite-toggle/{unitId}', [FavoriteController::class, 'toggleFavorite'])->name('favorite.toggle');
 });
 
 // Guest Protected Routes
