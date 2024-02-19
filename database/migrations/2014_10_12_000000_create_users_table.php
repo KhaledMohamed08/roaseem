@@ -16,10 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->uniqid();
+            $table->string('whatsapp')->nullable(); 
             $table->boolean('is_verified')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['user', 'company'])->default('user');
+            $table->string('tax_number')->nullable();
             // $table->string('otp')->nullable();
             // $table->timestamp('otp_expiry')->nullable();
             $table->rememberToken();

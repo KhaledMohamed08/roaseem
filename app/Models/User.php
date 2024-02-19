@@ -21,9 +21,13 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'whatsapp',
         'password',
-        'otp',
-        'is_verified',
+        // 'otp',
+        // 'is_verified',
+        'type',
+        'tax_number',
+
     ];
 
     /**
@@ -39,11 +43,37 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast.
      *
-     * @var array<strin
-g, string>
+     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function otps()
+    {
+        return $this->hasMany(Otp::class);
+    }
+
+    public function units()
+    {
+        return $this->hasMany(Unit::class);
+    }
+
+    public function companies()
+    {
+        return User::where('role', 'company')->get();
+    }
+
+    // Method to get users with the role 'user'
+    public function scopeUsers($query)
+    {
+        return $query->where('role', 'user');
+    }
+
+    // Method to get users with the role 'company'
+    public function scopeCompanies($query)
+    {
+        return $query->where('role', 'company');
+    }
 }
