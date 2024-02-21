@@ -9,6 +9,11 @@ class City extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'country_id',
+    ];
+
     public function country()
     {
         return $this->belongsTo(Country::class);
@@ -17,5 +22,9 @@ class City extends Model
     public function regions()
     {
         return $this->hasMany(Region::class);
+    }
+    public function unitReqs()
+    {
+        return $this->hasMany(UnitReq::class);
     }
 }

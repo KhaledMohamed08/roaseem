@@ -81,4 +81,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Unit::class, 'favorites', 'user_id', 'unit_id')->withTimestamps();
     }
+
+    public function unitReqUser()
+    {
+        return $this->hasMany(UnitReqUser::class);
+    }
 }

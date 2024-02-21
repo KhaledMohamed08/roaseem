@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
 use App\Http\Controllers\API\Home\HomeController;
 use App\Http\Controllers\API\Unit\UnitController;
+use App\Http\Controllers\API\UnitReq\unitReqController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('favorite-toggle/{unitId}', [FavoriteController::class, 'toggleFavorite'])->name('favorite.toggle');
     //Unit Routes
     Route::apiResource('unit', UnitController::class)->only(['store', 'update', 'destroy']);
+    //unitReqs
+    Route::post('unitReqs',[unitReqController::class,'store'])->name('unitReqs.store');
 });
 
 // Guest Protected Routes
