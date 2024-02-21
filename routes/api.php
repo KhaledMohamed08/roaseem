@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
 use App\Http\Controllers\API\Home\HomeController;
+use App\Http\Controllers\API\Unit\UnitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Global Routes
 Route::get('home', [HomeController::class, 'index'])->name('home');
+Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
 
 // Auth Protected Routes
 Route::middleware('auth:sanctum')->group( function () {
@@ -30,6 +32,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     // Favorite Routes
     Route::get('favorite-toggle/{unitId}', [FavoriteController::class, 'toggleFavorite'])->name('favorite.toggle');
+    //Unit Routes
+    Route::apiResource('unit', UnitController::class)->only(['store', 'update', 'destroy']);
 });
 
 // Guest Protected Routes

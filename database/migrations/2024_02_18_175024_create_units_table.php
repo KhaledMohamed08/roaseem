@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('region_id')->constrained('regions');
             $table->string('address');
-            $table->decimal('latitude', 10, 8);
+            $table->decimal('latitude', 11, 8);
             $table->decimal('longitude', 11, 8);
             $table->string('ad_title');
             $table->enum('unit_type',['land', 'apartment', 'exhibition']);
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->decimal('area', 8, 2);
             $table->decimal('street_width', 8, 2);
             $table->enum('payment_method', ['cash', 'card']);
-            $table->decimal('price', 8, 2);
+            $table->decimal('price', 11, 2);
             $table->longText('descreption');
             $table->longText('services');
             $table->integer('bedrooms');

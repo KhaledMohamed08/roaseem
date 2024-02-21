@@ -18,6 +18,8 @@ class UnitResource extends JsonResource
         return [
             'id' => $this->id,
             'user_name' => $this->user->name,
+            'country' => $this->region->city->country->name,
+            'city' => $this->region->city->name,
             'region' => $this->region->name,
             'address' => $this->address,
             'latitude' => $this->latitude,
@@ -43,6 +45,7 @@ class UnitResource extends JsonResource
             'rights_and_obligations' => $this->rights_and_obligations,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'images' => $this->getMedia('images'),
         ];
     }
 }
