@@ -25,10 +25,12 @@ return new class extends Migration
             $table->dateTime('ad_period');
             $table->enum('entity_type',['companies','marketers','all']);
             $table->unsignedBigInteger('city_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-            //foregin Key
+            //foregin Keys
             $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

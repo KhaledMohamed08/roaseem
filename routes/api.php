@@ -37,6 +37,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('unit', UnitController::class)->only(['store', 'update', 'destroy']);
     //unitReqs
     Route::post('unitReqs',[unitReqController::class,'store'])->name('unitReqs.store');
+    Route::get('unitReqs/{id}',[unitReqController::class,'edit'])->name('unitReqs.edit');
+    Route::put('unitReqs',[unitReqController::class,'update'])->name('unitReqs.update');
+    Route::delete('unitReqs/{id}',[unitReqController::class,'delete'])->name('unitReqs.destroy');
 });
 
 // Guest Protected Routes

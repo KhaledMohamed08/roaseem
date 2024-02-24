@@ -22,6 +22,7 @@ class UnitReq extends Model
         'ad_period',
         'entity_type',
         'city_id',
+        'user_id',
     ];
 
     public function city()
