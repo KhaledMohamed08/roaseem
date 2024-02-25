@@ -60,10 +60,10 @@ class User extends Authenticatable
         return $this->hasMany(Unit::class);
     }
 
-    public function companies()
-    {
-        return User::where('role', 'company')->get();
-    }
+    // public static function companies()
+    // {
+    //     return User::where('role', 'company')->get();
+    // }
 
     // Method to get users with the role 'user'
     public function scopeUsers($query)

@@ -10,6 +10,7 @@ use App\Http\Resources\unitReqResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\UnitReq;
 use App\Models\UnitReqUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,7 +72,6 @@ class unitReqController extends Controller
             }
         }
     }
-
 
     public function edit($id)
     {
@@ -149,7 +149,6 @@ class unitReqController extends Controller
             "entity_type" => $request->entity_type,
         ]);
     }
-
 
     public function delete($id)
     {
