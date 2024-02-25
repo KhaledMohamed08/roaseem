@@ -116,6 +116,17 @@ class UnitController extends Controller
     public function deleteImage($id)
     {
         $image = Media::find($id);
+        
+        if (!$image) {
+            return ApiResponse::error('Image not found', 404);
+        }
+
+        if ($image->model_id != auth()->id()) {
+            return ApiResponse::error(
+                'User Can Not Delete This Image',
+                403
+            );
+        }
         $image->delete();
 
         return ApiResponse::success(

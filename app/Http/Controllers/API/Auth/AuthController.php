@@ -154,7 +154,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required',
+            'phone' => 'required',
             'password' => 'required',
         ]);
 
@@ -174,7 +174,7 @@ class AuthController extends Controller
         }
 
         return ApiResponse::error(
-            'Invalid email or password',
+            'Invalid phone or password',
             401
         );
     }
@@ -189,17 +189,13 @@ class AuthController extends Controller
     public function forgoetPassword(Request $request)
     {
         $validatedData = $request->validate([
-            'email' => 'required|email',
+            'phone' => 'required',
         ]);
-
-        $user = User::where('email', $validatedData['email'])->first();
         $otpService = new OTPServiceOnlyPhone();
-        $otpService->regenerateOTP($user->phone, 10);
-
+        $otpService->regenerateOTP($validatedData['phone'], 10);
         return ApiResponse::success(
             [
-                'phone' => $user->phone,
-                'email' => $user->email,
+                'phone' => $validatedData['phone'],
             ],
             'OTP Sent Successfully',
             200,
