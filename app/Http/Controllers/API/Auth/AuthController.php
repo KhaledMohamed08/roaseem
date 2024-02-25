@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Otp;
 use App\Models\User;
+use App\Services\OTPService;
 use App\Services\OTPServiceOnlyPhone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -185,8 +186,23 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out successfully'], 200);
     }
 
-    // public function forgoetPassword()
-    // {
+    public function forgoetPassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+        ]);
 
-    // }
+        $user = User::where('email', $validatedData['email'])->first();
+        $otpService = new OTPServiceOnlyPhone();
+        $otpService->regenerateOTP($user->phone, 10);
+
+        return ApiResponse::success(
+            [
+                'phone' => $user->phone,
+                'email' => $user->email,
+            ],
+            'OTP Sent Successfully',
+            200,
+        );
+    }
 }

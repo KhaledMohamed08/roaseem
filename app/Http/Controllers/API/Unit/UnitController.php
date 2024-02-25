@@ -10,6 +10,7 @@ use App\Http\Responses\ApiResponse;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class UnitController extends Controller
 {
@@ -18,7 +19,8 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $unites = Unit::all();
+        $perPage = 9;
+        $unites = Unit::orderBy('created_at', 'desc')->paginate($perPage);
 
         return ApiResponse::success(
             [
@@ -108,5 +110,10 @@ class UnitController extends Controller
             'Unit Deleted Successfully',
             200,
         );
+    }
+
+    public function deleteImage(Media $media)
+    {
+        return Media::find(10);
     }
 }

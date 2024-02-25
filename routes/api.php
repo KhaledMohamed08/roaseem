@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
 use App\Http\Controllers\API\Home\HomeController;
+use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Unit\UnitController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
 use App\Http\Controllers\API\User\UserController;
@@ -34,8 +35,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     // Favorite Routes
     Route::get('favorite-toggle/{unitId}', [FavoriteController::class, 'toggleFavorite'])->name('favorite.toggle');
-    //Unit Routes
+    Route::get('favorites', [FavoriteController::class, 'getFavorites'])->name('favorites');
+    // Unit Routes
     Route::apiResource('unit', UnitController::class)->only(['store', 'update', 'destroy']);
+    Route::delete('delete-image/{Media}', [UnitController::class, 'deleteImage'])->name('image.delete');
     //unitReqs
     Route::post('unitReqs',[unitReqController::class,'store'])->name('unitReqs.store');
     Route::get('unitReqs/{id}',[unitReqController::class,'edit'])->name('unitReqs.edit');
@@ -44,6 +47,10 @@ Route::middleware('auth:sanctum')->group( function () {
 
     //filter Company 
     Route::post('companyFilter',[UserController::class,'companyFilter'])->name('companyFilter');
+    // Profile Routes
+    Route::get('profile/{user}', [ProfileController::class, 'profile'])->name('profile');
+    Route::put('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('my-unites', [ProfileController::class, 'myUnites'])->name('my.unites');
 });
 
 // Guest Protected Routes

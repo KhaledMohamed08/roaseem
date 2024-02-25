@@ -27,6 +27,7 @@ class UnitResource extends JsonResource
             'ad_title' => $this->ad_title,
             'unit_type' => $this->unit_type,
             'contract_type' => $this->contract_type,
+            'purpose' => $this->purpose,
             'interface' => $this->interface,
             'floor_number' => $this->floor_number,
             'area' => $this->area,

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('ad_title');
             $table->enum('unit_type',['land', 'apartment', 'exhibition']);
             $table->enum('contract_type', ['sale', 'rent']);
+            $table->enum('purpose', ['residential', 'commercial']);
             $table->enum('interface', ['north', 'south', 'east', 'west']);
             $table->integer('floor_number');
             $table->decimal('area', 8, 2);
