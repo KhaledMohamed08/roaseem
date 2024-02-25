@@ -20,6 +20,7 @@ class Unit extends Model implements HasMedia
         'ad_title',
         'unit_type',
         'contract_type',
+        'purpos',
         'interface',
         'floor_number',
         'area',

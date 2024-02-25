@@ -15,6 +15,11 @@ class UnitResource extends JsonResource
     public function toArray(Request $request): array
     {
         // return parent::toArray($request);
+        $originUrls = [];
+        foreach ($this->getMedia('images') as $media) {
+            array_push($originUrls, $media->original_url);
+        }
+
         return [
             'id' => $this->id,
             'user_name' => $this->user->name,
@@ -27,7 +32,7 @@ class UnitResource extends JsonResource
             'ad_title' => $this->ad_title,
             'unit_type' => $this->unit_type,
             'contract_type' => $this->contract_type,
-            'purpose' => $this->purpose,
+            'purpos' => $this->purpos,
             'interface' => $this->interface,
             'floor_number' => $this->floor_number,
             'area' => $this->area,
@@ -46,7 +51,9 @@ class UnitResource extends JsonResource
             'rights_and_obligations' => $this->rights_and_obligations,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'images' => $this->getMedia('images'),
+            'main_image' => $this->getFirstMediaUrl('unit-Main-image'),
+            // 'images' => $this->getMedia('images')->getUrl(),
+            'images' => $originUrls,
         ];
     }
 }

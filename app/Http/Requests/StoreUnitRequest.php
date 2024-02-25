@@ -44,6 +44,9 @@ class StoreUnitRequest extends FormRequest
             'contract_type' => [
                 'required',
             ],
+            'purpos' => [
+                'required',
+            ],
             'interface' => [
                 'required'
             ],
@@ -101,6 +104,12 @@ class StoreUnitRequest extends FormRequest
             ],
             'rights_and_obligations' => [
                 'required'
+            ],
+            'main_image' => [
+                'required',
+                'file',
+                'mimetypes:image/jpeg,image/jpg,image/png',
+                'max:10240',
             ],
             'images.*' => [
                 'file',

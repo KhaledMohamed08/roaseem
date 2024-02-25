@@ -43,6 +43,7 @@ class UnitController extends Controller
         }
         $validatedData['user_id'] = $userId;
         $unit = Unit::create($validatedData); // Crete New Unit
+        $unit->addMediaFromRequest('main_image')->toMediaCollection('unit-Main-image');
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $unit->addMedia($image)->toMediaCollection('images'); // Add images in media model for this unit
@@ -112,8 +113,17 @@ class UnitController extends Controller
         );
     }
 
-    public function deleteImage(Media $media)
+    public function deleteImage($id)
     {
-        return Media::find(10);
+        $image = Media::find($id);
+        $image->delete();
+
+        return ApiResponse::success(
+            [
+                'image' => $image,
+            ],
+            'Image Deleted Successfully',
+            200
+        );
     }
 }

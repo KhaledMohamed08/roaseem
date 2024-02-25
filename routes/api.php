@@ -7,6 +7,10 @@ use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Unit\UnitController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
 use App\Http\Controllers\API\User\UserController;
+use App\Http\Responses\ApiResponse;
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +33,30 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
 
+Route::get('countries', function () {
+    $countries = Country::all();
+    return ApiResponse::success(
+        [
+            'countries' => $countries,
+        ]
+    );
+});
+Route::get('cities', function () {
+    $cities = City::all();
+    return ApiResponse::success(
+        [
+            'cities' => $cities,
+        ]
+    );
+});
+Route::get('regions', function () {
+    $regions = Region::all();
+    return ApiResponse::success(
+        [
+            'regions' => $regions,
+        ]
+    );
+});
 // Auth Protected Routes
 Route::middleware('auth:sanctum')->group( function () {
     // Auth Routes
@@ -38,7 +66,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('favorites', [FavoriteController::class, 'getFavorites'])->name('favorites');
     // Unit Routes
     Route::apiResource('unit', UnitController::class)->only(['store', 'update', 'destroy']);
-    Route::delete('delete-image/{Media}', [UnitController::class, 'deleteImage'])->name('image.delete');
+    Route::delete('delete-image/{id}', [UnitController::class, 'deleteImage'])->name('image.delete');
     //unitReqs
     Route::post('unitReqs',[unitReqController::class,'store'])->name('unitReqs.store');
     Route::get('unitReqs/{id}',[unitReqController::class,'edit'])->name('unitReqs.edit');
