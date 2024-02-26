@@ -68,10 +68,12 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('unit', UnitController::class)->only(['store', 'update', 'destroy']);
     Route::delete('delete-image/{id}', [UnitController::class, 'deleteImage'])->name('image.delete');
     //unitReqs
+    Route::get('unit-Reqs',[unitReqController::class,'index'])->name('unitReqs.index');
     Route::post('unitReqs',[unitReqController::class,'store'])->name('unitReqs.store');
     Route::get('unitReqs/{id}',[unitReqController::class,'edit'])->name('unitReqs.edit');
     Route::put('unitReqs',[unitReqController::class,'update'])->name('unitReqs.update');
     Route::delete('unitReqs/{id}',[unitReqController::class,'delete'])->name('unitReqs.destroy');
+    Route::get('my-reqs',[unitReqController::class,'myRequests'])->name('myRequests');
 
     //filter Company 
     Route::post('companyFilter',[UserController::class,'companyFilter'])->name('companyFilter');

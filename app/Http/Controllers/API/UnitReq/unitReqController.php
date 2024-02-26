@@ -16,6 +16,49 @@ use Illuminate\Support\Facades\Auth;
 
 class unitReqController extends Controller
 {
+    public function index(Request $request)
+    {
+        $sortDirection = $request->input('sort_direction', 'desc');
+
+        $validSortDirections = ['asc', 'desc'];
+        if (!in_array($sortDirection, $validSortDirections)) 
+        {
+            return ApiResponse::error('Invalid sort direction.', 400);
+        }
+        $query = UnitReq::with('unitReqUser');
+
+        $query->orderBy('id', $sortDirection);
+           
+        $unitReqs = $query->paginate(2);
+
+        if ($unitReqs->isNotEmpty()) {
+            return ApiResponse::success([
+                'Unit request' => unitReqResource::collection($unitReqs)
+            ]);
+        }
+        else 
+        {
+            return ApiResponse::error('No unit requests found.', 404);
+        }
+    }
+
+    public function myRequests()
+    {
+        $user = Auth::user();
+        $myReqs = UnitReq::where('user_id', $user->id)->get();
+
+        if($myReqs->isNotEmpty())
+        {
+            return ApiResponse::success([
+                'Unit request' => unitReqResource::collection($myReqs)
+            ]);
+        }
+        else 
+        {
+            return ApiResponse::error('No unit requests found.', 404);
+        }
+    }
+
     public function store(StoreUnitReqRequest $request)
     {
         $validated = $request->validated();
@@ -117,7 +160,7 @@ class unitReqController extends Controller
         $unitReqData = $this->updateUnitRequest($unitReq, $request, $user);
 
         if ($request->companies) {
-            $unitReq->unitReqUser()->delete(); 
+            $unitReq->unitReqUser()->delete();
 
             foreach ($request->companies as $company) {
                 $unitReq->unitReqUser()->create([
@@ -161,7 +204,7 @@ class unitReqController extends Controller
         }
 
         if ($unitReq->unitReqUser) {
-            $unitReq->unitReqUser()->delete(); 
+            $unitReq->unitReqUser()->delete();
         }
 
         $unitReq->delete();
