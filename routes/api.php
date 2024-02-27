@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Global Routes
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
+Route::get('unites-types/{user}', [ProfileController::class, 'userUnitesStatistics'])->name('unites.types');
 
 Route::get('countries', function () {
     $countries = Country::all();
@@ -79,6 +80,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('profile/{user}', [ProfileController::class, 'profile'])->name('profile');
     Route::put('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('my-unites', [ProfileController::class, 'myUnites'])->name('my.unites');
+    Route::put('reset-password', [ProfileController::class, 'resetPassword'])->name('reset.password');
 });
 
 // Guest Protected Routes
@@ -89,4 +91,6 @@ Route::middleware('guest:sanctum')->group( function () {
     Route::post('regenirate-otp', [AuthController::class, 'regenerateOTP'])->name('regenirate-otp');
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('forget-password', [AuthController::class, 'forgoetPassword'])->name('forget.password');
+    Route::put('update-password', [AuthController::class, 'updatePassword'])->name('update.password');
 });

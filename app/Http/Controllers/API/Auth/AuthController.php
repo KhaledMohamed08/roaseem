@@ -8,7 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Otp;
 use App\Models\User;
-use App\Services\OTPService;
+// use App\Services\OTPService;
 use App\Services\OTPServiceOnlyPhone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -192,13 +192,32 @@ class AuthController extends Controller
             'phone' => 'required',
         ]);
         $otpService = new OTPServiceOnlyPhone();
-        $otpService->regenerateOTP($validatedData['phone'], 10);
+        $otp = $otpService->regenerateOTP($validatedData['phone'], 10);
         return ApiResponse::success(
             [
                 'phone' => $validatedData['phone'],
+                'otp' => $otp,
             ],
             'OTP Sent Successfully',
             200,
+        );
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'phone' => 'required|numeric',
+            'password' => 'required|min:6|confirmed'
+        ]);
+        $validatedData['password'] = Hash::make($validatedData['password']);
+        $user = User::where('phone', $validatedData['phone'])->first();
+        $user->update([
+            'password' => $validatedData['password'],
+        ]);
+
+        return ApiResponse::successWithoutData(
+            'Password Updated Successfully',
+            200
         );
     }
 }
