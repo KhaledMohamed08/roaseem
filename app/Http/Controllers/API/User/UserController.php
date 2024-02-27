@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-
-
     public function companyFilter(Request $request)
     {
         $name = $request->input('name');
