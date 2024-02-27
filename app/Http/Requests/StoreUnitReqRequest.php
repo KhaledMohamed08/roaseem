@@ -30,7 +30,7 @@ class StoreUnitReqRequest extends FormRequest
             'area'=>"required",
             'price'=>"required|numeric",
             'description'=>"required",
-            'adPeriod'=>"required",
+            'adPeriod'=>"nullable",
             'entity_type'=>"required",
             'companies'=>"nullable",
         ];

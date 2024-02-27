@@ -75,9 +75,11 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::put('unitReqs',[unitReqController::class,'update'])->name('unitReqs.update');
     Route::delete('unitReqs/{id}',[unitReqController::class,'delete'])->name('unitReqs.destroy');
     Route::get('my-reqs',[unitReqController::class,'myRequests'])->name('myRequests');
-
-    //filter Company 
-    Route::post('companyFilter',[UserController::class,'companyFilter'])->name('companyFilter');
+    //all Companies
+    Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
+    //filter
+    Route::get('filter',[unitReqController::class,'filter'])->name('filter');
+    
     // Profile Routes
     Route::get('profile/{user}', [ProfileController::class, 'profile'])->name('profile');
     Route::put('profile', [ProfileController::class, 'edit'])->name('profile.edit');

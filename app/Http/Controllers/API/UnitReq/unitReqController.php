@@ -11,33 +11,38 @@ use App\Http\Responses\ApiResponse;
 use App\Models\UnitReq;
 use App\Models\UnitReqUser;
 use App\Models\User;
+use App\Services\FilterService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class unitReqController extends Controller
 {
+    protected $filterService;
+
+    public function __construct(FilterService $filterService)
+    {
+        $this->filterService = $filterService;
+    }
+
     public function index(Request $request)
     {
         $sortDirection = $request->input('sort_direction', 'desc');
 
         $validSortDirections = ['asc', 'desc'];
-        if (!in_array($sortDirection, $validSortDirections)) 
-        {
+        if (!in_array($sortDirection, $validSortDirections)) {
             return ApiResponse::error('Invalid sort direction.', 400);
         }
         $query = UnitReq::with('unitReqUser');
 
         $query->orderBy('id', $sortDirection);
-           
+
         $unitReqs = $query->paginate(2);
 
         if ($unitReqs->isNotEmpty()) {
             return ApiResponse::success([
                 'Unit request' => unitReqResource::collection($unitReqs)
             ]);
-        }
-        else 
-        {
+        } else {
             return ApiResponse::error('No unit requests found.', 404);
         }
     }
@@ -47,14 +52,11 @@ class unitReqController extends Controller
         $user = Auth::user();
         $myReqs = UnitReq::where('user_id', $user->id)->get();
 
-        if($myReqs->isNotEmpty())
-        {
+        if ($myReqs->isNotEmpty()) {
             return ApiResponse::success([
                 'Unit request' => unitReqResource::collection($myReqs)
             ]);
-        }
-        else 
-        {
+        } else {
             return ApiResponse::error('No unit requests found.', 404);
         }
     }
@@ -212,5 +214,29 @@ class unitReqController extends Controller
         return ApiResponse::successWithoutData([
             'message' => 'Unit request deleted successfully',
         ]);
+    }
+
+    public function filter(Request $request)
+    {
+        $relationships = ['unitReqUser'];
+
+        $filters = [
+            'status' => $request->input('status'),
+            'purpose' => $request->input('purpose'),
+            'entity_type' => $request->input('entity_type'),
+            'price' => $request->filled(['max', 'min']) ? [$request->min, $request->max] : null,
+            'area' => $request->filled(['areaFrom', 'areaTo']) ? [$request->areaFrom, $request->areaTo] : null,
+            'city_id' => $request->input('city_id'),
+            'unit_types' => $request->input('unit_types')
+        ];
+
+        $filterService = $this->filterService->filter(UnitReq::class, $relationships, $filters);
+
+        if ($filterService->isNotEmpty()) {
+            return ApiResponse::success([
+                'Unit request' => unitReqResource::collection($filterService)
+            ], 'Unit Request updated successfully', 201);
+        }
+        return ApiResponse::error('No unit requests found.', 404);
     }
 }
