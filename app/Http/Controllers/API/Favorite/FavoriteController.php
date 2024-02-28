@@ -18,14 +18,14 @@ class FavoriteController extends Controller
         if ($user->favorites->contains($unitId)) {
             $user->favorites()->detach($unitId);
             return ApiResponse::successWithoutData(
-                'Item Added To Favorites',
+                'Item Removed To Favorites',
                 200
             );
         }
 
         $user->favorites()->attach($unitId);
         return ApiResponse::successWithoutData(
-            'Item Removed From Favorites',
+            'Item Added From Favorites',
             200
         );
     }

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUnitRequest;
 use App\Http\Requests\UpdateUnitRequest;
 use App\Http\Resources\UnitResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\Service;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,7 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $perPage = 9;
+        $perPage = 1;
         $unites = Unit::orderBy('created_at', 'desc')->paginate($perPage);
 
         return ApiResponse::success(
@@ -41,8 +42,16 @@ class UnitController extends Controller
         if (!$userId) {
         return redirect()->route('login');
         }
-        $validatedData['user_id'] = $userId;
-        $unit = Unit::create($validatedData); // Crete New Unit
+        $unitData = $validatedData;
+        unset($unitData['services'], $unitData['main_image']);
+        $unitData['user_id'] = $userId;
+        $unit = Unit::create($unitData); // Crete New Unit
+        foreach ($request['services'] as $service) {
+            Service::create([
+                'service_id' => $service,
+                'unit_id' => $unit->id,
+            ]);
+        }
         $unit->addMediaFromRequest('main_image')->toMediaCollection('unit-Main-image');
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {

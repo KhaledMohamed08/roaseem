@@ -23,6 +23,12 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             CitySeeder::class,
             RegionSeeder::class,
+            UnitTypeSeeder::class,
+            UnitStatusSeeder::class,
+            UnitServiceSeeder::class,
+            UnitPurposeSeeder::class,
+            UnitPaymentSeeder::class,
+            UnitinterfaceSeeder::class
         ]);
     
     }

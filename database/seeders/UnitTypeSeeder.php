@@ -2,19 +2,23 @@
 
 namespace Database\Seeders;
 
-use App\Models\Country;
+use App\Models\UnitType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CountrySeeder extends Seeder
+class UnitTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Country::create([
-            'name' => 'KSA',
+        UnitType::create([
+            'name' => 'apartment',
+        ]);
+
+        UnitType::create([
+            'name' => 'land',
         ]);
     }
 }

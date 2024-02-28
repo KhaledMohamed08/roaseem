@@ -63,7 +63,8 @@ class ProfileController extends Controller
         );
     }
 
-    public function userUnitesStatistics(User $user) {
+    public function userUnitesStatistics() {
+        $user = Auth::user();
         $numOfEachUnitType = $this->numOfEachUnitType($user->id);
         $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
         $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);

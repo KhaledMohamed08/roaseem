@@ -38,21 +38,29 @@ class StoreUnitRequest extends FormRequest
             'ad_title' => [
                 'required',
             ],
-            'unit_type' => [
+            'unit_type_id' => [
                 'required',
+                'numeric',
             ],
-            'contract_type' => [
+            'unit_status_id' => [
                 'required',
+                'numeric',
             ],
-            'purpos' => [
+            'unit_purpose_id' => [
                 'required',
+                'numeric',
             ],
-            'interface' => [
-                'required'
+            'unit_interface_id' => [
+                'required',
+                'numeric',
             ],
             'floor_number' => [
                 'required',
                 'numeric',
+            ],
+            'created_year' => [
+                'required',
+                'numeric'
             ],
             'area' => [
                 'required',
@@ -62,8 +70,9 @@ class StoreUnitRequest extends FormRequest
                 'required',
                 'numeric',
             ],
-            'payment_method' => [
-                'required'
+            'unit_payment_id' => [
+                'required',
+                'numeric',
             ],
             'price' => [
                 'required',

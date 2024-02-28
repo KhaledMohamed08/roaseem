@@ -29,7 +29,7 @@ class AuthController extends Controller
             return ApiResponse::success(
                 [
                     'phone' => $phone,
-                    // 'otp' => $otp,
+                    'otp' => $otp,
                 ],
                 'OTP Sent Successfully',
                 200
@@ -54,7 +54,7 @@ class AuthController extends Controller
         return ApiResponse::success(
             [
                 'phone' => $phone,
-                // 'otp' => $otp,
+                'otp' => $otp,
             ],
             'OTP Regenrated Successfully',
             200

@@ -81,7 +81,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('filter',[unitReqController::class,'filter'])->name('filter');
     
     // Profile Routes
-    Route::get('profile/{user}', [ProfileController::class, 'profile'])->name('profile');
+    Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
     Route::put('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('my-unites', [ProfileController::class, 'myUnites'])->name('my.unites');
     Route::put('reset-password', [ProfileController::class, 'resetPassword'])->name('reset.password');

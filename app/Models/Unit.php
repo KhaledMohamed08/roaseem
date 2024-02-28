@@ -18,17 +18,18 @@ class Unit extends Model implements HasMedia
         'latitude',
         'longitude',
         'ad_title',
-        'unit_type',
-        'contract_type',
-        'purpos',
-        'interface',
+        'unit_type_id',
+        'unit_status_id',
+        'unit_purpose_id',
+        'unit_interface_id',
+        'created_year',
         'floor_number',
         'area',
         'street_width',
-        'payment_method',
+        'unit_payment_id',
         'price',
         'descreption',
-        'services',
+        // 'services',
         'bedrooms',
         'living_rooms',
         'bathrooms',
@@ -63,4 +64,36 @@ class Unit extends Model implements HasMedia
     {
         return $this->city->country;
     }
+
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(UnitType::class, 'unit_type_id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(UnitStatus::class, 'unit_status_id');
+    }
+
+    public function purpose()
+    {
+        return $this->belongsTo(UnitPurpose::class, 'unit_purpose_id');
+    }
+
+    public function interface()
+    {
+        return $this->belongsTo(UnitInterface::class, 'unit_interface_id');
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(UnitPayment::class, 'unit_payment_id');
+    }
+
+    
 }

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\City;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CitySeeder extends Seeder
 {
@@ -16,7 +15,7 @@ class CitySeeder extends Seeder
     {
         City::create([
             'name' => 'city',
-            'country_id' =>1,
+            'country_id' => 1,
         ]);
     }
 }
