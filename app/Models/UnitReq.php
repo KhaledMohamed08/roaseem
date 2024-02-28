@@ -34,4 +34,11 @@ class UnitReq extends Model
     {
         return $this->hasMany(UnitReqUser::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    
 }

@@ -54,7 +54,7 @@ class unitReqController extends Controller
 
         if ($myReqs->isNotEmpty()) {
             return ApiResponse::success([
-                'Unit request' => unitReqResource::collection($myReqs)
+                'Unitrequest' => unitReqResource::collection($myReqs)
             ]);
         } else {
             return ApiResponse::error('No unit requests found.', 404);
@@ -78,7 +78,7 @@ class unitReqController extends Controller
             $this->saveUserRequest($unitReqData, $user, $request->companies);
 
             return ApiResponse::success([
-                'Unit request' => new unitReqResource($unitReqData)
+                'Unitrequest' => new unitReqResource($unitReqData)
             ], 'Unit Request created successfully', 201);
         }
 
@@ -136,7 +136,7 @@ class unitReqController extends Controller
         $unitReq->load('unitReqUser');
 
         return ApiResponse::success([
-            'Unit request' => new unitReqResource($unitReq)
+            'Unitrequest' => new unitReqResource($unitReq)
         ]);
     }
 
@@ -173,7 +173,7 @@ class unitReqController extends Controller
         }
 
         return ApiResponse::success([
-            'Unit request' => new unitReqResource($unitReq)
+            'Unitrequest' => new unitReqResource($unitReq)
         ], 'Unit Request updated successfully', 201);
     }
 
@@ -218,7 +218,11 @@ class unitReqController extends Controller
 
     public function filter(Request $request)
     {
+        // return $request;
         $relationships = ['unitReqUser'];
+
+        $sortField = "id";
+        $sortDirection = $request->input('sort_direction', 'asc');
 
         $filters = [
             'status' => $request->input('status'),
@@ -229,13 +233,13 @@ class unitReqController extends Controller
             'city_id' => $request->input('city_id'),
             'unit_types' => $request->input('unit_types')
         ];
-
-        $filterService = $this->filterService->filter(UnitReq::class, $relationships, $filters);
+        
+        $filterService = $this->filterService->filter(UnitReq::class, $relationships, $filters, $sortField, $sortDirection);
 
         if ($filterService->isNotEmpty()) {
             return ApiResponse::success([
-                'Unit request' => unitReqResource::collection($filterService)
-            ], 'Unit Request updated successfully', 201);
+                'Unitrequest' => unitReqResource::collection($filterService)
+            ], 'UnitRequest updated successfully', 201);
         }
         return ApiResponse::error('No unit requests found.', 404);
     }

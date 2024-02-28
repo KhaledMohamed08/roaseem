@@ -9,6 +9,7 @@ use App\Http\Resources\UnitResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Service;
 use App\Models\Unit;
+use App\Models\UnitViews;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -40,7 +41,7 @@ class UnitController extends Controller
         $validatedData = $request->validated();
         $userId = Auth::id();
         if (!$userId) {
-        return redirect()->route('login');
+            return redirect()->route('login');
         }
         $unitData = $validatedData;
         unset($unitData['services'], $unitData['main_image']);
@@ -58,7 +59,7 @@ class UnitController extends Controller
                 $unit->addMedia($image)->toMediaCollection('images'); // Add images in media model for this unit
             }
         }
-        
+
         return ApiResponse::success(
             [
                 'unit' => new UnitResource($unit),
@@ -73,6 +74,22 @@ class UnitController extends Controller
      */
     public function show(Unit $unit)
     {
+        $user = null;
+        if ($token = request()->bearerToken()) {
+            $user = Auth::guard('sanctum')->user();
+        }
+
+        if ($user) {
+            UnitViews::create([
+                "user_id" => $user->id,
+                "unit_id" => $unit->id
+            ]);
+        } else {
+            UnitViews::create([
+                "unit_id" => $unit->id
+            ]);
+        }
+
         return ApiResponse::success(
             [
                 'unit' => new UnitResource($unit),
@@ -125,7 +142,7 @@ class UnitController extends Controller
     public function deleteImage($id)
     {
         $image = Media::find($id);
-        
+
         if (!$image) {
             return ApiResponse::error('Image not found', 404);
         }

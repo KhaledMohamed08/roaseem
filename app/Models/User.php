@@ -86,4 +86,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(UnitReqUser::class);
     }
+
+    public function notification()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function unitView()
+    {
+        return $this->hasMany(UnitViews::class);
+    }
 }

@@ -96,4 +96,8 @@ class Unit extends Model implements HasMedia
     }
 
     
+    public function unitView()
+    {
+        $this->hasMany(UnitViews::class);
+    }
 }

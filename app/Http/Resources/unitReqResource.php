@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,6 +16,7 @@ class unitReqResource extends JsonResource
     public function toArray(Request $request): array
     {
         // return parent::toArray($request);
+        
         return[
             "id" => $this->id,
             "name"=>$this->name,
@@ -26,9 +28,10 @@ class unitReqResource extends JsonResource
             "area"=>$this->area,
             "price"=>$this->price,
             "description"=>$this->description,
-            "adPeriod"=>$this->ad_period,
+            "adPeriod"=>Carbon::parse($this->ad_period)->format('d/m/y'),
             "entityType"=>$this->entity_type,
-            "city_id"=>$this->city_id,
+            "city"=>$this->city->name,
+            "created_at"=>Carbon::parse($this->created_at)->format('d/m/Y'),
             // "company"=>UserResource::collection($this->whenLoaded($this->unitReqUser->user)),
 
             "companies" => UserResource::collection($this->unitReqUser)->map(function ($unitReqUser) {

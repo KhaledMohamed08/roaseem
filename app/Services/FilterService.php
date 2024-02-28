@@ -8,7 +8,7 @@ use App\Helpers\ApiResponse;
 
 class FilterService
 {
-    public function filter($model, $relationships, $filters)
+    public function filter($model, $relationships, $filters, $sortField, $sortDirection = 'asc')
     {
         $query = $model::with($relationships);
 
@@ -22,6 +22,11 @@ class FilterService
                     $query->where($field, $value);
                 }
             }
+        }
+
+        //sorting
+        if ($sortField && in_array(strtolower($sortDirection), ['asc', 'desc'])) {
+            $query->orderBy($sortField, $sortDirection);
         }
 
         $results = $query->get();
