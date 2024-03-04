@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function profile(User $user)
+    public function profile()
     {
+        $user = Auth::user();
         return ApiResponse::success(
             [
                 'user' => new UserResource($user),

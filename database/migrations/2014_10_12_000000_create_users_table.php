@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['user', 'company'])->default('user');
             $table->string('tax_number')->nullable();
+            $table->string('practicing_number')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('users');
             // $table->string('otp')->nullable();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\UnitService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,6 +19,12 @@ class UnitResource extends JsonResource
         $originUrls = [];
         foreach ($this->getMedia('images') as $media) {
             array_push($originUrls, $media->original_url);
+        }
+
+        $servicesNames = [];
+        foreach ($this->services as $service) {
+            $servideName = UnitService::find($service->service_id)->name;
+            array_push($servicesNames, $servideName);
         }
 
         return [
@@ -41,7 +48,8 @@ class UnitResource extends JsonResource
             'payment_method' => $this->payment_method,
             'price' => $this->price,
             'descreption' => $this->descreption,
-            'services' => $this->services,
+            // 'services' => $this->services,
+            'services' => $servicesNames,
             'bedrooms' => $this->bedrooms,
             'living_rooms' => $this->living_rooms,
             'bathrooms' => $this->bathrooms,

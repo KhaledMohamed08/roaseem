@@ -62,6 +62,8 @@ Route::get('regions', function () {
 Route::middleware('auth:sanctum')->group( function () {
     // Auth Routes
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    // Register Employee For Company
+    Route::post('create-employee', [AuthController::class, 'createEmployee'])->name('employee.create');
     // Favorite Routes
     Route::get('favorite-toggle/{unitId}', [FavoriteController::class, 'toggleFavorite'])->name('favorite.toggle');
     Route::get('favorites', [FavoriteController::class, 'getFavorites'])->name('favorites');

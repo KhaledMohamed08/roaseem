@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUnitRequest;
 use App\Http\Requests\UpdateUnitRequest;
 use App\Http\Resources\UnitResource;
+use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Service;
 use App\Models\Unit;
@@ -21,7 +22,7 @@ class UnitController extends Controller
      */
     public function index()
     {
-        $perPage = 1;
+        $perPage = 9;
         $unites = Unit::orderBy('created_at', 'desc')->paginate($perPage);
 
         return ApiResponse::success(
@@ -93,6 +94,7 @@ class UnitController extends Controller
         return ApiResponse::success(
             [
                 'unit' => new UnitResource($unit),
+                'user' => new UserResource($unit->user),
             ],
             'Unit',
             200

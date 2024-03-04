@@ -40,6 +40,7 @@ class OTPServiceOnlyPhone
         $OTP->update([
             'code' => $code,
             'expires_at' => $expiresAt,
+            'used_at' => null,
         ]);
 
         return $OTP->code;

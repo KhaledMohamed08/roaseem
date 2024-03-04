@@ -40,14 +40,25 @@ class StoreUserRequest extends FormRequest
                 'min:6',
                 'confirmed',
             ],
+            'whatsapp' => [
+                
+            ],
+            'land_line' => [
+
+            ],
             'role' => [
-                'required_if:role,company',
+                // 'required_if:role,company',
+                'required',
                 'string',
             ],
             'tax_number' => [
                 'required_if:role,company',
                 'numeric',
-            ]
+            ],
+            'practicing_number' => [
+                'required_if:role,practiciner',
+                'numeric',
+            ],
         ];
     }
 

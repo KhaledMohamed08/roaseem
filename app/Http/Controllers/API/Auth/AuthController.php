@@ -193,6 +193,7 @@ class AuthController extends Controller
         ]);
         $otpService = new OTPServiceOnlyPhone();
         $otp = $otpService->regenerateOTP($validatedData['phone'], 10);
+        
         return ApiResponse::success(
             [
                 'phone' => $validatedData['phone'],
@@ -217,6 +218,31 @@ class AuthController extends Controller
 
         return ApiResponse::successWithoutData(
             'Password Updated Successfully',
+            200
+        );
+    }
+
+    public function createEmployee(StoreUserRequest $request)
+    {
+        $authUser = Auth::user();
+        if ($authUser->role != 'company') {
+            return ApiResponse::error(
+                'Only Companies Can Register Employees',
+                400
+            );
+        }
+        $validatedData = $request->validated();
+        $validatedData['password'] = Hash::make($validatedData['password']);
+        $validatedData['company_id'] = $authUser->id;
+        $validatedData['role'] = 'user';
+
+        $employee = User::create($validatedData);
+
+        return ApiResponse::success(
+            [
+                'Employee' => new UserResource($employee)
+            ],
+            'Employee Created Successfully',
             200
         );
     }
