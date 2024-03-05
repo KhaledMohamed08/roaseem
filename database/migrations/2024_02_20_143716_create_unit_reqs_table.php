@@ -19,8 +19,10 @@ return new class extends Migration
             $table->enum('unit_types',['land','villa', 'Apartment', 'fair', 'building','office','station']);
             $table->enum('status',['sale','rent'])->nullable();
             $table->enum('purpose',['residential','companies','Agricultural'])->nullable();
-            $table->string('area');
-            $table->decimal('price',8,2);
+            $table->decimal('max_area',8,2);
+            $table->decimal('min_area',8,2);
+            $table->decimal('max_price',8,2);
+            $table->decimal('min_price',8,2);
             $table->longText('description');
             $table->dateTime('ad_period');
             $table->enum('entity_type',['companies','marketers','all']);

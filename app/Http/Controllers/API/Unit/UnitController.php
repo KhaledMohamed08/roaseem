@@ -8,11 +8,14 @@ use App\Http\Requests\UpdateUnitRequest;
 use App\Http\Resources\UnitResource;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\Notification;
 use App\Models\Service;
 use App\Models\Unit;
 use App\Models\UnitViews;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class UnitController extends Controller
@@ -20,6 +23,14 @@ class UnitController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    protected $notificationsService;
+
+    public function __construct(NotificationService $notificationsService)
+    {
+        $this->notificationsService = $notificationsService;
+    }
+
     public function index()
     {
         $perPage = 9;
@@ -61,6 +72,20 @@ class UnitController extends Controller
             }
         }
 
+        $notificationData = [];
+        $usersQuery = DB::table('users')->select('id')->where('role', 'user');
+        $notificationData = $usersQuery->get()->map(function ($user) use ($unit) {
+            return [
+                'user_id' => $user->id,
+                'message' => 'A new unit has been Added',
+                'event' => 'new_unit',
+                'is_read' => false,
+                'url' => "unit/$unit->id"
+            ];
+        })->toArray();
+
+        Notification::insert($notificationData);
+
         return ApiResponse::success(
             [
                 'unit' => new UnitResource($unit),
@@ -85,10 +110,14 @@ class UnitController extends Controller
                 "user_id" => $user->id,
                 "unit_id" => $unit->id
             ]);
+            $notification = $this->notificationsService
+                ->createNotification($unit->user_id, "Your Unit has been viewed from $user->name", "unit_viewed", "unit/$unit->id");
         } else {
             UnitViews::create([
                 "unit_id" => $unit->id
             ]);
+            $notification = $this->notificationsService
+                ->createNotification($unit->user_id, "Your Unit has been viewed from Guest", "unit_viewed", "unit/$unit->id");
         }
 
         return ApiResponse::success(

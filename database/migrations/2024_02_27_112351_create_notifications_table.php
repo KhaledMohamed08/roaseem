@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('message');
             $table->boolean('is_read');
-            $table->enum('event',['unit_viewed', 'added to', 'unit_added_to_fav']);
-            $table->unsignedBigInteger('user_id');
+            $table->enum('event',['unit_viewed', 'added to', 'unit_added_to_fav','new_unit']);
+            $table->string('url')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
 
             //foregin Keys

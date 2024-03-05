@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
 use App\Http\Controllers\API\Home\HomeController;
+use App\Http\Controllers\API\Notification\notificationController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Unit\UnitController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
@@ -87,6 +88,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::put('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('my-unites', [ProfileController::class, 'myUnites'])->name('my.unites');
     Route::put('reset-password', [ProfileController::class, 'resetPassword'])->name('reset.password');
+
+    //Notifications
+    Route::get('notifications', [notificationController::class, 'index'])->name('notifications.index');
+    Route::delete('notifications/{id}', [notificationController::class, 'delete'])->name('notifications.delete');
 });
 
 // Guest Protected Routes

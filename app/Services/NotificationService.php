@@ -4,15 +4,16 @@ namespace App\Services;
 
 use App\Models\Notification;
 
-class NotificationsService
+class NotificationService
 {
-    public function createNotification($userId, $message, $event)
+    public function createNotification($userId, $message, $event, $url = null)
     {
         return Notification::create([
             'user_id' => $userId,
             'message' => $message,
             'event' => $event,
-            'is_read' => false // Assuming notifications are initially unread
+            'is_read' => false,
+            'url' => $url
         ]);
     }
 
@@ -29,8 +30,18 @@ class NotificationsService
 
     public function getNotificationsForUser($userId)
     {
-        return Notification::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
+        return Notification::where('user_id', $userId)->orderBy('id', 'desc')->get();
     }
 
-    // You can add more methods as needed for your application
+    public function deleteNotification($notificationId)
+    {
+        $notification = Notification::find($notificationId);
+        if ($notification) {
+            $notification->delete();
+            return true;
+        }
+        return false; 
+    }
+
+
 }

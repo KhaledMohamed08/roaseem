@@ -21,7 +21,7 @@ class UserController extends Controller
                 'Companies' => UserResource::collection($companies)
             ]);
         } else {
-            return ApiResponse::error('No unit requests found.', 404);
+            return ApiResponse::error('No Companies found.', 404);
         }
     }
 }
