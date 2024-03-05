@@ -50,6 +50,7 @@ class StoreUserRequest extends FormRequest
                 // 'required_if:role,company',
                 'required',
                 'string',
+                'in:user,company,marketer,practiciner'
             ],
             'tax_number' => [
                 'required_if:role,company',
@@ -66,6 +67,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             // 'phone.regex' => 'phone number must me only numbers',
+            'role.in' => 'The selected role is invalid, select from (user, company, marketer or practiciner)'
         ];
     }
 }

@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Global Routes
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
-Route::get('unites-types/{user}', [ProfileController::class, 'userUnitesStatistics'])->name('unites.types');
+Route::get('unites-types', [ProfileController::class, 'userUnitesStatistics'])->name('unites.types');
 
 Route::get('countries', function () {
     $countries = Country::all();

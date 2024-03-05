@@ -22,11 +22,14 @@ class User extends Authenticatable
         'email',
         'phone',
         'whatsapp',
+        'land_line',
         'password',
         // 'otp',
         // 'is_verified',
         'role',
         'tax_number',
+        'practicing_number',
+        'company_id',
 
     ];
 

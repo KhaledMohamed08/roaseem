@@ -26,14 +26,19 @@ class UpdateUserRequest extends FormRequest
 
         return [
             'name' => 'required',
-            'phone' => [
-                'required',
-                Rule::unique('users')->ignore($userId, 'id'),
-            ],
+            // 'phone' => [
+            //     'required',
+            //     Rule::unique('users')->ignore($userId, 'id'),
+            // ],
             'email' => [
                 'required',
                 Rule::unique('users')->ignore($userId, 'id'),
             ],
+            'image' => [
+                'file',
+                'mimetypes:image/jpeg,image/jpg,image/png',
+                'max:10240',
+            ]
         ];
     }
 }

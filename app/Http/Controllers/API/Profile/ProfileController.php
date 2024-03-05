@@ -29,11 +29,18 @@ class ProfileController extends Controller
 
     public function edit(UpdateUserRequest $request)
     {
+        return $request;
         $validatedData = $request->validated();
-        $user = Auth::user();
+        $userId = Auth::id();
+        $user = User::find($userId);
 
         if ($user) {
             $user->update($validatedData);
+
+            if ($request->hasFile('image')) {
+                $user->clearMediaCollection('logo');
+                $user->addMediaFromRequest('image')->toMediaCollection('logo');
+            }
 
             return ApiResponse::success(
                 [

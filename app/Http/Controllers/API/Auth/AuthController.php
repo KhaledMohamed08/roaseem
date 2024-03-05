@@ -86,69 +86,92 @@ class AuthController extends Controller
         }
     }
 
+    // public function register(StoreUserRequest $request)
+    // {
+    //     $validatedData = $request->validated();
+    //     $validatedData['password'] = Hash::make($validatedData['password']);
+
+    //     if (!$request->has('role') || $request['role'] === 'user') {
+    //         $otp = Otp::where('phone', $validatedData['phone'])->first();
+
+    //         if ($otp && $otp->used_at != null) {
+    //             $userData = [
+    //                 'name' => $validatedData['name'],
+    //                 'email' => $validatedData['email'],
+    //                 'phone' => $validatedData['phone'],
+    //                 'password' => $validatedData['password'],
+    //                 'role' => 'user',
+    //             ];
+
+    //             $user = User::create($userData);
+    //             $otp->update(['user_id' => $user->id]);
+
+    //             $token = $user->createToken('user_token')->plainTextToken;
+
+    //             return ApiResponse::success(
+    //                 [
+    //                     'user' => new UserResource($user),
+    //                     'token' => $token,
+    //                 ],
+    //                 'User Created Successfully',
+    //                 200
+    //             );
+    //         }
+
+    //         // Return response indicating the need to verify the phone number
+    //         return ApiResponse::error('Please verify your phone number before registering.', 400);
+    //     } else {
+    //         // For company or other roles, proceed without phone verification
+    //         $userData = [
+    //             'name' => $validatedData['name'],
+    //             'email' => $validatedData['email'],
+    //             'phone' => $validatedData['phone'],
+    //             'password' => $validatedData['password'],
+    //         ];
+
+    //         if ($request->has('role') && $validatedData['role'] === 'company') {
+    //             $userData['role'] = $validatedData['role'];
+    //             $userData['tax_number'] = $validatedData['tax_number'];
+    //             $message = 'Company Created Successfully';
+    //         } else {
+    //             $message = 'User Created Successfully';
+    //         }
+
+    //         $user = User::create($userData);
+    //         $token = $user->createToken('user_token')->plainTextToken;
+
+    //         return ApiResponse::success(
+    //             [
+    //                 'user' => new UserResource($user),
+    //                 'token' => $token,
+    //             ],
+    //             $message,
+    //             200
+    //         );
+    //     }
+    // }
+
     public function register(StoreUserRequest $request)
     {
         $validatedData = $request->validated();
         $validatedData['password'] = Hash::make($validatedData['password']);
-
-        if (!$request->has('role') || $request['role'] === 'user') {
-            $otp = Otp::where('phone', $validatedData['phone'])->first();
-
-            if ($otp && $otp->used_at != null) {
-                $userData = [
-                    'name' => $validatedData['name'],
-                    'email' => $validatedData['email'],
-                    'phone' => $validatedData['phone'],
-                    'password' => $validatedData['password'],
-                    'role' => 'user',
-                ];
-
-                $user = User::create($userData);
-                $otp->update(['user_id' => $user->id]);
-
-                $token = $user->createToken('user_token')->plainTextToken;
-
-                return ApiResponse::success(
-                    [
-                        'user' => new UserResource($user),
-                        'token' => $token,
-                    ],
-                    'User Created Successfully',
-                    200
-                );
-            }
-
-            // Return response indicating the need to verify the phone number
-            return ApiResponse::error('Please verify your phone number before registering.', 400);
+        $otp = Otp::where('phone', $validatedData['phone'])->first();
+        if ($otp && $otp->used_at != null) {
+            $user = User::create($validatedData);
         } else {
-            // For company or other roles, proceed without phone verification
-            $userData = [
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
-                'phone' => $validatedData['phone'],
-                'password' => $validatedData['password'],
-            ];
-
-            if ($request->has('role') && $validatedData['role'] === 'company') {
-                $userData['role'] = $validatedData['role'];
-                $userData['tax_number'] = $validatedData['tax_number'];
-                $message = 'Company Created Successfully';
-            } else {
-                $message = 'User Created Successfully';
-            }
-
-            $user = User::create($userData);
-            $token = $user->createToken('user_token')->plainTextToken;
-
-            return ApiResponse::success(
-                [
-                    'user' => new UserResource($user),
-                    'token' => $token,
-                ],
-                $message,
-                200
+            return ApiResponse::error(
+                'Phone Number Not Verified!',
+                400
             );
         }
+
+        return ApiResponse::success(
+            [
+                'user' => $user,
+            ],
+            'User Created Successfully',
+            200
+        );
     }
 
     public function login(Request $request)
@@ -157,6 +180,10 @@ class AuthController extends Controller
             'phone' => 'required',
             'password' => 'required',
         ]);
+
+        if (!is_numeric($credentials['phone'])) {
+            $credentials = ['email' => $credentials['phone'], 'password' => $credentials['password']];
+        }
 
         if (Auth::attempt($credentials)) {
             $userId = Auth::id();
@@ -174,7 +201,7 @@ class AuthController extends Controller
         }
 
         return ApiResponse::error(
-            'Invalid phone or password',
+            'Invalid phone, email or password',
             401
         );
     }
