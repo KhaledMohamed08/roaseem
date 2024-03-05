@@ -8,16 +8,20 @@ use App\Models\Notification;
 use App\Models\Unit;
 use App\Models\User;
 use App\Services\NotificationService;
+use App\Services\FilterService;
+
 use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
-    protected $notificationsService;
+    protected $filterService;
 
-    public function __construct(NotificationService $notificationsService)
+    public function __construct(FilterService $filterService, NotificationService $notificationsService)
     {
         $this->notificationsService = $notificationsService;
+        $this->filterService = $filterService;
     }
+    protected $notificationsService;
 
     public function toggleFavorite($unitId)
     {
@@ -52,9 +56,10 @@ class FavoriteController extends Controller
     public function getFavorites()
     {
         $user = auth()->user();
+        $favorites = $user->favorites;
 
         return ApiResponse::success(
-            ['favorites' => $user->favorites],
+            ['favorites' => $favorites],
             'User Favorites Items',
             200
         );

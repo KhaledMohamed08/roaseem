@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
 class UserResource extends JsonResource
 {
     /**
@@ -20,10 +21,12 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
+            'whatsapp' => $this->whatsapp,
+            'land_line' => $this->land_line,
             'role' => $this->role,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'image' => $this->getFirstMediaUrl('logo'),
+            'image' => $this->getFirstMediaUrl('logo') ?? 'no image',
         ];
     }
 }
