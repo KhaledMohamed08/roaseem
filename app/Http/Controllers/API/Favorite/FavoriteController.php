@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Favorite;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UnitResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Notification;
 use App\Models\Unit;
@@ -15,13 +16,14 @@ use Illuminate\Http\Request;
 class FavoriteController extends Controller
 {
     protected $filterService;
+    protected $notificationsService;
 
     public function __construct(FilterService $filterService, NotificationService $notificationsService)
     {
         $this->notificationsService = $notificationsService;
         $this->filterService = $filterService;
     }
-    protected $notificationsService;
+    
 
     public function toggleFavorite($unitId)
     {
@@ -59,7 +61,7 @@ class FavoriteController extends Controller
         $favorites = $user->favorites;
 
         return ApiResponse::success(
-            ['favorites' => $favorites],
+            ['favorites' => new UnitResource($favorites)],
             'User Favorites Items',
             200
         );

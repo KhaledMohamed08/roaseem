@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'whatsapp' => $this->whatsapp,
             'land_line' => $this->land_line,
             'role' => $this->role,
+            'about' => $this->about,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'image' => $this->getFirstMediaUrl('logo') ?? 'no image',

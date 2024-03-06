@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->longText('about')->nullable();
             $table->enum('role', ['user', 'company', 'marketer', 'practiciner'])->default('user');
             $table->string('tax_number')->nullable();
             $table->string('practicing_number')->nullable();
