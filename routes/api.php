@@ -8,6 +8,7 @@ use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Unit\UnitController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
 use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\unitFeaturesController;
 use App\Http\Responses\ApiResponse;
 use App\Models\City;
 use App\Models\Country;
@@ -92,6 +93,14 @@ Route::middleware('auth:sanctum')->group( function () {
     //Notifications
     Route::get('notifications', [notificationController::class, 'index'])->name('notifications.index');
     Route::delete('notifications/{id}', [notificationController::class, 'delete'])->name('notifications.delete');
+    
+    //unitFeatures
+    Route::get('unitStatus',[unitFeaturesController::class,'getUnitStatus']);
+    Route::get('unitTypes',[unitFeaturesController::class,'getUnitType']);
+    Route::get('unitService',[unitFeaturesController::class,'getUnitServices']);
+    Route::get('unitPurposes',[unitFeaturesController::class,'getunitPurpose']);
+    Route::get('unitPayment',[unitFeaturesController::class,'getunitPayment']);
+    Route::get('unitInterFace',[unitFeaturesController::class,'getunitInterFace']);
 });
 
 // Guest Protected Routes

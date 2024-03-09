@@ -47,7 +47,7 @@ class FavoriteController extends Controller
 
         $user->favorites()->attach($unitId);
         $notification = $this->notificationsService
-        ->createNotification($unit->user_id, "Your Unit added to favorites from $user->name","unit_added_to_fav","unit/$unitId");
+        ->createNotification($unit->user_id, "Your Unit added to favorites from $user->name","unit_added_to_fav","$unitId");
         // return $notification;
         return ApiResponse::successWithoutData(
             'Item Added From Favorites',

@@ -111,13 +111,13 @@ class UnitController extends Controller
                 "unit_id" => $unit->id
             ]);
             $notification = $this->notificationsService
-                ->createNotification($unit->user_id, "Your Unit has been viewed from $user->name", "unit_viewed", "unit/$unit->id");
+                ->createNotification($unit->user_id, "Your Unit has been viewed from $user->name", "unit_viewed", "$unit->id");
         } else {
             UnitViews::create([
                 "unit_id" => $unit->id
             ]);
             $notification = $this->notificationsService
-                ->createNotification($unit->user_id, "Your Unit has been viewed from Guest", "unit_viewed", "unit/$unit->id");
+                ->createNotification($unit->user_id, "Your Unit has been viewed from Guest", "unit_viewed", "$unit->id");
         }
 
         return ApiResponse::success(

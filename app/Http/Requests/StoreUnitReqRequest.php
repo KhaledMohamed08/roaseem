@@ -32,6 +32,8 @@ class StoreUnitReqRequest extends FormRequest
             'maxPrice'=>"required|numeric",
             'minPrice'=>"required|numeric",
             'description'=>"required",
+            'bedRooms' => "required",
+            'bathRooms' => "required",
             'adPeriod'=>"nullable",
             'entity_type'=>"required",
             'companies'=>"nullable",

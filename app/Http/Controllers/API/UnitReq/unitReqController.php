@@ -102,6 +102,8 @@ class unitReqController extends Controller
             "max_price" => $request->maxPrice,
             "min_price" => $request->minPrice,
             "description" => $request->description,
+            'bed_rooms' => $request->bedRooms,
+            'bath_rooms' => $request->bathRooms,
             "ad_period" => $request->adPeriod,
             "entity_type" => $request->entity_type,
             "user_id" => $user->id,
@@ -220,7 +222,6 @@ class unitReqController extends Controller
 
     public function filter(Request $request)
     {
-        // return $request;
         $relationships = ['unitReqUser'];
 
         $sortField = "id";
