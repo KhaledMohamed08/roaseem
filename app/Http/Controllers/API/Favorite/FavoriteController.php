@@ -61,7 +61,7 @@ class FavoriteController extends Controller
         $favorites = $user->favorites;
 
         return ApiResponse::success(
-            ['favorites' => new UnitResource($favorites)],
+            ['favorites' => UnitResource::collection($favorites)],
             'User Favorites Items',
             200
         );

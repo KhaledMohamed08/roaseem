@@ -63,6 +63,7 @@ class UnitResource extends JsonResource
             'main_image' => $this->getFirstMediaUrl('unit-Main-image'),
             // 'images' => $this->getMedia('images')->getUrl(),
             'images' => $originUrls,
+            'user' => $this->user,
         ];
     }
 }

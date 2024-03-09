@@ -33,7 +33,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Global Routes
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
-Route::get('unites-types', [ProfileController::class, 'userUnitesStatistics'])->name('unites.types');
 
 Route::get('countries', function () {
     $countries = Country::all();
@@ -71,6 +70,7 @@ Route::middleware('auth:sanctum')->group( function () {
     // Unit Routes
     Route::apiResource('unit', UnitController::class)->only(['store', 'update', 'destroy']);
     Route::delete('delete-image/{id}', [UnitController::class, 'deleteImage'])->name('image.delete');
+    Route::get('unites-types', [ProfileController::class, 'userUnitesStatistics'])->name('unites.types');
     //unitReqs
     Route::get('unit-Reqs',[unitReqController::class,'index'])->name('unitReqs.index');
     Route::post('unitReqs',[unitReqController::class,'store'])->name('unitReqs.store');

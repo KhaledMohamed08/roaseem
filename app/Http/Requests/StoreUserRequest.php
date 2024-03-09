@@ -47,7 +47,7 @@ class StoreUserRequest extends FormRequest
                 'numeric'
             ],
             'about' => [
-                
+
             ],
             'role' => [
                 // 'required_if:role,company',
