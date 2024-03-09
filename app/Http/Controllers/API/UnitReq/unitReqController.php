@@ -163,6 +163,8 @@ class unitReqController extends Controller
             ], 301);
         }
 
+        
+
         $unitReqData = $this->updateUnitRequest($unitReq, $request, $user);
 
         if ($request->companies) {
@@ -194,6 +196,8 @@ class unitReqController extends Controller
             "area" => $request->area,
             "price" => $request->price,
             "description" => $request->description,
+            'bed_rooms' => $request->bedRooms,
+            'bath_rooms' => $request->bathRooms,
             "ad_period" => $request->adPeriod,
             "entity_type" => $request->entity_type,
         ]);

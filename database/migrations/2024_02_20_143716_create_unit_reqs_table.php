@@ -24,8 +24,8 @@ return new class extends Migration
             $table->unsignedDecimal('max_price',10,2);
             $table->unsignedDecimal('min_price',8,2);
             $table->longText('description');
-            $table->enum('bed_rooms',['1','2','3','5',"5+"]);
-            $table->enum('bath_rooms',['1','2','3','5',"5+"]);
+            $table->enum('bed_rooms',['1','2','3','4',"5+"]);
+            $table->enum('bath_rooms',['1','2','3','4',"5+"]);
             $table->dateTime('ad_period');
             $table->enum('entity_type',['companies','marketers','all']);
             $table->unsignedBigInteger('city_id');

@@ -30,6 +30,8 @@ class unitReqResource extends JsonResource
             "maxPrice"=>$this->max_price,
             "minPrice"=>$this->min_price,
             "description"=>$this->description,
+            'bedRooms' => $this->bed_rooms,
+            'bathRooms' => $this->bath_rooms,
             "adPeriod"=>Carbon::parse($this->ad_period)->format('d/m/y'),
             "entityType"=>$this->entity_type,
             "city"=>$this->city->name,

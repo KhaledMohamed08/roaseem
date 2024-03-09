@@ -21,6 +21,8 @@ class UnitReq extends Model
         'max_price',
         'min_price',
         'description',
+        'bed_rooms',
+        'bath_rooms',
         'ad_period',
         'entity_type',
         'city_id',
