@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\Unit;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UnitFeatureResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\UnitInterface;

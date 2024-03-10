@@ -13,9 +13,9 @@ class UnitReq extends Model
         'name',
         'phone',
         'email',
-        'unit_types',
-        'status',
-        'purpose',
+        'unit_types_id',
+        'unit_status_id',
+        'unit_purpose_id',
         'max_area',
         'min_area',
         'max_price',
@@ -28,6 +28,21 @@ class UnitReq extends Model
         'city_id',
         'user_id',
     ];
+
+    public function unitType()
+    {
+        return $this->belongsTo(UnitType::class);
+    }
+
+    public function unitStatus()
+    {
+        return $this->belongsTo(UnitStatus::class);
+    }
+
+    public function unitPurpose()
+    {
+        return $this->belongsTo(UnitPurpose::class);
+    }
 
     public function city()
     {
@@ -43,6 +58,4 @@ class UnitReq extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    
 }

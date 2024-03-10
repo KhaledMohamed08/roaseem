@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('email');
-            $table->enum('unit_types',['land','villa', 'Apartment', 'fair', 'building','office','station']);
-            $table->enum('status',['sale','rent'])->nullable();
-            $table->enum('purpose',['residential','companies','Agricultural'])->nullable();
+            $table->unsignedBigInteger('unit_types_id');
+            $table->unsignedBigInteger('unit_status_id')->nullable();
+            $table->unsignedBigInteger('unit_purpose_id')->nullable();
             $table->unsignedDecimal('max_area',10,2);
             $table->unsignedDecimal('min_area',8,2);
             $table->unsignedDecimal('max_price',10,2);
@@ -35,6 +35,9 @@ return new class extends Migration
             //foregin Keys
             $table->foreign('city_id')->references('id')->on('cities');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('unit_types_id')->references('id')->on('unit_types');
+            $table->foreign('unit_status_id')->references('id')->on('unit_statuses');
+            $table->foreign('unit_purpose_id')->references('id')->on('unit_purposes');
         });
     }
 

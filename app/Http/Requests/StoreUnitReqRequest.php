@@ -25,7 +25,7 @@ class StoreUnitReqRequest extends FormRequest
             'name'=>"required|string",
             'phone'=>"required",
             'email'=>"required|email",
-            'unitType'=>"required",
+            'unitType_id'=>"required",
             'city_id'=>"required",
             'maxArea'=>"required|numeric",
             'minArea'=>"required|numeric",
