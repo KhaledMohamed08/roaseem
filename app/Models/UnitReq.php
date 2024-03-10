@@ -31,7 +31,7 @@ class UnitReq extends Model
 
     public function unitType()
     {
-        return $this->belongsTo(UnitType::class);
+        return $this->belongsTo(UnitType::class,'unit_types_id');
     }
 
     public function unitStatus()
