@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedDecimal('max_area',10,2);
             $table->unsignedDecimal('min_area',8,2);
             $table->unsignedDecimal('max_price',10,2);
-            $table->unsignedDecimal('min_price',8,2);
+            $table->unsignedDecimal('min_price',10,2);
             $table->longText('description');
             $table->enum('bed_rooms',['1','2','3','4',"5+"]);
             $table->enum('bath_rooms',['1','2','3','4',"5+"]);

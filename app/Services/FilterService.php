@@ -14,10 +14,17 @@ class FilterService
 
         foreach ($filters as $field => $value) {
             if (!empty($value)) {
-                if (is_array($value)) {
+                if (is_array($value)) 
+                {
                     // Handle range filters
+                    $query->whereIn($field, $value);
+                } 
+                elseif((is_array($value) && count($value) == 2))
+                {
                     $query->whereBetween($field, $value);
-                } else {
+                }
+                else 
+                {
                     // Handle single value filters
                     $query->where($field, $value);
                 }

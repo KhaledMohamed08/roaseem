@@ -234,8 +234,8 @@ class unitReqController extends Controller
         $sortDirection = $request->input('sort_direction', 'asc');
 
         $filters = [
-            'status' => $request->input('status'),
-            'purpose' => $request->input('purpose'),
+            'unit_status_id' => $request->input('status_id'),
+            'unit_purpose_id' => $request->input('purpose_id'),
             'entity_type' => $request->input('entity_type'),
             'max_price' => $request->input('maxPrice'),
             'min_price' => $request->input('minPrice'),
@@ -244,7 +244,9 @@ class unitReqController extends Controller
             // 'price' => $request->filled(['max', 'min']) ? [$request->min, $request->max] : null,
             // 'area' => $request->filled(['areaFrom', 'areaTo']) ? [$request->areaFrom, $request->areaTo] : null,
             'city_id' => $request->input('city_id'),
-            'unit_types' => $request->input('unit_types')
+            'unit_types_id' => $request->input('unit_types'),
+            'bed_rooms' => $request->input('bedRooms'),
+            'bath_rooms' => $request->input('bathRooms')
         ];
         
         $filterService = $this->filterService->filter(UnitReq::class, $relationships, $filters, $sortField, $sortDirection);
