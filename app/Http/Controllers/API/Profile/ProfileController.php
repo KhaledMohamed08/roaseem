@@ -29,8 +29,9 @@ class ProfileController extends Controller
 
     public function edit(UpdateUserRequest $request)
     {
-        return $request;
+        // return $request;
         $validatedData = $request->validated();
+        dd($validatedData);
         $userId = Auth::id();
         $user = User::find($userId);
 
@@ -77,6 +78,7 @@ class ProfileController extends Controller
         $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
         $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);
         $numOfEachUnitCities = $this->numOfEachUnitCities($user->id);
+        $numOfFavorites = $this->numOfFavorites($user->id);
 
         return ApiResponse::success(
             [
@@ -96,6 +98,7 @@ class ProfileController extends Controller
                     'total' => count($numOfEachUnitCities),
                     'details' => $numOfEachUnitCities,
                 ],
+                'numOfFavorites' => $numOfFavorites,
             ],
             'Unit Statistics',
             200
@@ -182,6 +185,20 @@ class ProfileController extends Controller
         }
 
         return $numOfEachUnitCities;
+    }
+
+    protected function numOfFavorites($id)
+    {
+        $user = User::find($id);
+        $unites = $user->unites;
+        $numOfFavorites = 0;
+        foreach ($unites as $unit) {
+            if ($unit->favoritedBy != null) {
+                $numOfFavorites += $unit->favoritedBy->count(); 
+            }
+        }
+
+        return $numOfFavorites;
     }
 
     public function resetPassword(Request $request)

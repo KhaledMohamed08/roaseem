@@ -38,18 +38,29 @@ class UpdateUnitRequest extends FormRequest
             'ad_title' => [
                 'required',
             ],
-            'unit_type' => [
+            'unit_type_id' => [
                 'required',
+                'numeric',
             ],
-            'contract_type' => [
+            'unit_status_id' => [
                 'required',
+                'numeric',
             ],
-            'interface' => [
-                'required'
+            'unit_purpose_id' => [
+                'required',
+                'numeric',
+            ],
+            'unit_interface_id' => [
+                'required',
+                'numeric',
             ],
             'floor_number' => [
                 'required',
                 'numeric',
+            ],
+            'created_year' => [
+                'required',
+                'numeric'
             ],
             'area' => [
                 'required',
@@ -59,8 +70,9 @@ class UpdateUnitRequest extends FormRequest
                 'required',
                 'numeric',
             ],
-            'payment_method' => [
-                'required'
+            'unit_payment_id' => [
+                'required',
+                'numeric',
             ],
             'price' => [
                 'required',
@@ -101,6 +113,12 @@ class UpdateUnitRequest extends FormRequest
             ],
             'rights_and_obligations' => [
                 'required'
+            ],
+            'main_image' => [
+                'required',
+                'file',
+                'mimetypes:image/jpeg,image/jpg,image/png',
+                'max:10240',
             ],
             'images.*' => [
                 'file',
