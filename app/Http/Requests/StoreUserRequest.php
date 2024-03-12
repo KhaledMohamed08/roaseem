@@ -41,10 +41,10 @@ class StoreUserRequest extends FormRequest
                 'confirmed',
             ],
             'whatsapp' => [
-                'numeric'
+
             ],
             'land_line' => [
-                'numeric'
+                
             ],
             'about' => [
 
