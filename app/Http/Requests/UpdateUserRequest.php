@@ -31,14 +31,12 @@ class UpdateUserRequest extends FormRequest
             //     Rule::unique('users')->ignore($userId, 'id'),
             // ],
             'email' => [
-                'required',
+                // 'required',
                 Rule::unique('users')->ignore($userId, 'id'),
             ],
-            'image' => [
-                'file',
-                'mimetypes:image/jpeg,image/jpg,image/png',
-                'max:10240',
-            ]
+            'about' => '',
+            'whatsapp' => '',
+            'land_line' => '',
         ];
     }
 }

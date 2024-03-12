@@ -29,9 +29,7 @@ class ProfileController extends Controller
 
     public function edit(UpdateUserRequest $request)
     {
-        // return $request;
         $validatedData = $request->validated();
-        dd($validatedData);
         $userId = Auth::id();
         $user = User::find($userId);
 
