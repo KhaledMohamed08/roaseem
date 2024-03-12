@@ -22,9 +22,20 @@ class unitReqResource extends JsonResource
             "name"=>$this->name,
             "phone"=>$this->phone,
             "email"=>$this->email,
-            "unitType"=>$this->unitType->name,
-            "status"=>isset($this->unitStatus->name) ? $this->unitStatus->name:null,
-            "purpose"=>isset($this->unitPurpose->name) ? $this->unitPurpose->name:null,
+            "unitType"=>[
+                "id" => $this->unitType->id,
+               "name" => $this->unitType->name,
+            ],
+
+            "status" => isset($this->unitStatus) ? [
+                "id" => $this->unitStatus->id,
+                "name" => $this->unitStatus->name,
+            ] : null,
+            
+            "purpose" => isset($this->unitPurpose) ? [
+                "id" => $this->unitPurpose->id,
+                "name" => $this->unitPurpose->name,
+            ] : null,
             "maxArea"=>$this->max_area,
             "minArea"=>$this->min_area,
             "maxPrice"=>$this->max_price,
@@ -34,7 +45,11 @@ class unitReqResource extends JsonResource
             'bathRooms' => $this->bath_rooms,
             "adPeriod"=>Carbon::parse($this->ad_period)->format('d/m/y'),
             "entityType"=>$this->entity_type,
-            "city"=>$this->city->name,
+            "city"=>[
+                "id"=>$this->city->id,
+               "name"=> $this->city->name,
+            ],
+
             "created_at"=>Carbon::parse($this->created_at)->format('d/m/Y'),
             // "company"=>UserResource::collection($this->whenLoaded($this->unitReqUser->user)),
 
@@ -44,15 +59,6 @@ class unitReqResource extends JsonResource
                     'name' => $unitReqUser->user->name,
                 ];
             }),
-            
-            // "companies" => UserResource::collection(
-            //     $this->unitReqUser->where('user_id', '!=', $user->id)
-            //     )->map(function ($unitReqUser) {
-            //     return [
-            //         'id' => $unitReqUser->user->id,
-            //         'name' => $unitReqUser->user->name,
-            //     ];
-            // }),
         ];
     }
 }
