@@ -50,7 +50,9 @@ class unitReqController extends Controller
     public function myRequests()
     {
         $user = Auth::user();
-        $myReqs = UnitReq::where('user_id', $user->id)->get();
+        $myReqs = UnitReq::where('user_id', $user->id)
+        ->orderby('id','desc')
+        ->get();
 
         if ($myReqs->isNotEmpty()) {
             return ApiResponse::success([
