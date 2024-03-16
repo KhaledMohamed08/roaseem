@@ -17,6 +17,7 @@ class NotificationResource extends JsonResource
         // return parent::toArray($request);
         return 
         [
+            'id' => $this->id,
             'message' => $this->message,
             'event' => $this->event,
             'url' => $this->url,
