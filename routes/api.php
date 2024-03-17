@@ -96,6 +96,7 @@ Route::middleware('auth:sanctum')->group( function () {
     
     //unitFeatures
     Route::get('unitStatus',[unitFeaturesController::class,'getUnitStatus']);
+    Route::get('unitStatusFilter',[unitFeaturesController::class,'unitStatusFilter']);
     Route::get('unitTypes',[unitFeaturesController::class,'getUnitType']);
     Route::get('unitService',[unitFeaturesController::class,'getUnitServices']);
     Route::get('unitPurposes',[unitFeaturesController::class,'getunitPurpose']);

@@ -15,24 +15,24 @@ use Illuminate\Http\Request;
 
 class unitFeaturesController extends Controller
 {
-    // public function getUnitStatus(UnitStatus $unitStatus)
-    // {
-    //     $unitStatus = $unitStatus->get();
-    //     if($unitStatus->isNotEmpty()) 
-    //     {
-    //         return ApiResponse::success(
-    //             [
-    //                 'unitStatus' => UnitFeatureResource::collection($unitStatus),
-    //             ],
-    //         );
-    //     }
-    //     else
-    //     {
-    //         return ApiResponse::error('Unit Status not found', 404);
-    //     }
-    // }
-
     public function getUnitStatus(UnitStatus $unitStatus)
+    {
+        $unitStatus = $unitStatus->get();
+        if($unitStatus->isNotEmpty()) 
+        {
+            return ApiResponse::success(
+                [
+                    'unitStatus' => UnitFeatureResource::collection($unitStatus),
+                ],
+            );
+        }
+        else
+        {
+            return ApiResponse::error('Unit Status not found', 404);
+        }
+    }
+
+    public function unitStatusFilter(UnitStatus $unitStatus)
     {
         $unitStatus = $unitStatus->where('name',"sale")->get();
         if($unitStatus->isNotEmpty()) 
