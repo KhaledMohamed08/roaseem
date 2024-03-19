@@ -8,7 +8,7 @@ use App\Helpers\ApiResponse;
 
 class FilterService
 {
-    public function filter($model, $relationships, $filters, $sortField, $sortDirection = 'asc')
+    public function filter($model, $relationships, $filters, $sortField, $sortDirection = 'desc')
     {
         $query = $model::with($relationships);
 

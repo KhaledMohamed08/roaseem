@@ -233,8 +233,8 @@ class unitReqController extends Controller
         $relationships = ['unitReqUser'];
 
         $sortField = "id";
-        $sortDirection = $request->input('sort_direction', 'asc');
-
+        $sortDirection = $request->input('sort_direction') ?? 'desc';
+        
         $filters = [
             'unit_status_id' => $request->input('status_id'),
             'unit_purpose_id' => $request->input('purpose_id'),

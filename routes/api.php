@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AppSetting\appSettingController;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
 use App\Http\Controllers\API\Home\HomeController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\API\Unit\UnitController;
 use App\Http\Controllers\API\Unit\unitFeaturesController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
 use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\API\VerificationServices\VerificationServiceController;
 use App\Http\Responses\ApiResponse;
 use App\Models\City;
 use App\Models\Country;
@@ -102,6 +104,14 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('unitPurposes',[unitFeaturesController::class,'getunitPurpose']);
     Route::get('unitPayment',[unitFeaturesController::class,'getunitPayment']);
     Route::get('unitInterFace',[unitFeaturesController::class,'getunitInterFace']);
+
+    //VerificationServices
+    Route::get('verificationServices',[VerificationServiceController::class,'index']);
+    Route::get('search',[VerificationServiceController::class,'search']);
+
+    //appSettings
+    Route::get('appSetting',[appSettingController::class,'index']);
+
 });
 
 // Guest Protected Routes
