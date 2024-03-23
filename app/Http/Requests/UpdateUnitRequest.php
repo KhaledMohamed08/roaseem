@@ -115,7 +115,6 @@ class UpdateUnitRequest extends FormRequest
                 'required'
             ],
             'main_image' => [
-                'required',
                 'file',
                 'mimetypes:image/jpeg,image/jpg,image/png',
                 'max:10240',

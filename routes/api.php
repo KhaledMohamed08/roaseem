@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AppSetting\appSettingController;
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
 use App\Http\Controllers\API\Home\HomeController;
 use App\Http\Controllers\API\Notification\notificationController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\API\Unit\UnitController;
 use App\Http\Controllers\API\Unit\unitFeaturesController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
 use App\Http\Controllers\API\User\UserController;
-use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\VerificationServices\VerificationServiceController;
 use App\Http\Responses\ApiResponse;
 use App\Models\City;
