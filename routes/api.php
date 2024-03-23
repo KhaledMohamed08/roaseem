@@ -11,6 +11,7 @@ use App\Http\Controllers\API\Unit\UnitController;
 use App\Http\Controllers\API\Unit\unitFeaturesController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
 use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\VerificationServices\VerificationServiceController;
 use App\Http\Responses\ApiResponse;
 use App\Models\City;
@@ -74,7 +75,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('favorite-toggle/{unitId}', [FavoriteController::class, 'toggleFavorite'])->name('favorite.toggle');
     Route::get('favorites', [FavoriteController::class, 'getFavorites'])->name('favorites');
     // Unit Routes
-    Route::apiResource('unit', UnitController::class)->only(['store', 'update', 'destroy']);
+    Route::apiResource('unit', UnitController::class)->only(['store', 'destroy']);
+    Route::post('unit/{unit}', [UnitController::class, 'update']);
     Route::delete('delete-image/{id}', [UnitController::class, 'deleteImage'])->name('image.delete');
     Route::get('unites-types', [ProfileController::class, 'userUnitesStatistics'])->name('unites.types');
     //unitReqs
@@ -88,17 +90,24 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
     //filter
     Route::get('filter',[unitReqController::class,'filter'])->name('filter');
-    
+
     // Profile Routes
     Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
     Route::put('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('my-unites', [ProfileController::class, 'myUnites'])->name('my.unites');
     Route::put('reset-password', [ProfileController::class, 'resetPassword'])->name('reset.password');
 
+    // Company Admin Routes
+    Route::post('add-marketer', [ProfileController::class, 'addMarketerForCompany'])->name('add.marketer');
+    Route::get('company-marketer', [ProfileController::class, 'companyMarketers'])->name('company.marketers');
+    Route::get('marketers-numbers', [ProfileController::class, 'companyMarketerssNumbers'])->name('company.marketers.numbers');
+    Route::get('active-toggle/{user}', [ProfileController::class, 'marketerActiveToggle'])->name('marketer.active.toggle');
+    Route::get('marketers-search', [ProfileController::class, 'companyMarketersSearch'])->name('marketers.search');
+
     //Notifications
     Route::get('notifications', [notificationController::class, 'index'])->name('notifications.index');
     Route::delete('notifications/{id}', [notificationController::class, 'delete'])->name('notifications.delete');
-    
+
     //unitFeatures
     Route::get('unitStatus',[unitFeaturesController::class,'getUnitStatus']);
     Route::get('unitStatusFilter',[unitFeaturesController::class,'unitStatusFilter']);
@@ -107,6 +116,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('unitPurposes',[unitFeaturesController::class,'getunitPurpose']);
     Route::get('unitPayment',[unitFeaturesController::class,'getunitPayment']);
     Route::get('unitInterFace',[unitFeaturesController::class,'getunitInterFace']);
+
+    // Chat
+    Route::post('/send-message', [ChatController::class, 'sendMessage']);
+    Route::get('/get-messages', [ChatController::class, 'getMessages']);
 
     //VerificationServices
     Route::get('verificationServices',[VerificationServiceController::class,'index']);

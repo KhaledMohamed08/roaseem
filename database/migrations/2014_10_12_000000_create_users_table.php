@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('tax_number')->nullable();
             $table->string('practicing_number')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
-            $table->foreign('company_id')->references('id')->on('users');
+            $table->foreign('company_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             // $table->string('otp')->nullable();
             // $table->timestamp('otp_expiry')->nullable();
             $table->rememberToken();

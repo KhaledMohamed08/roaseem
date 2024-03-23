@@ -23,6 +23,8 @@ class Unit extends Model implements HasMedia
         'unit_purpose_id',
         'unit_interface_id',
         'created_year',
+        'license_start',
+        'license_end',
         'floor_number',
         'area',
         'street_width',

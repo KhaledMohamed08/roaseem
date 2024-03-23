@@ -18,7 +18,13 @@ class UnitResource extends JsonResource
         // return parent::toArray($request);
         $originUrls = [];
         foreach ($this->getMedia('images') as $media) {
-            array_push($originUrls, $media->original_url);
+            // array_push($originUrls, $media->original_url);
+            // $originUrls[$media->original_url] = $media->id;
+            $image = [
+                'id' => $media->id,
+                'url' => $media->original_url
+            ];
+            array_push($originUrls, $image);
         }
 
         $servicesNames = [];
@@ -33,19 +39,25 @@ class UnitResource extends JsonResource
             'country' => $this->region->city->country->name,
             'city' => $this->region->city->name,
             'region' => $this->region->name,
+            'region_id' => $this->region_id,
             'address' => $this->address,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'ad_title' => $this->ad_title,
             'type' => $this->type->name,
+            'type_id' => $this->unit_type_id ,
             'status' => $this->status->name,
+            'status_id' => $this->unit_status_id,
             'purpose' => $this->purpose->name,
+            'purpose_id' => $this->unit_purpose_id,
             'interface' => $this->interface->name,
+            'interface_id' => $this->unit_interface_id,
             'floor_number' => $this->floor_number,
             'created_year' => $this->created_year,
             'area' => $this->area,
             'street_width' => $this->street_width,
             'payment_method' => $this->payment_method,
+            'payment_id' => $this->unit_payment_id,
             'price' => $this->price,
             'descreption' => $this->descreption,
             // 'services' => $this->services,
@@ -60,10 +72,13 @@ class UnitResource extends JsonResource
             'rights_and_obligations' => $this->rights_and_obligations,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'main_image' => $this->getFirstMediaUrl('unit-Main-image'),
+            'main_image' => [
+                'id' => $this->getFirstMedia('unit-Main-image')->id ?? '',
+                'url' => $this->getFirstMediaUrl('unit-Main-image'),
+            ],
             // 'images' => $this->getMedia('images')->getUrl(),
             'images' => $originUrls,
-            'user' => $this->user,
+            //'user' => $this->user,
         ];
     }
 }

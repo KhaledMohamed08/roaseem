@@ -167,7 +167,7 @@ class AuthController extends Controller
 
         return ApiResponse::success(
             [
-                'user' => $user,
+                'user' => new UserResource($user),
             ],
             'User Created Successfully',
             200
@@ -249,28 +249,44 @@ class AuthController extends Controller
         );
     }
 
-    public function createEmployee(StoreUserRequest $request)
-    {
-        $authUser = Auth::user();
-        if ($authUser->role != 'company') {
-            return ApiResponse::error(
-                'Only Companies Can Register Employees',
-                400
-            );
-        }
-        $validatedData = $request->validated();
-        $validatedData['password'] = Hash::make($validatedData['password']);
-        $validatedData['company_id'] = $authUser->id;
-        $validatedData['role'] = 'user';
+    // public function createEmployee(StoreUserRequest $request)
+    // {
+    //     $authUser = Auth::user();
+    //     if ($authUser->role != 'company') {
+    //         return ApiResponse::error(
+    //             'Only Companies Can Register Employees',
+    //             400
+    //         );
+    //     }
+    //     $validatedData = $request->validated();
+    //     $validatedData['password'] = Hash::make($validatedData['password']);
+    //     $validatedData['company_id'] = $authUser->id;
+    //     $validatedData['role'] = 'user';
 
-        $employee = User::create($validatedData);
+    //     $employee = User::create($validatedData);
 
-        return ApiResponse::success(
-            [
-                'Employee' => new UserResource($employee)
-            ],
-            'Employee Created Successfully',
-            200
-        );
-    }
+    //     return ApiResponse::success(
+    //         [
+    //             'Employee' => new UserResource($employee)
+    //         ],
+    //         'Employee Created Successfully',
+    //         200
+    //     );
+    // }
+
+    // public function companyEmployeies()
+    // {
+    //     $authUser = Auth::user();
+    //     if ($authUser->role != 'company') {
+    //         return ApiResponse::error(
+    //             'Only Companies Can Register Employees',
+    //             400
+    //         );
+    //     }
+
+    //     $users = User::whereNotNull('company_id')->where('company_id', $authUser->id)->get();
+    //     $activeUsers = $users::where('is_active', true)->get();
+    //     dd($activeUsers);
+
+    // }
 }

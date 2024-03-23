@@ -24,6 +24,8 @@ return new class extends Migration
             $table->foreignId('unit_purpose_id')->constrained('unit_purposes');
             $table->foreignId('unit_interface_id')->constrained('unit_interfaces');
             $table->year('created_year');
+            $table->date('license_start');
+            $table->date('license_end');
             $table->integer('floor_number');
             $table->decimal('area', 8, 2);
             $table->decimal('street_width', 8, 2);

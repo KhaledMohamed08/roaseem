@@ -110,18 +110,22 @@ class ProfileController extends Controller
         
         $numOfEachUnitType = [];
 
+        // foreach ($unites as $unit) {
+        //     switch ($unit->unit_type) {
+        //         case 'apartment':
+        //             $numOfEachUnitType['apartment'] = ($numOfEachUnitType['apartment'] ?? 0) + 1;
+        //             break;
+        //         case 'land':
+        //             $numOfEachUnitType['land'] = ($numOfEachUnitType['land'] ?? 0) + 1;
+        //             break;
+        //         case 'exhibition':
+        //             $numOfEachUnitType['exhibition'] = ($numOfEachUnitType['exhibition'] ?? 0) + 1;
+        //             break;
+        //     }
+        // }
+
         foreach ($unites as $unit) {
-            switch ($unit->unit_type) {
-                case 'apartment':
-                    $numOfEachUnitType['apartment'] = ($numOfEachUnitType['apartment'] ?? 0) + 1;
-                    break;
-                case 'land':
-                    $numOfEachUnitType['land'] = ($numOfEachUnitType['land'] ?? 0) + 1;
-                    break;
-                case 'exhibition':
-                    $numOfEachUnitType['exhibition'] = ($numOfEachUnitType['exhibition'] ?? 0) + 1;
-                    break;
-            }
+            $numOfEachUnitType[$unit->type->name] = ($numOfEachUnitType[$unit->type->name] ?? 0) + 1;
         }
 
         return $numOfEachUnitType;
@@ -134,15 +138,18 @@ class ProfileController extends Controller
         
         $numOfEachUnitStatus = [];
 
+        // foreach ($unites as $unit) {
+        //     switch ($unit->contract_type) {
+        //         case 'sale':
+        //             $numOfEachUnitStatus['sale'] = ($numOfEachUnitStatus['sale'] ?? 0) + 1;
+        //             break;
+        //         case 'rent':
+        //             $numOfEachUnitStatus['rent'] = ($numOfEachUnitStatus['rent'] ?? 0) + 1;
+        //             break;
+        //     }
+        // }
         foreach ($unites as $unit) {
-            switch ($unit->contract_type) {
-                case 'sale':
-                    $numOfEachUnitStatus['sale'] = ($numOfEachUnitStatus['sale'] ?? 0) + 1;
-                    break;
-                case 'rent':
-                    $numOfEachUnitStatus['rent'] = ($numOfEachUnitStatus['rent'] ?? 0) + 1;
-                    break;
-            }
+            $numOfEachUnitStatus[$unit->status->name] = ($numOfEachUnitStatus[$unit->status->name] ?? 0) + 1;
         }
 
         return $numOfEachUnitStatus;
@@ -155,16 +162,20 @@ class ProfileController extends Controller
         
         $numOfEachUnitPurpos = [];
 
+        // foreach ($unites as $unit) {
+        //     switch ($unit->purpos) {
+        //         case 'residential':
+        //             $numOfEachUnitPurpos['residential'] = ($numOfEachUnitPurpos['residential'] ?? 0) + 1;
+        //             break;
+        //         case 'commercial':
+        //             $numOfEachUnitPurpos['commercial'] = ($numOfEachUnitPurpos['commercial'] ?? 0) + 1;
+        //             break;
+        //     }
+        // }
         foreach ($unites as $unit) {
-            switch ($unit->purpos) {
-                case 'residential':
-                    $numOfEachUnitPurpos['residential'] = ($numOfEachUnitPurpos['residential'] ?? 0) + 1;
-                    break;
-                case 'commercial':
-                    $numOfEachUnitPurpos['commercial'] = ($numOfEachUnitPurpos['commercial'] ?? 0) + 1;
-                    break;
-            }
+            $numOfEachUnitPurpos[$unit->purpose->name] = ($numOfEachUnitPurpos[$unit->purpose->name] ?? 0) + 1;
         }
+
 
         return $numOfEachUnitPurpos;
     }
@@ -220,6 +231,170 @@ class ProfileController extends Controller
 
         return ApiResponse::error(
             'Wrong Old Password'
+        );
+    }
+
+    public function companyMarketerssNumbers()
+    {
+        $company = Auth::user();
+        if ($company->role != 'company') {
+            return ApiResponse::error(
+                'Only Companies Can Register Employees',
+                400
+            );
+        }
+
+        $activeUsers = User::where('company_id', $company->id)->where('is_active', 1)->count();
+        $non_activeUsers = User::where('company_id', $company->id)->where('is_active', 0)->count();
+        // $allUsers = $activeUsers + $non_activeUsers;
+
+        return ApiResponse::success(
+            [
+                'all_users' => $activeUsers + $non_activeUsers,
+                'active_users' => $activeUsers,
+                'not_active_users' => $non_activeUsers,
+            ],
+            ' Company Users Data',
+            200
+        );
+    }
+
+    public function addMarketerForCompany(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required|numeric',
+            'password' => 'required|confirmed|min:6',
+        ]);
+        $validatedData['password'] = Hash::make($validatedData['password']);
+        $validatedData['role'] = 'marketer';
+        $validatedData['company_id'] = Auth::id();
+        $marketer = User::create($validatedData);
+        
+        return ApiResponse::success(
+            [
+                'marketer' => new UserResource($marketer),
+            ],
+            'Marketer Created Successfully',
+            200
+        );
+    }
+
+    public function companyMarketers()
+    {
+        $company = Auth::user();
+        if ($company->role != 'company') {
+            return ApiResponse::error(
+                'Only Companies Has Marketers',
+                400
+            );
+        }
+        $marketers = User::where('company_id', $company->id)->get();
+        
+        return ApiResponse::success(
+            [
+                'marketers' => UserResource::collection($marketers),
+            ],
+            'Company Marketers',
+            200
+        );
+    }
+
+    public function marketerActiveToggle(User $user)
+    {
+        $company = Auth::user();
+        if ($user->company_id != $company->id) {
+            return ApiResponse::error(
+                'Cannot make changes for this Marketer from this Company',
+                400
+            );
+        }
+        // $user->update([
+        //     'is_active' => !$user->is_active
+        // ]);
+        $user->is_active = !$user->is_active;
+        $user->save();
+
+        return ApiResponse::success(
+            ['User Active' => $user->is_active],
+            'User Updated Successfully',
+            200
+        );
+    }
+
+    public function companyMarketersSearch(Request $request)
+    {
+        $company = Auth::user();
+        if ($company->role != 'company') {
+
+        }
+
+        $marketers = User::where('company_id', $company->id)
+                  ->where('name', 'like', '%' . $request->search . '%')
+                  ->get();
+
+        return ApiResponse::success(
+            [
+                'marketers' => UserResource::collection($marketers),
+            ],
+            'Company Users',
+            200,
+        );
+    }
+
+    public function updateMarketer(Request $request, User $user)
+    {
+        if ($user->role != 'marketer' || $user->company_id != Auth::id()) {
+            return ApiResponse::error(
+                'Cant Update This User',
+                400,
+            );
+        }
+        $validatedData = $request->validate([
+            'name' => 'required',
+            // 'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,except,id',
+            'phone' => 'required|numeric|unique:users,phone,except,id',
+        ]);
+        $user->update($validatedData);
+
+        return ApiResponse::success(
+            [
+                'marketer' => new UserResource($user),
+            ],
+            'Marketer Updated Successfully',
+            200
+        );
+    }
+
+    public function deleteMarketer(User $user)
+    {
+        if ($user->role != 'marketer' || $user->company_id != Auth::id()) {
+            return ApiResponse::error(
+                'Cant Delete This User',
+                400,
+            );
+        }
+        $user->delete();
+
+        return ApiResponse::success(
+            [
+                'marketer' => new UserResource($user),
+            ],
+            'Marketer Deleted Successfully',
+            200
+        );
+    }
+    
+    public function showMarketer(User $user)
+    {
+        return ApiResponse::success(
+            [
+                'marketer' => new UserResource($user),
+            ],
+            'Marketer Data',
+            200
         );
     }
 }
