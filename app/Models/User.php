@@ -106,4 +106,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(UnitViews::class);
     }
+
+    public function rate()
+    {
+        return $this->hasMany(Rate::class);
+    }
 }

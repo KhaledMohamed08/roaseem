@@ -17,7 +17,7 @@ class appSettingController extends Controller
         if($appSettings->IsNotEmpty())
         {
             return ApiResponse::success([
-                'App Setting' => appSettingResource::collection($appSettings)
+                'AppSetting' => appSettingResource::collection($appSettings)
             ]);   
         }
         return ApiResponse::error('No App Setting found.', 404);

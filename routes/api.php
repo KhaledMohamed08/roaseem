@@ -6,6 +6,7 @@ use App\Http\Controllers\API\Favorite\FavoriteController;
 use App\Http\Controllers\API\Home\HomeController;
 use App\Http\Controllers\API\Notification\notificationController;
 use App\Http\Controllers\API\Profile\ProfileController;
+use App\Http\Controllers\API\Rate\rateController;
 use App\Http\Controllers\API\Unit\UnitController;
 use App\Http\Controllers\API\Unit\unitFeaturesController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
@@ -36,6 +37,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Global Routes
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
+
+Route::get('appSetting',[appSettingController::class,'index']);
 
 Route::get('countries', function () {
     $countries = Country::all();
@@ -110,8 +113,11 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('search',[VerificationServiceController::class,'search']);
 
     //appSettings
-    Route::get('appSetting',[appSettingController::class,'index']);
 
+    //rate
+    Route::get('index',[rateController::class,'index']);
+    Route::post('createRate',[rateController::class,'store']);
+    Route::delete('deleteRate/{id}',[rateController::class,'delete']);
 });
 
 // Guest Protected Routes
