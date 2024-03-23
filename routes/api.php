@@ -103,6 +103,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('marketers-numbers', [ProfileController::class, 'companyMarketerssNumbers'])->name('company.marketers.numbers');
     Route::get('active-toggle/{user}', [ProfileController::class, 'marketerActiveToggle'])->name('marketer.active.toggle');
     Route::get('marketers-search', [ProfileController::class, 'companyMarketersSearch'])->name('marketers.search');
+    Route::get('show-marketer/{user}', [ProfileController::class, 'showMarketer'])->name('marketer.show');
+    Route::post('update-marketer/{user}', [ProfileController::class, 'updateMarketer'])->name('marketer.update');
+    Route::delete('delete-marketer/{user}', [ProfileController::class, 'deleteMarketer'])->name('marketer.delete');
 
     //Notifications
     Route::get('notifications', [notificationController::class, 'index'])->name('notifications.index');

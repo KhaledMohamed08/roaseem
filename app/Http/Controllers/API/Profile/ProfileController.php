@@ -76,7 +76,7 @@ class ProfileController extends Controller
         $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
         $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);
         $numOfEachUnitCities = $this->numOfEachUnitCities($user->id);
-        $numOfFavorites = $this->numOfFavorites($user->id);
+        // $numOfFavorites = $this->numOfFavorites($user->id);
 
         return ApiResponse::success(
             [
@@ -96,7 +96,7 @@ class ProfileController extends Controller
                     'total' => count($numOfEachUnitCities),
                     'details' => $numOfEachUnitCities,
                 ],
-                'numOfFavorites' => $numOfFavorites,
+                // 'numOfFavorites' => $numOfFavorites,
             ],
             'Unit Statistics',
             200
