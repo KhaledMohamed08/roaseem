@@ -39,7 +39,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
 
+//app Settings
 Route::get('appSetting',[appSettingController::class,'index']);
+Route::post('complaintsStore',[appSettingController::class,'complaintsStore']);
+Route::get('regulations',[appSettingController::class,'regulations']);
+Route::get('News',[appSettingController::class,'news']);
+
 
 Route::get('countries', function () {
     $countries = Country::all();
@@ -127,8 +132,6 @@ Route::middleware('auth:sanctum')->group( function () {
     //VerificationServices
     Route::get('verificationServices',[VerificationServiceController::class,'index']);
     Route::get('search',[VerificationServiceController::class,'search']);
-
-    //appSettings
 
     //rate
     Route::get('index',[rateController::class,'index']);
