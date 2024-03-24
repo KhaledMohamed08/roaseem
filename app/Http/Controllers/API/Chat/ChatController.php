@@ -39,7 +39,7 @@ class ChatController extends Controller
         // Fetch messages
         $messages = Message::where('sender_id', auth()->id())
             ->orWhere('receiver_id', auth()->id())
-            ->with(['sender', 'receiver'])
+            // ->with(['sender', 'receiver'])
             ->orderBy('created_at', 'desc')
             ->get();
 

@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             UnitServiceSeeder::class,
             UnitPurposeSeeder::class,
             UnitPaymentSeeder::class,
-            UnitinterfaceSeeder::class
+            UnitinterfaceSeeder::class,
+            PermissionsSeeder::class,
         ]);
     
     }

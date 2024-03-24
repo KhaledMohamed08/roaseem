@@ -230,7 +230,7 @@ class ProfileController extends Controller
         }
 
         return ApiResponse::error(
-            'Wrong Old Password'
+            'Wrong Old Password',
         );
     }
 
@@ -266,15 +266,22 @@ class ProfileController extends Controller
             'email' => 'required|email',
             'phone' => 'required|numeric',
             'password' => 'required|confirmed|min:6',
+            'permissions' => 'array',
         ]);
         $validatedData['password'] = Hash::make($validatedData['password']);
         $validatedData['role'] = 'marketer';
         $validatedData['company_id'] = Auth::id();
+        unset($validatedData['permissions']);
         $marketer = User::create($validatedData);
-        
+        if ($request->has('permissions')) {
+            foreach ($request['permissions'] as $permission) {
+                $marketer->givePermissionTo($permission);
+            }
+        }
         return ApiResponse::success(
             [
                 'marketer' => new UserResource($marketer),
+                'permissions' => $marketer->getAllPermissions(),
             ],
             'Marketer Created Successfully',
             200
