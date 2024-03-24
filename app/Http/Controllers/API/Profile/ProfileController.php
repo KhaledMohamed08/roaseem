@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -273,10 +274,8 @@ class ProfileController extends Controller
         $validatedData['company_id'] = Auth::id();
         unset($validatedData['permissions']);
         $marketer = User::create($validatedData);
-        if ($request->has('permissions')) {
-            foreach ($request['permissions'] as $permission) {
-                $marketer->givePermissionTo($permission);
-            }
+        if ($request->has('permissions') && is_array($request->permissions)) {
+            $marketer->syncPermissions($request->permissions);
         }
         return ApiResponse::success(
             [
@@ -361,14 +360,29 @@ class ProfileController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             // 'email' => 'required|email|unique:users,email',
-            'email' => 'required|email|unique:users,email,except,id',
-            'phone' => 'required|numeric|unique:users,phone,except,id',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'phone' => [
+                'required',
+                'numeric',
+                Rule::unique('users', 'phone')->ignore($user->id),
+            ],
+            'permissions' => 'array',
         ]);
+
         $user->update($validatedData);
+
+        if ($request->has('permissions') && is_array($request->permissions)) {
+            $user->syncPermissions($request->permissions);
+        }
 
         return ApiResponse::success(
             [
                 'marketer' => new UserResource($user),
+                'permissions' => $user->getAllPermissions(),
             ],
             'Marketer Updated Successfully',
             200
