@@ -130,6 +130,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/send-message', [ChatController::class, 'sendMessage']);
     Route::get('/get-messages', [ChatController::class, 'getMessages']);
     Route::get('/get-chats', [ChatController::class, 'getChats']);
+    Route::get('/show-chat/{user}', [ChatController::class, 'showChat']);
 
     //VerificationServices
     Route::get('verificationServices',[VerificationServiceController::class,'index']);

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\Chat;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MessageResource;
+use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Http\Request;
 use App\Models\Message;
@@ -71,13 +73,33 @@ class ChatController extends Controller
                 array_push($users, $user);
             }
         }
-        return $users;
-        // return response()->json(['messages' => $messages]);
         return ApiResponse::success(
             [
-                'messages' => $messages,
+                'users' => UserResource::collection($users)
             ],
-            'All Messages',
+            'Users Chat With',
+            200
+        );
+    }
+
+    public function showChat(User $user)
+    {
+        $messages = Message::where(function ($query) use ($user) {
+            $query->where('sender_id', auth()->id())
+                ->where('receiver_id', $user->id);
+        })
+        ->orWhere(function ($query) use ($user) {
+            $query->where('sender_id', $user->id)
+                ->where('receiver_id', auth()->id());
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return ApiResponse::success(
+            [
+                'messages' => MessageResource::collection($messages),
+            ],
+            'All Messages With' . ' ' . $user->name,
             200
         );
     }
