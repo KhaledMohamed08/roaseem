@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Http\Request;
 use App\Models\Message;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
@@ -51,5 +53,38 @@ class ChatController extends Controller
             'All Messages',
             200
         );
+    }
+
+    public function getChats()
+    {
+        $users = [];
+        // Fetch messages
+        $messages = Message::where('sender_id', auth()->id())
+            ->orWhere('receiver_id', auth()->id())
+            // ->with(['sender', 'receiver'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($messages as $message) {
+            $user = User::find($message->receiver_id);
+            if (!in_array($user, $users)) {
+                array_push($users, $user);
+            }
+        }
+        return $users;
+        // return response()->json(['messages' => $messages]);
+        return ApiResponse::success(
+            [
+                'messages' => $messages,
+            ],
+            'All Messages',
+            200
+        );
+    }
+
+    public function blockToggle(User $user)
+    {
+        $authUser = Auth::user();
+
     }
 }

@@ -54,6 +54,8 @@ class UnitResource extends JsonResource
             'interface_id' => $this->unit_interface_id,
             'floor_number' => $this->floor_number,
             'created_year' => $this->created_year,
+            'license_start' => $this->license_start,
+            'license_end' => $this->license_end,
             'area' => $this->area,
             'street_width' => $this->street_width,
             'payment_method' => $this->payment_method,

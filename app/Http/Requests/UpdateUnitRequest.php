@@ -62,6 +62,12 @@ class UpdateUnitRequest extends FormRequest
                 'required',
                 'numeric'
             ],
+            'license_start' => [
+
+            ],
+            'license_end' => [
+
+            ],
             'area' => [
                 'required',
                 'numeric',

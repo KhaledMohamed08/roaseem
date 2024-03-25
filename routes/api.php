@@ -16,6 +16,7 @@ use App\Http\Controllers\API\VerificationServices\VerificationServiceController;
 use App\Http\Responses\ApiResponse;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Rate;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -128,6 +129,7 @@ Route::middleware('auth:sanctum')->group( function () {
     // Chat
     Route::post('/send-message', [ChatController::class, 'sendMessage']);
     Route::get('/get-messages', [ChatController::class, 'getMessages']);
+    Route::get('/get-chats', [ChatController::class, 'getChats']);
 
     //VerificationServices
     Route::get('verificationServices',[VerificationServiceController::class,'index']);

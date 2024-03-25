@@ -413,6 +413,7 @@ class ProfileController extends Controller
         return ApiResponse::success(
             [
                 'marketer' => new UserResource($user),
+                'permissions' => $user->getAllPermissions(),
             ],
             'Marketer Data',
             200
