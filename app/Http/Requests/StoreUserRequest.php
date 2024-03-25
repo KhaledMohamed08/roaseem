@@ -63,6 +63,7 @@ class StoreUserRequest extends FormRequest
                 'required_if:role,practiciner',
                 'numeric',
             ],
+            'fcmToken' => "required",
         ];
     }
 

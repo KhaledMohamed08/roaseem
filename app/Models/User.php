@@ -112,4 +112,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Rate::class);
     }
+
+    public function fcmToken()
+    {
+        return $this->hasMany(FcmToken::class);
+    }
 }

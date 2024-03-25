@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\FcmToken;
 use App\Models\Otp;
 use App\Models\User;
+use App\Services\FcmToken as ServicesFcmToken;
 // use App\Services\OTPService;
 use App\Services\OTPServiceOnlyPhone;
 use Illuminate\Http\Request;
@@ -16,6 +18,13 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    protected $fcmToken;
+
+    public function __construct(ServicesFcmToken $fcmToken)
+    {
+        $this->fcmToken = $fcmToken;
+    }
+
     // Start
     public function generateOTP(Request $request)
     {
@@ -158,6 +167,7 @@ class AuthController extends Controller
         $otp = Otp::where('phone', $validatedData['phone'])->first();
         if ($otp && $otp->used_at != null) {
             $user = User::create($validatedData);
+            $fcmToken = $this->fcmToken->fcmSave($validatedData['fcmToken'], $user->id);
         } else {
             return ApiResponse::error(
                 'Phone Number Not Verified!',
@@ -179,16 +189,20 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'phone' => 'required',
             'password' => 'required',
+            'fcmToken' => 'required',
         ]);
 
         if (!is_numeric($credentials['phone'])) {
             $credentials = ['email' => $credentials['phone'], 'password' => $credentials['password']];
         }
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->only(['phone', 'password']))) {   
             $userId = Auth::id();
             $user = User::find($userId);
             $token = $user->createToken('user_token')->plainTextToken;
+
+            //Notification_fireBase
+            $fcmToken = $this->fcmToken->fcmSave($request->fcmToken, $user->id);
 
             return ApiResponse::success(
                 [
