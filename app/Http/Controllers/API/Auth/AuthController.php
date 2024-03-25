@@ -189,7 +189,6 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'phone' => 'required',
             'password' => 'required',
-            'fcmToken' => 'required',
         ]);
 
         if (!is_numeric($credentials['phone'])) {
@@ -202,7 +201,10 @@ class AuthController extends Controller
             $token = $user->createToken('user_token')->plainTextToken;
 
             //Notification_fireBase
-            $fcmToken = $this->fcmToken->fcmSave($request->fcmToken, $user->id);
+            if($request->fcmToken)
+            {
+                $fcmToken = $this->fcmToken->fcmSave($request->fcmToken, $user->id);
+            }
 
             return ApiResponse::success(
                 [
@@ -223,7 +225,10 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $userId = $request->user()->id;
-        $fcmToken = $this->fcmToken->fcmDelete($request->fcmToken, $userId);
+        if($request->fcmToken)
+        {
+            $fcmToken = $this->fcmToken->fcmDelete($request->fcmToken, $userId);
+        }
         $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
