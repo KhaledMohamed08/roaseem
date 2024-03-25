@@ -217,7 +217,8 @@ class ProfileController extends Controller
             'password' => 'required',
             'newPassword' => 'required|confirmed|min:6'
         ]);
-        $user = Auth::user();
+        $userId = Auth::id();
+        $user = User::find($userId);
         if (Hash::check($validatedData['password'], $user->password)) {
             $validatedData['newPassword'] = Hash::make($validatedData['newPassword']);
             $user->update([
