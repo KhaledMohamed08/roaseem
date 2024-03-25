@@ -27,10 +27,13 @@ class UnitResource extends JsonResource
             array_push($originUrls, $image);
         }
 
-        $servicesNames = [];
+        $services = [];
         foreach ($this->services as $service) {
-            $servideName = UnitService::find($service->service_id)->name;
-            array_push($servicesNames, $servideName);
+            $service = UnitService::find($service->service_id);
+            array_push($services, [
+                'id' => $service->id,
+                'name' => $service->name
+            ]);
         }
 
         return [
@@ -63,7 +66,7 @@ class UnitResource extends JsonResource
             'price' => $this->price,
             'descreption' => $this->descreption,
             // 'services' => $this->services,
-            'services' => $servicesNames,
+            'services' => $services,
             'bedrooms' => $this->bedrooms,
             'living_rooms' => $this->living_rooms,
             'bathrooms' => $this->bathrooms,
