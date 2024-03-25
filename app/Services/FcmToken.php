@@ -7,7 +7,7 @@ class FcmToken
 {
     public function fcmSave($token, $userId)
     {
-        $userFcmToken = ModelsFcmToken::where('token', $token)->where('token', $token)->first();
+        $userFcmToken = ModelsFcmToken::where('token', $token)->where('user_id', $userId)->first();
 
         if(!$userFcmToken)
         {
@@ -17,5 +17,15 @@ class FcmToken
             'user_id' => $userId,
             ]);
         }
+    }
+
+    public function fcmDelete($token, $userId)
+    {
+        $userFcmToken = ModelsFcmToken::where('token', $token)->where('user_id', $userId)->first();
+        if($userFcmToken)
+        {
+            $userFcmToken->delete();
+        }
+
     }
 }

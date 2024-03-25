@@ -222,6 +222,8 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $userId = $request->user()->id;
+        $fcmToken = $this->fcmToken->fcmDelete($request->fcmToken, $userId);
         $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
