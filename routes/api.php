@@ -95,7 +95,7 @@ Route::middleware('auth:sanctum')->group( function () {
     //all Companies
     Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
     //filter
-    Route::get('filter',[unitReqController::class,'filter'])->name('filter');
+    Route::post('filter',[unitReqController::class,'filter'])->name('filter');
 
     // Profile Routes
     Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
