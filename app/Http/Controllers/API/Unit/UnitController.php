@@ -178,12 +178,15 @@ class UnitController extends Controller
             return ApiResponse::error('Image not found', 404);
         }
 
-        if ($image->model_id != auth()->id()) {
+        $authUser = Auth::user();
+        $userUnites = $authUser->unites;
+        if (! $userUnites->contains('id', $image->model_id)) {
             return ApiResponse::error(
                 'User Can Not Delete This Image',
                 403
             );
         }
+
         $image->delete();
 
         return ApiResponse::success(
