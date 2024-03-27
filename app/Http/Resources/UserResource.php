@@ -19,8 +19,8 @@ class UserResource extends JsonResource
         $role = $this->role;
         $taxNumber = $this->role === 'company' ? $this->tax_number : null;
         $practicing_number = $this->role === 'practiciner' ? $this->practicing_number : null;
-        
-        return [
+
+        $user = [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
@@ -37,5 +37,11 @@ class UserResource extends JsonResource
             'updated_at' => $this->updated_at,
             'image' => $this->getFirstMediaUrl('logo') ?? 'no image',
         ];
+
+        if ($this->role == 'marketer') {
+            $user['permissions'] = $this->getAllPermissions();
+        }
+        
+        return $user;
     }
 }

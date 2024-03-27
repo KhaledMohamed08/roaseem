@@ -281,7 +281,7 @@ class ProfileController extends Controller
         return ApiResponse::success(
             [
                 'marketer' => new UserResource($marketer),
-                'permissions' => $marketer->getAllPermissions(),
+                // 'permissions' => $marketer->getAllPermissions(),
             ],
             'Marketer Created Successfully',
             200
@@ -383,7 +383,7 @@ class ProfileController extends Controller
         return ApiResponse::success(
             [
                 'marketer' => new UserResource($user),
-                'permissions' => $user->getAllPermissions(),
+                // 'permissions' => $user->getAllPermissions(),
             ],
             'Marketer Updated Successfully',
             200
@@ -414,7 +414,7 @@ class ProfileController extends Controller
         return ApiResponse::success(
             [
                 'marketer' => new UserResource($user),
-                'permissions' => $user->getAllPermissions(),
+                // 'permissions' => $user->getAllPermissions(),
             ],
             'Marketer Data',
             200
