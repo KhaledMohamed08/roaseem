@@ -23,10 +23,10 @@ return new class extends Migration
             $table->decimal('opening_price');
             $table->decimal('subscription_fee');
             $table->decimal('minimum_bid');
-            $table->enum('admin_status', ['bending', 'confirmed', 'rejected']);
-            $table->enum('status', ['coming', 'ongoing', 'ended']);
-            $table->string('Auctioneer_name');
-            $table->string('id_image');
+            $table->enum('admin_status', ['bending', 'confirmed', 'rejected'])->default('bending');
+            $table->enum('status', ['coming', 'ongoing', 'ended'])->default('coming');
+            $table->string('auctioneer_name');
+            // $table->string('id_image');
             $table->string('id_number');
             $table->string('auction_license_number');
             $table->timestamps();

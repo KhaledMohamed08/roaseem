@@ -23,6 +23,7 @@ class City extends Model
     {
         return $this->hasMany(Region::class);
     }
+    
     public function unitReqs()
     {
         return $this->hasMany(UnitReq::class);
