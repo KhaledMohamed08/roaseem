@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('regulation_news', function (Blueprint $table) {
+        Schema::create('regulations_laws', function (Blueprint $table) {
             $table->id();
-            $table->longText('content');
-            $table->string('reference')->nullable();
-            $table->enum('key',['regulations','news']);
+            $table->string('title');
+            $table->string('description');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('regulations_news');
+        Schema::dropIfExists('regulations_laws');
     }
 };

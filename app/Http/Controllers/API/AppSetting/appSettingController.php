@@ -4,11 +4,13 @@ namespace App\Http\Controllers\API\AppSetting;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\appSettingResource;
-use App\Http\Resources\RegulationNewsResource;
+use App\Http\Resources\RealEstateNewsResource;
+use App\Http\Resources\RegulationsLawsResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\AppSettings;
 use App\Models\Complain;
-use App\Models\RegulationNews;
+use App\Models\RealEstateNews;
+use App\Models\RegulationsLaws;
 use Illuminate\Http\Request;
 
 class appSettingController extends Controller
@@ -49,12 +51,12 @@ class appSettingController extends Controller
 
     public function regulations()
     {
-        $regulations = RegulationNews::where('key', 'regulations')->get();
+        $regulations = RegulationsLaws::get();
 
         if($regulations->isNotEmpty())
         {
             return ApiResponse::success([
-                'regulations' => RegulationNewsResource::collection($regulations)
+                'regulations' => RegulationsLawsResource::collection($regulations)
             ]);   
         }
 
@@ -63,15 +65,23 @@ class appSettingController extends Controller
 
     public function news()
     {
-        $news = RegulationNews::where('key', 'news')->get();
+        $news = RealEstateNews::get();
 
         if($news->isNotEmpty())
         {
+            foreach($news as $new)
+            {
+                foreach($new->getMedia('images') as $image)
+                {
+                    $image = $image->original_url;
+                    $new->image = $image;
+                }
+            }
             return ApiResponse::success([
-                'regulations' => RegulationNewsResource::collection($news)
+                'News' => RealEstateNewsResource::collection($news)
             ]);   
         }
 
-        return ApiResponse::error('No regulations had been added found.', 404);
+        return ApiResponse::error('No News had been added.', 404);
     }
 }

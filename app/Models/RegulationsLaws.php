@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RegulationNews extends Model
+class RegulationsLaws extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'content',
-        'reference',
-        'key',
+        'title',
+        'description',
     ];
+
+    protected $guarded = [];
+
 }
