@@ -29,34 +29,40 @@ class StoreAuctionRequest extends FormRequest
                 'required',
             ],
             'is_offline' => [
-                'required',
+
             ],
             'link' => [
                 'required',
             ],
             'start_date' => [
                 'required',
+                'date',
             ],
             'end_date' => [
                 'required',
+                'date',
             ],
             'start_time' => [
                 'required',
+                // 'timezone'
             ],
             'opening_price' => [
                 'required',
+                'numeric'
             ],
             'subscription_fee' => [
                 'required',
+                'numeric'
             ],
             'minimum_bid' => [
                 'required',
+                'numeric',
             ],
             'admin_status' => [
-                'required',
+
             ],
             'status' => [
-                'required',
+                
             ],
             'auctioneer_name' => [
                 'required',

@@ -24,7 +24,7 @@ class AuctionController extends Controller
             [
                 'auctions' => AuctionResource::collection($auctions),
             ],
-            'auctions',
+            'Auctions Retrieved Successfully',
             200
         );
     }
@@ -34,7 +34,15 @@ class AuctionController extends Controller
      */
     public function store(StoreAuctionRequest $request)
     {
-        
+        $newAuction = Auction::create($request->validated());
+
+        return ApiResponse::success(
+            [
+                'Auction ' => new AuctionResource($newAuction),
+            ],
+            'Auction Created Successfully',
+            200,
+        );
     }
 
     /**
@@ -42,7 +50,13 @@ class AuctionController extends Controller
      */
     public function show(Auction $auction)
     {
-        //
+        return ApiResponse::success(
+            [
+                'Auction' => new AuctionResource($auction),
+            ],
+            'Auction',
+            200,
+        );
     }
 
     /**
@@ -50,7 +64,15 @@ class AuctionController extends Controller
      */
     public function update(UpdateAuctionRequest $request, Auction $auction)
     {
-        //
+        $auction->update($request->validated());
+
+        return ApiResponse::success(
+            [
+                'Auction' => new AuctionResource($auction->fresh()),
+            ],
+            'Auction Updated Successfully',
+            200,
+        );
     }
 
     /**
@@ -58,6 +80,14 @@ class AuctionController extends Controller
      */
     public function destroy(Auction $auction)
     {
-        //
+        $auction->delete();
+
+        return ApiResponse::success(
+            [
+                'Auction' => new AuctionResource($auction),
+            ],
+            'Auction Deleted Successfully',
+            200
+        );
     }
 }

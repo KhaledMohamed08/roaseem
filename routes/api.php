@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AppSetting\appSettingController;
+use App\Http\Controllers\API\Auction\AuctionController;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
@@ -39,6 +40,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Global Routes
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
+Route::apiResource('auction', AuctionController::class)->except(['store', 'update', 'destroy']);
 
 //app Settings
 Route::get('appSetting',[appSettingController::class,'index']);
@@ -140,6 +142,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('index',[rateController::class,'index']);
     Route::post('createRate',[rateController::class,'store']);
     Route::delete('deleteRate/{id}',[rateController::class,'delete']);
+
+    // Auction
+    Route::apiResource('auction', AuctionController::class)->only(['store', 'destroy']);
+
 });
 
 // Guest Protected Routes
