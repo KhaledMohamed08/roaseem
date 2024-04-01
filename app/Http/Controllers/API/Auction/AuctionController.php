@@ -9,7 +9,10 @@ use App\Http\Resources\AuctionResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Auction;
 use App\Services\FilterService;
+use App\Models\Property;
 use Illuminate\Http\Request;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 
 class AuctionController extends Controller
 {
@@ -62,6 +65,13 @@ class AuctionController extends Controller
     public function store(StoreAuctionRequest $request)
     {
         $newAuction = Auction::create($request->validated());
+        $newAuction->addMediaFromRequest('auction_pdf_file')->toMediaCollection('auction_pdf_file');
+        $newAuction->addMediaFromRequest('main_auction_image')->toMediaCollection('main_auction_image');
+
+        foreach ($request['properties'] as $property) {
+            $property['auction_id'] = $newAuction->id;
+            $newProperty = Property::create($property);
+        }
 
         return ApiResponse::success(
             [

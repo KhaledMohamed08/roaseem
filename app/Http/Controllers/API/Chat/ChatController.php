@@ -68,11 +68,22 @@ class ChatController extends Controller
             ->get();
 
         foreach ($messages as $message) {
-            $user = User::find($message->receiver_id);
-            if (!in_array($user, $users)) {
-                array_push($users, $user);
+            $receiver = User::find($message->receiver_id);
+            if (!in_array($receiver, $users)) {
+                if ($receiver->id != auth()->id()) {
+                    array_push($users, $receiver);
+                }
             }
         }
+        foreach ($messages as $message) {
+            $sender = User::find($message->sender_id);
+            if (!in_array($sender, $users)) {
+                if ($sender->id != auth()->id()) {
+                    array_push($users, $sender);
+                }
+            }
+        }
+
         return ApiResponse::success(
             [
                 'users' => UserResource::collection($users)

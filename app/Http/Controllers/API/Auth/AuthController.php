@@ -95,71 +95,6 @@ class AuthController extends Controller
         }
     }
 
-    // public function register(StoreUserRequest $request)
-    // {
-    //     $validatedData = $request->validated();
-    //     $validatedData['password'] = Hash::make($validatedData['password']);
-
-    //     if (!$request->has('role') || $request['role'] === 'user') {
-    //         $otp = Otp::where('phone', $validatedData['phone'])->first();
-
-    //         if ($otp && $otp->used_at != null) {
-    //             $userData = [
-    //                 'name' => $validatedData['name'],
-    //                 'email' => $validatedData['email'],
-    //                 'phone' => $validatedData['phone'],
-    //                 'password' => $validatedData['password'],
-    //                 'role' => 'user',
-    //             ];
-
-    //             $user = User::create($userData);
-    //             $otp->update(['user_id' => $user->id]);
-
-    //             $token = $user->createToken('user_token')->plainTextToken;
-
-    //             return ApiResponse::success(
-    //                 [
-    //                     'user' => new UserResource($user),
-    //                     'token' => $token,
-    //                 ],
-    //                 'User Created Successfully',
-    //                 200
-    //             );
-    //         }
-
-    //         // Return response indicating the need to verify the phone number
-    //         return ApiResponse::error('Please verify your phone number before registering.', 400);
-    //     } else {
-    //         // For company or other roles, proceed without phone verification
-    //         $userData = [
-    //             'name' => $validatedData['name'],
-    //             'email' => $validatedData['email'],
-    //             'phone' => $validatedData['phone'],
-    //             'password' => $validatedData['password'],
-    //         ];
-
-    //         if ($request->has('role') && $validatedData['role'] === 'company') {
-    //             $userData['role'] = $validatedData['role'];
-    //             $userData['tax_number'] = $validatedData['tax_number'];
-    //             $message = 'Company Created Successfully';
-    //         } else {
-    //             $message = 'User Created Successfully';
-    //         }
-
-    //         $user = User::create($userData);
-    //         $token = $user->createToken('user_token')->plainTextToken;
-
-    //         return ApiResponse::success(
-    //             [
-    //                 'user' => new UserResource($user),
-    //                 'token' => $token,
-    //             ],
-    //             $message,
-    //             200
-    //         );
-    //     }
-    // }
-
     public function register(StoreUserRequest $request)
     {
         $validatedData = $request->validated();
@@ -269,45 +204,4 @@ class AuthController extends Controller
             200
         );
     }
-
-    // public function createEmployee(StoreUserRequest $request)
-    // {
-    //     $authUser = Auth::user();
-    //     if ($authUser->role != 'company') {
-    //         return ApiResponse::error(
-    //             'Only Companies Can Register Employees',
-    //             400
-    //         );
-    //     }
-    //     $validatedData = $request->validated();
-    //     $validatedData['password'] = Hash::make($validatedData['password']);
-    //     $validatedData['company_id'] = $authUser->id;
-    //     $validatedData['role'] = 'user';
-
-    //     $employee = User::create($validatedData);
-
-    //     return ApiResponse::success(
-    //         [
-    //             'Employee' => new UserResource($employee)
-    //         ],
-    //         'Employee Created Successfully',
-    //         200
-    //     );
-    // }
-
-    // public function companyEmployeies()
-    // {
-    //     $authUser = Auth::user();
-    //     if ($authUser->role != 'company') {
-    //         return ApiResponse::error(
-    //             'Only Companies Can Register Employees',
-    //             400
-    //         );
-    //     }
-
-    //     $users = User::whereNotNull('company_id')->where('company_id', $authUser->id)->get();
-    //     $activeUsers = $users::where('is_active', true)->get();
-    //     dd($activeUsers);
-
-    // }
 }

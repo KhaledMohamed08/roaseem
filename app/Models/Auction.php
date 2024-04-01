@@ -4,17 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Auction extends Model
+
+class Auction extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
-    protected $filable = [
+    protected $fillable = [
         'title',
         'desc',
         'link',
         'start_date',
-        'end_data',
+        'end_date',
         'start_time',
         'opening_price',
         'subscription_fee',

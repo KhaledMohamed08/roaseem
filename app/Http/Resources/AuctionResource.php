@@ -32,6 +32,15 @@ class AuctionResource extends JsonResource
             'auctioneer_name' => $this->auctioneer_name,
             'id_number' => $this->id_number,
             'auction_license_number' => $this->auction_license_number,
+            'pdf_file' => [
+                'id' => $this->getFirstMedia('auction_pdf_file')->id ?? '',
+                'url' => $this->getFirstMediaUrl('auction_pdf_file'),
+            ],
+            'main_image' => [
+                'id' => $this->getFirstMedia('main_auction_image')->id ?? '',
+                'url' => $this->getFirstMediaUrl('main_auction_image'),
+            ],
+            'properties' => $this->properties,
         ];
     }
 }
