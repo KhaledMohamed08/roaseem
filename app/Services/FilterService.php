@@ -8,9 +8,15 @@ use App\Helpers\ApiResponse;
 
 class FilterService
 {
-    public function filter($model, $relationships, $filters, $sortField, $sortDirection = 'desc')
+    public function filter($model, $filters, $sortField = 'id', $sortDirection = 'desc', $relationships = null)
     {
-        $query = $model::with($relationships);
+        // $query = $model::with($relationships);
+
+        $query = $model::query();
+
+        if ($relationships !== null) {
+            $query->with($relationships);
+        }
 
         foreach ($filters as $field => $value) {
             if (!empty($value)) {

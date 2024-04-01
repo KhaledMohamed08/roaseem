@@ -29,6 +29,7 @@ return new class extends Migration
             // $table->string('id_image');
             $table->string('id_number');
             $table->string('auction_license_number');
+            $table->foreignId('region_id')->constrained('regions');
             $table->timestamps();
         });
     }

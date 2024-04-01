@@ -251,7 +251,7 @@ class unitReqController extends Controller
             'bath_rooms' => $request->input('bathRooms')
         ];
         
-        $filterService = $this->filterService->filter(UnitReq::class, $relationships, $filters, $sortField, $sortDirection);
+        $filterService = $this->filterService->filter(UnitReq::class, $filters, $sortField, $sortDirection , $relationships);
 
         if ($filterService->isNotEmpty()) {
             return ApiResponse::success([

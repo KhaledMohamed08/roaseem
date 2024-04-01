@@ -22,6 +22,7 @@ class Auction extends Model
         'auctioneer_name',
         'id_number',
         'auction_license_number',
+        'region_id',
     ];
 
     public function properties()
@@ -42,5 +43,20 @@ class Auction extends Model
     public function scopeOnline($query)
     {
         return $query->where('is_offline', false);
+    }
+    
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function city()
+    {
+        return $this->region->city;
+    }
+
+    public function country()
+    {
+        return $this->city->country;
     }
 }
