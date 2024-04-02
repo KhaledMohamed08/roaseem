@@ -40,7 +40,8 @@ class AuctionResource extends JsonResource
                 'id' => $this->getFirstMedia('main_auction_image')->id ?? '',
                 'url' => $this->getFirstMediaUrl('main_auction_image'),
             ],
-            'properties' => $this->properties,
+            // 'properties' => $this->properties,
+            'properties' => PropertyResource::collection($this->properties),
         ];
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Responses\ApiResponse;
 use App\Models\Auction;
 use App\Services\FilterService;
 use App\Models\Property;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -71,6 +72,16 @@ class AuctionController extends Controller
         foreach ($request['properties'] as $property) {
             $property['auction_id'] = $newAuction->id;
             $newProperty = Property::create($property);
+            // foreach ($property['services'] as $service) {
+            //     Service::create([
+            //         'service_id' => $service,
+            //         'unit_id' => $newProperty->id,
+            //     ]);
+            // }
+            
+            foreach ($property['images'] as $image) {
+                $newProperty->addMedia($image)->toMediaCollection('property-images');
+            }
         }
 
         return ApiResponse::success(
