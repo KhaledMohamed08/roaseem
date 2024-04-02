@@ -30,6 +30,8 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             // $table->string('otp')->nullable();
             // $table->timestamp('otp_expiry')->nullable();
+            $table->decimal('latitude', 11, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

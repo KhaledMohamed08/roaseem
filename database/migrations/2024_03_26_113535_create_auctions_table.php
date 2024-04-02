@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('auctions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->string('desc');
             $table->boolean('is_offline')->default(false);

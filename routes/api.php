@@ -145,6 +145,7 @@ Route::middleware('auth:sanctum')->group( function () {
 
     // Auction
     Route::apiResource('auction', AuctionController::class)->only(['store', 'destroy', 'index']);
+    Route::get('my-auctions-orders', [AuctionController::class, 'showMyOrders'])->name('my-auctions');
 
 });
 

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->string('message');
             $table->boolean('is_read');
             $table->enum('event',['unit_viewed', 'added to', 'unit_added_to_fav','new_unit']);

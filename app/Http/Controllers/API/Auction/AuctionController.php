@@ -11,7 +11,9 @@ use App\Models\Auction;
 use App\Services\FilterService;
 use App\Models\Property;
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 
@@ -65,19 +67,15 @@ class AuctionController extends Controller
      */
     public function store(StoreAuctionRequest $request)
     {
-        $newAuction = Auction::create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
+        $newAuction = Auction::create($data);
         $newAuction->addMediaFromRequest('auction_pdf_file')->toMediaCollection('auction_pdf_file');
         $newAuction->addMediaFromRequest('main_auction_image')->toMediaCollection('main_auction_image');
 
         foreach ($request['properties'] as $property) {
             $property['auction_id'] = $newAuction->id;
             $newProperty = Property::create($property);
-            // foreach ($property['services'] as $service) {
-            //     Service::create([
-            //         'service_id' => $service,
-            //         'unit_id' => $newProperty->id,
-            //     ]);
-            // }
             
             foreach ($property['images'] as $image) {
                 $newProperty->addMedia($image)->toMediaCollection('property-images');
@@ -137,5 +135,13 @@ class AuctionController extends Controller
             'Auction Deleted Successfully',
             200
         );
+    }
+
+    public function showMyOrders()
+    {
+        $userId = Auth::id();
+        $user = User::find($userId);
+        $orders = $user->auctions;
+        return $orders;
     }
 }

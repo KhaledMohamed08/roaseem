@@ -37,6 +37,8 @@ class UpdateUserRequest extends FormRequest
             'about' => '',
             'whatsapp' => '',
             'land_line' => '',
+            'longitude' => '',
+            'latitude' => '',
         ];
     }
 }

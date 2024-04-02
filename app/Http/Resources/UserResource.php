@@ -36,6 +36,8 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'image' => $this->getFirstMediaUrl('logo') ?? 'no image',
+            'longitude' => $this->longitude ?? 'no longitude',
+            'latitude' => $this->latitude ?? 'no latitude',
         ];
 
         if ($this->role == 'marketer') {
