@@ -87,11 +87,10 @@ class AuthController extends Controller
         $credentials = $request->only('phone', 'otp');
         $otpService = new OTPServiceOnlyPhone();
         $verfied = $otpService->verifyOTP($credentials['phone'], $credentials['otp']);
-        $phone = $credentials['phone'];
         if ($verfied) {
             return ApiResponse::success(
                 [
-                    'phone' => "966$phone"
+                    'phone' => $credentials['phone']
                 ],
                 'OTP Verified Successfully',
                 200
@@ -189,9 +188,11 @@ class AuthController extends Controller
         $otp = $otpService->regenerateOTP($validatedData['phone'], 10);
         $sendSms = $this->sendSms->sendSms($validatedData['phone'], $otp);
         $message = "مرحبا بكم في منصة رواسيم العقارية كود:" . $otp ;
+        $phone = $validatedData['phone'];
+
         return ApiResponse::success(
             [
-                'phone' => $validatedData['phone'],
+                'phone' => "966$phone",
                 'otp' => $message,
             ],
             'OTP Sent Successfully',
