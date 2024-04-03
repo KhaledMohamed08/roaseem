@@ -27,6 +27,7 @@ class User extends Authenticatable implements HasMedia
         'whatsapp',
         'land_line',
         'password',
+        'about',
         // 'otp',
         // 'is_verified',
         'role',
