@@ -81,6 +81,9 @@ class StoreAuctionRequest extends FormRequest
                 'required',
                 'file'
             ],
+            'region_id' => [
+
+            ],
         ];
     }
 }

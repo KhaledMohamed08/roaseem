@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\MessageResource;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\Block;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Models\User;
@@ -117,7 +118,24 @@ class ChatController extends Controller
 
     public function blockToggle(User $user)
     {
-        $authUser = Auth::user();
+        $block = Block::where('blocker_id', Auth::id())->where('blocked_id', $user->id)->first();
 
+        if (!$block) {
+            Block::create([
+                'blocker_id' => Auth::id(),
+                'blocked_id' => $user->id,
+            ]);
+            return ApiResponse::successWithoutData(
+                'user blocked successfully',
+                200
+            );
+        } else {
+            $block->delete();
+
+            return ApiResponse::successWithoutData(
+                'user unblocked successfully',
+                200
+            );
+        }
     }
 }

@@ -102,6 +102,7 @@ class AuthController extends Controller
         $otp = Otp::where('phone', $validatedData['phone'])->first();
         if ($otp && $otp->used_at != null) {
             $user = User::create($validatedData);
+            $token = $user->createToken('user_token')->plainTextToken;
             $fcmToken = $this->fcmToken->fcmSave($validatedData['fcmToken'], $user->id);
         } else {
             return ApiResponse::error(
@@ -113,6 +114,7 @@ class AuthController extends Controller
         return ApiResponse::success(
             [
                 'user' => new UserResource($user),
+                'token' => $token,
             ],
             'User Created Successfully',
             200

@@ -117,4 +117,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(FcmToken::class);
     }
+
+    public function auctions()
+    {
+        return $this->hasMany(Auction::class);
+    }
 }

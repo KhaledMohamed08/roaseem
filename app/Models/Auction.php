@@ -13,6 +13,7 @@ class Auction extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
+        'user_id',
         'title',
         'desc',
         'link',
@@ -61,5 +62,10 @@ class Auction extends Model implements HasMedia
     public function country()
     {
         return $this->city->country;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
