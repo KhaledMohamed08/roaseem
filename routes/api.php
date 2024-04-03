@@ -99,8 +99,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('my-reqs',[unitReqController::class,'myRequests'])->name('myRequests');
     //all Companies
     Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
-    //all marketers
-    Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarketer');
     //filter
     Route::post('filter',[unitReqController::class,'filter'])->name('filter');
 
