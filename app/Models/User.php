@@ -33,7 +33,7 @@ class User extends Authenticatable implements HasMedia
         'tax_number',
         'practicing_number',
         'company_id',
-
+        'address',
     ];
 
     /**

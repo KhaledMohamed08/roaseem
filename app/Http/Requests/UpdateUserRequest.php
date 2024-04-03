@@ -39,6 +39,7 @@ class UpdateUserRequest extends FormRequest
             'land_line' => '',
             'longitude' => '',
             'latitude' => '',
+            'address' => '',
         ];
     }
 }

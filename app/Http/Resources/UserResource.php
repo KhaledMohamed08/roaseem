@@ -38,6 +38,7 @@ class UserResource extends JsonResource
             'image' => $this->getFirstMediaUrl('logo') ?? 'no image',
             'longitude' => $this->longitude ?? 'no longitude',
             'latitude' => $this->latitude ?? 'no latitude',
+            'address' => $this->address ?? 'no address',
         ];
 
         if ($this->role == 'marketer') {

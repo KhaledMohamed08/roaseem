@@ -32,6 +32,7 @@ return new class extends Migration
             // $table->timestamp('otp_expiry')->nullable();
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
+            $table->string('address')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
