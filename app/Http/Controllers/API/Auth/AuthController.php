@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Services\FcmToken as ServicesFcmToken;
 // use App\Services\OTPService;
 use App\Services\OTPServiceOnlyPhone;
+use App\Services\SendSms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,10 +20,12 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     protected $fcmToken;
+    protected $sendSms;
 
-    public function __construct(ServicesFcmToken $fcmToken)
+    public function __construct(ServicesFcmToken $fcmToken, SendSms $sendSms)
     {
         $this->fcmToken = $fcmToken;
+        $this->sendSms = $sendSms;
     }
 
     // Start
@@ -34,6 +37,9 @@ class AuthController extends Controller
         $phone = $request['phone'];
         $otpService = new OTPServiceOnlyPhone;
         $otp = $otpService->generateOTP($phone, 10);
+        $message = "$otp :مرحبا بكم في منصة رواسيم العقارية كود";
+        $sendSms = $this->sendSms->sendSms($phone, $message);
+
         if ($otp) {
             return ApiResponse::success(
                 [
@@ -59,6 +65,8 @@ class AuthController extends Controller
         $phone = $request['phone'];
         $otpService = new OTPServiceOnlyPhone();
         $otp = $otpService->regenerateOTP($phone);
+        $message = "مرحبا بكم في منصة رواسيم العقارية كود:" . $otp ;
+        $sendSms = $this->sendSms->sendSms($phone, $message);
 
         return ApiResponse::success(
             [
@@ -178,7 +186,8 @@ class AuthController extends Controller
         ]);
         $otpService = new OTPServiceOnlyPhone();
         $otp = $otpService->regenerateOTP($validatedData['phone'], 10);
-        
+        $sendSms = $this->sendSms->sendSms($validatedData['phone'], $otp);
+
         return ApiResponse::success(
             [
                 'phone' => $validatedData['phone'],

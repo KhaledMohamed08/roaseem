@@ -157,6 +157,6 @@ Route::middleware('guest:sanctum')->group( function () {
     Route::post('regenirate-otp', [AuthController::class, 'regenerateOTP'])->name('regenirate-otp');
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('forget-password', [AuthController::class, 'forgoetPassword'])->name('forget.password');
+    Route::put('forget-password', [AuthController::class, 'forgoetPassword'])->name('forget.password');
     Route::put('update-password', [AuthController::class, 'updatePassword'])->name('update.password');
 });

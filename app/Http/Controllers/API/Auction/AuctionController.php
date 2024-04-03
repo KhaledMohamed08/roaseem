@@ -12,6 +12,7 @@ use App\Services\FilterService;
 use App\Models\Property;
 use App\Models\Service;
 use App\Models\User;
+use App\Services\SendSms;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -23,7 +24,7 @@ class AuctionController extends Controller
 
     public function __construct(FilterService $filterService)
     {
-        $this->filterService = $filterService;
+        $this->filterService = $filterService;  
     }
 
     /**
