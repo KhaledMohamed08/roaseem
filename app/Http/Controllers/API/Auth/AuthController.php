@@ -43,7 +43,7 @@ class AuthController extends Controller
         if ($otp) {
             return ApiResponse::success(
                 [
-                    'phone' => $phone,
+                    'phone' => "966$phone",
                     'otp' => $otp,
                 ],
                 'OTP Sent Successfully',
@@ -70,7 +70,7 @@ class AuthController extends Controller
 
         return ApiResponse::success(
             [
-                'phone' => $phone,
+                'phone' => "966$phone",
                 'otp' => $otp,
             ],
             'OTP Regenrated Successfully',
@@ -87,10 +87,11 @@ class AuthController extends Controller
         $credentials = $request->only('phone', 'otp');
         $otpService = new OTPServiceOnlyPhone();
         $verfied = $otpService->verifyOTP($credentials['phone'], $credentials['otp']);
+        $phone = $credentials['phone'];
         if ($verfied) {
             return ApiResponse::success(
                 [
-                    'phone' => $credentials['phone']
+                    'phone' => "966$phone"
                 ],
                 'OTP Verified Successfully',
                 200
@@ -187,11 +188,11 @@ class AuthController extends Controller
         $otpService = new OTPServiceOnlyPhone();
         $otp = $otpService->regenerateOTP($validatedData['phone'], 10);
         $sendSms = $this->sendSms->sendSms($validatedData['phone'], $otp);
-
+        $message = "مرحبا بكم في منصة رواسيم العقارية كود:" . $otp ;
         return ApiResponse::success(
             [
                 'phone' => $validatedData['phone'],
-                'otp' => $otp,
+                'otp' => $message,
             ],
             'OTP Sent Successfully',
             200,
