@@ -47,6 +47,9 @@ Route::get('appSetting',[appSettingController::class,'index']);
 Route::post('complaintsStore',[appSettingController::class,'complaintsStore']);
 Route::get('regulations',[appSettingController::class,'regulations']);
 Route::get('News',[appSettingController::class,'news']);
+//user Search
+Route::get('userSearch',[UserController::class,'search'])->name('userSearch');
+Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarketer');
 
 
 Route::get('countries', function () {
@@ -96,6 +99,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('my-reqs',[unitReqController::class,'myRequests'])->name('myRequests');
     //all Companies
     Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
+    //all marketers
+    Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarketer');
     //filter
     Route::post('filter',[unitReqController::class,'filter'])->name('filter');
 

@@ -88,6 +88,11 @@ class User extends Authenticatable implements HasMedia
         return $query->where('role', 'practiciner');
     }
 
+    public function scopeMarketer($query)
+    {
+        return $query->where('role', 'marketer');
+    }
+
     public function favorites()
     {
         return $this->belongsToMany(Unit::class, 'favorites', 'user_id', 'unit_id')->withTimestamps();
