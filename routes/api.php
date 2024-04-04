@@ -147,7 +147,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::delete('deleteRate/{id}',[rateController::class,'delete']);
 
     // Auction
-    Route::apiResource('auction', AuctionController::class)->only(['store', 'destroy', 'index']);
+    Route::apiResource('auction', AuctionController::class)->only(['store', 'destroy', 'update']);
     Route::get('my-auctions-orders', [AuctionController::class, 'showMyOrders'])->name('my-auctions');
 
 });

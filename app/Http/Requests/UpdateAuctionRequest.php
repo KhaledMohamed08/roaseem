@@ -73,6 +73,17 @@ class UpdateAuctionRequest extends FormRequest
             'auction_license_number' => [
                 'required',
             ],
+            'auction_pdf_file' => [
+                'required',
+                'file',
+            ],
+            'main_auction_image' => [
+                'required',
+                'file'
+            ],
+            'region_id' => [
+
+            ],
         ];
     }
 }

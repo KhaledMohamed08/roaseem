@@ -111,7 +111,9 @@ class AuctionController extends Controller
      */
     public function update(UpdateAuctionRequest $request, Auction $auction)
     {
-        $auction->update($request->validated());
+        $data = $request->validated();
+        $auction->update($data);
+        
 
         return ApiResponse::success(
             [
@@ -143,6 +145,13 @@ class AuctionController extends Controller
         $userId = Auth::id();
         $user = User::find($userId);
         $orders = $user->auctions;
-        return $orders;
+        return ApiResponse::success(
+            [
+                'number of auctions' => $orders->count(),
+                'auctions' => AuctionResource::collection($orders),
+            ],
+            'Auctions Created By' . ' ' . $user->name,
+            200,
+        );
     }
 }
