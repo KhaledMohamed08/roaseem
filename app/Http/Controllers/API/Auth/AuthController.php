@@ -37,13 +37,13 @@ class AuthController extends Controller
         $phone = $request['phone'];
         $otpService = new OTPServiceOnlyPhone;
         $otp = $otpService->generateOTP($phone, 10);
-        $message = "$otp :مرحبا بكم في منصة رواسيم العقارية كود";
-        $sendSms = $this->sendSms->sendSms($phone, $message);
+        $message = "مرحبا بكم في منصة رواسيم العقارية كود:" . $otp ;
+        $sendSms = $this->sendSms->sendSms("966" . $phone, $message);
 
         if ($otp) {
             return ApiResponse::success(
                 [
-                    'phone' => "966$phone",
+                    'phone' => $phone,
                     'otp' => $otp,
                 ],
                 'OTP Sent Successfully',
@@ -66,11 +66,11 @@ class AuthController extends Controller
         $otpService = new OTPServiceOnlyPhone();
         $otp = $otpService->regenerateOTP($phone);
         $message = "مرحبا بكم في منصة رواسيم العقارية كود:" . $otp ;
-        $sendSms = $this->sendSms->sendSms($phone, $message);
+        $sendSms = $this->sendSms->sendSms("966" . $phone, $message);
 
         return ApiResponse::success(
             [
-                'phone' => "966$phone",
+                'phone' => $phone,
                 'otp' => $otp,
             ],
             'OTP Regenrated Successfully',
@@ -186,13 +186,13 @@ class AuthController extends Controller
         ]);
         $otpService = new OTPServiceOnlyPhone();
         $otp = $otpService->regenerateOTP($validatedData['phone'], 10);
-        $sendSms = $this->sendSms->sendSms($validatedData['phone'], $otp);
+        $sendSms = $this->sendSms->sendSms("966" . $validatedData['phone'], $otp);
         $message = "مرحبا بكم في منصة رواسيم العقارية كود:" . $otp ;
         $phone = $validatedData['phone'];
 
         return ApiResponse::success(
             [
-                'phone' => "966$phone",
+                'phone' => $phone,
                 'otp' => $message,
             ],
             'OTP Sent Successfully',

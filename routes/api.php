@@ -146,10 +146,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('createRate',[rateController::class,'store']);
     Route::delete('deleteRate/{id}',[rateController::class,'delete']);
 
-    // Auction
+    // Auction Routes
     Route::apiResource('auction', AuctionController::class)->only(['store', 'destroy', 'update']);
     Route::get('my-auctions-orders', [AuctionController::class, 'showMyOrders'])->name('my-auctions');
-
 });
 
 // Guest Protected Routes
