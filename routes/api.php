@@ -149,6 +149,7 @@ Route::middleware('auth:sanctum')->group( function () {
     // Auction Routes
     Route::apiResource('auction', AuctionController::class)->only(['store', 'destroy', 'update']);
     Route::get('my-auctions-orders', [AuctionController::class, 'showMyOrders'])->name('my-auctions');
+    Route::post('push-amount/{auction}', [AuctionController::class, 'pushAmountInAuction'])->name('amount.push');
 });
 
 // Guest Protected Routes

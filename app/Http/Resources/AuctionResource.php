@@ -12,7 +12,7 @@ class AuctionResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
         // return parent::toArray($request);
         return [
@@ -32,6 +32,8 @@ class AuctionResource extends JsonResource
             'auctioneer_name' => $this->auctioneer_name,
             'id_number' => $this->id_number,
             'auction_license_number' => $this->auction_license_number,
+            'max_price' => $this->details->max_price ?? '0',
+            'max_user_id' => $this->details->user_id ?? '0',
             'pdf_file' => [
                 'id' => $this->getFirstMedia('auction_pdf_file')->id ?? '',
                 'url' => $this->getFirstMediaUrl('auction_pdf_file'),

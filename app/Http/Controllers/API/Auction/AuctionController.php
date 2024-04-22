@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateAuctionRequest;
 use App\Http\Resources\AuctionResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Auction;
+use App\Models\AuctionDetails;
 use App\Services\FilterService;
 use App\Models\Property;
 use App\Models\Service;
@@ -153,5 +154,37 @@ class AuctionController extends Controller
             'Auctions Created By' . ' ' . $user->name,
             200,
         );
+    }
+
+    public function pushAmountInAuction(Request $request, Auction $auction)
+    {
+        $user = Auth::user();
+        $userAuctions = $user->auctions;
+        
+        if (!$userAuctions->contains($auction)) {
+            return ApiResponse::error([
+                'You Must Subscibe in this Auction'
+            ]);
+        }
+        if ($request['mount'] > $auction->minimum_bid) {
+            AuctionDetails::updateOrCreate(
+                ['auction_id' => $auction->id],
+                ['max_price' => $request['mount'], 'max_user' => $user->id]
+            );
+
+            return ApiResponse::success(
+                [
+                    'auction' => new AuctionResource($auction),
+                ],
+                'new amount pushed successfully',
+                200
+            );
+
+        } else {
+            return ApiResponse::error(
+                'kjhkjkjgkjgkhgkjgkj',
+                400
+            );
+        }
     }
 }
