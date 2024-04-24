@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,8 +23,8 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = auth()->id();
-
+        $userId = auth()->user()->id;
+        $user = User::find($userId);
         return [
             'name' => 'required',
             // 'phone' => [
@@ -32,7 +33,10 @@ class UpdateUserRequest extends FormRequest
             // ],
             'email' => [
                 // 'required',
-                Rule::unique('users')->ignore($userId, 'id'),
+                // Rule::unique('users')->where(function ($query) use ($userId) {
+                //     return $query->where('id', '!=', $userId);
+                // }),
+                Rule::unique('users')->ignore($user),
             ],
             'about' => '',
             'whatsapp' => '',

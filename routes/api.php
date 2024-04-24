@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AppSetting\appSettingController;
 use App\Http\Controllers\API\Auction\AuctionController;
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Block\BlockController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
 use App\Http\Controllers\API\Home\HomeController;
@@ -60,6 +61,52 @@ Route::get('countries', function () {
         ]
     );
 });
+Route::get('country/{id?}', function ($id=null) {
+    if ($id != null) {
+        $country = Country::find($id);
+        $country->cities;
+
+        return ApiResponse::success(
+            [
+                'country' => $country,
+                // 'cities' => $cities,
+            ],
+            'cities of ' . $country->name,
+            200
+        );
+    } else {
+        return ApiResponse::success(
+            [
+                'countries' => Country::all(),
+            ],
+            'all countries',
+            200
+        );
+    }
+});
+Route::get('city/{id?}', function ($id=null) {
+    if ($id != null) {
+        $city = City::find($id);
+        $city->regions;
+
+        return ApiResponse::success(
+            [
+                'city' => $city,
+                // 'cities' => $cities,
+            ],
+            'cities of ' . $city->name,
+            200
+        );
+    } else {
+        return ApiResponse::success(
+            [
+                'countries' => City::all(),
+            ],
+            'all countries',
+            200
+        );
+    }
+});
 Route::get('cities', function () {
     $cities = City::all();
     return ApiResponse::success(
@@ -76,6 +123,7 @@ Route::get('regions', function () {
         ]
     );
 });
+
 // Auth Protected Routes
 Route::middleware('auth:sanctum')->group( function () {
     // Auth Routes
@@ -101,12 +149,12 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
     //filter
     Route::post('filter',[unitReqController::class,'filter'])->name('filter');
-
     // Profile Routes
     Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
     Route::put('profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('my-unites', [ProfileController::class, 'myUnites'])->name('my.unites');
     Route::put('reset-password', [ProfileController::class, 'resetPassword'])->name('reset.password');
+    Route::delete('delete-account', [ProfileController::class, 'deleteAccount'])->name('account.delete');
 
     // Company Admin Routes
     Route::post('add-marketer', [ProfileController::class, 'addMarketerForCompany'])->name('add.marketer');
@@ -136,6 +184,10 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/get-messages', [ChatController::class, 'getMessages']);
     Route::get('/get-chats', [ChatController::class, 'getChats']);
     Route::get('/show-chat/{user}', [ChatController::class, 'showChat']);
+    
+    // block
+    Route::get('block-user/{user}', [BlockController::class, 'blockUser'])->name('block.user');
+    Route::get('unblock-user/{user}', [BlockController::class, 'unblockUser'])->name('unblock.user');
 
     //VerificationServices
     Route::get('verificationServices',[VerificationServiceController::class,'index']);

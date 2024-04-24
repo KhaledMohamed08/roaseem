@@ -22,6 +22,22 @@ class ChatController extends Controller
             'message' => 'required',
         ]);
 
+        $block = Block::where(function ($query) use ($request) {
+            $query->where('blocker_id', $request['receiver_id'])
+                  ->where('blocked_id', auth()->id());
+        })
+        ->orWhere(function ($query) use ($request) {
+            $query->where('blocker_id', auth()->id())
+                  ->where('blocked_id', $request['receiver_id']);
+        })
+        ->first();
+
+        if ($block) {
+            return ApiResponse::error(
+                'Can Not Send message Because Of Block!'
+            );
+        }
+
         // Create message
         $message = Message::create([
             'sender_id' => auth()->id(),
@@ -116,26 +132,26 @@ class ChatController extends Controller
         );
     }
 
-    public function blockToggle(User $user)
-    {
-        $block = Block::where('blocker_id', Auth::id())->where('blocked_id', $user->id)->first();
+    // public function blockToggle(User $user)
+    // {
+    //     $block = Block::where('blocker_id', Auth::id())->where('blocked_id', $user->id)->first();
 
-        if (!$block) {
-            Block::create([
-                'blocker_id' => Auth::id(),
-                'blocked_id' => $user->id,
-            ]);
-            return ApiResponse::successWithoutData(
-                'user blocked successfully',
-                200
-            );
-        } else {
-            $block->delete();
+    //     if (!$block) {
+    //         Block::create([
+    //             'blocker_id' => Auth::id(),
+    //             'blocked_id' => $user->id,
+    //         ]);
+    //         return ApiResponse::successWithoutData(
+    //             'user blocked successfully',
+    //             200
+    //         );
+    //     } else {
+    //         $block->delete();
 
-            return ApiResponse::successWithoutData(
-                'user unblocked successfully',
-                200
-            );
-        }
-    }
+    //         return ApiResponse::successWithoutData(
+    //             'user unblocked successfully',
+    //             200
+    //         );
+    //     }
+    // }
 }

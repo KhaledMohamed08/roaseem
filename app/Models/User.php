@@ -35,6 +35,8 @@ class User extends Authenticatable implements HasMedia
         'practicing_number',
         'company_id',
         'address',
+        'latitude',
+		'longitude',
     ];
 
     /**
@@ -127,5 +129,10 @@ class User extends Authenticatable implements HasMedia
     public function auctions()
     {
         return $this->hasMany(Auction::class);
+    }
+
+    public function blocked()
+    {
+        return $this->hasMany(Block::class);
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('auction_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('auction_id')->constrained('auctions');
-            $table->decimal('max_price');
+            $table->decimal('max_price')->default(0);
             $table->foreignId('max_user')->constrained('users', 'id');
             $table->timestamps();
         });

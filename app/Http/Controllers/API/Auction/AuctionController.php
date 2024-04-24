@@ -163,28 +163,29 @@ class AuctionController extends Controller
         
         if (!$userAuctions->contains($auction)) {
             return ApiResponse::error([
-                'You Must Subscibe in this Auction'
+                'You did not subscibed in this Auction!'
             ]);
         }
-        if ($request['mount'] > $auction->minimum_bid) {
-            AuctionDetails::updateOrCreate(
-                ['auction_id' => $auction->id],
-                ['max_price' => $request['mount'], 'max_user' => $user->id]
-            );
+        
+        if ($auction->details) {
+            if (intval($request['mount']) >= (intval($auction->details->max_price) + intval($auction->minimum_bid))) {
+                $auction->details->max_price = $request['mount'];
+                $auction->details->max_user = Auth::id();
+                $auction->details->save();
 
-            return ApiResponse::success(
-                [
-                    'auction' => new AuctionResource($auction),
-                ],
-                'new amount pushed successfully',
-                200
-            );
-
-        } else {
-            return ApiResponse::error(
-                'kjhkjkjgkjgkhgkjgkj',
-                400
-            );
+                return ApiResponse::success(
+                    [
+                        'auction' => new AuctionResource($auction),
+                    ],
+                    'Mount Pushed Successfully',
+                    200,
+                );
+            } else {
+                return ApiResponse::error(
+                    'Failed push. Min price you can push is ' . (intval($auction->details->max_price) + intval($auction->minimum_bid)),
+                    400
+                );
+            }
         }
     }
 }

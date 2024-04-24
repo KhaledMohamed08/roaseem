@@ -28,11 +28,31 @@ class ProfileController extends Controller
         );
     }
 
-    public function edit(UpdateUserRequest $request)
+    public function edit(Request $request)
     {
-        $validatedData = $request->validated();
         $userId = Auth::id();
         $user = User::find($userId);
+        // $validatedData = $request->validated();
+        $validatedData = $request->validate([
+            'name' => 'required',
+            // 'phone' => [
+            //     'required',
+            //     Rule::unique('users')->ignore($userId, 'id'),
+            // ],
+            'email' => [
+                // 'required',
+                // Rule::unique('users')->where(function ($query) use ($userId) {
+                //     return $query->where('id', '!=', $userId);
+                // }),
+                Rule::unique('users')->ignore($user),
+            ],
+            'about' => '',
+            'whatsapp' => '',
+            'land_line' => '',
+            'longitude' => '',
+            'latitude' => '',
+            'address' => '',
+        ]);
 
         if ($user) {
             $user->update($validatedData);
@@ -417,6 +437,21 @@ class ProfileController extends Controller
                 // 'permissions' => $user->getAllPermissions(),
             ],
             'Marketer Data',
+            200
+        );
+    }
+
+    public function deleteAccount()
+    {
+        $userId = Auth::id();
+        $user = User::find($userId);
+        $user->delete();
+
+        return ApiResponse::success(
+            [
+                'user' => new UserResource($user)
+            ],
+            'User Deleted Successfuly',
             200
         );
     }
