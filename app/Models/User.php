@@ -135,4 +135,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Block::class);
     }
+    
+    public function AuctionUser()
+    {
+        return $this->hasMany(AuctionUser::class);
+    }
 }

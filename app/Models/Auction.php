@@ -73,4 +73,9 @@ class Auction extends Model implements HasMedia
     {
         return $this->hasOne(AuctionDetails::class);
     }
+    
+    public function AuctionUser()
+    {
+        return $this->hasMany(AuctionUser::class);
+    }
 }

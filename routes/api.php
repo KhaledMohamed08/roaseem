@@ -10,6 +10,7 @@ use App\Http\Controllers\API\Home\HomeController;
 use App\Http\Controllers\API\Notification\notificationController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Rate\rateController;
+use App\Http\Controllers\API\Subscription\subscriptionController;
 use App\Http\Controllers\API\Unit\UnitController;
 use App\Http\Controllers\API\Unit\unitFeaturesController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
@@ -202,6 +203,12 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('auction', AuctionController::class)->only(['store', 'destroy', 'update']);
     Route::get('my-auctions-orders', [AuctionController::class, 'showMyOrders'])->name('my-auctions');
     Route::post('push-amount/{auction}', [AuctionController::class, 'pushAmountInAuction'])->name('amount.push');
+
+    //Subscripe
+    Route::get('auctionSubscripe/{id}', [subscriptionController::class, 'auctionSubscripe']);
+    Route::post('subscripeStore', [subscriptionController::class, 'subscripeStore']);
+    Route::get('mySubscriptiones', [subscriptionController::class, 'mysubscripe']);
+
 });
 
 // Guest Protected Routes
