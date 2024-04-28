@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Ads\AddsController;
 use App\Http\Controllers\API\AppSetting\appSettingController;
 use App\Http\Controllers\API\Auction\AuctionController;
 use App\Http\Controllers\API\Auth\AuthController;
@@ -52,6 +53,9 @@ Route::get('News',[appSettingController::class,'news']);
 //user Search
 Route::get('userSearch',[UserController::class,'search'])->name('userSearch');
 Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarketer');
+
+//Ads
+    Route::get('allAds',[AddsController::class,'index']);
 
 
 Route::get('countries', function () {
@@ -208,6 +212,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('auctionSubscripe/{id}', [subscriptionController::class, 'auctionSubscripe']);
     Route::post('subscripeStore', [subscriptionController::class, 'subscripeStore']);
     Route::get('mySubscriptiones', [subscriptionController::class, 'mysubscripe']);
+
 
 });
 

@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('adds', function (Blueprint $table) {
             $table->id();
             $table->morphs('model');
-            $table->string('title');
+            $table->string('type');
+            $table->string('link')->nullable();
+            $table->string('title')->nullable();
             $table->text('description');
             $table->timestamps();
         });
