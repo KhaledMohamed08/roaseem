@@ -50,9 +50,14 @@ Route::get('appSetting',[appSettingController::class,'index']);
 Route::post('complaintsStore',[appSettingController::class,'complaintsStore']);
 Route::get('regulations',[appSettingController::class,'regulations']);
 Route::get('News',[appSettingController::class,'news']);
+Route::get('privacyPolicy',[appSettingController::class,'privacyPolicies']);
 //user Search
 Route::get('userSearch',[UserController::class,'search'])->name('userSearch');
 Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarketer');
+Route::get('getUser/{id}',[UserController::class,'getUser']);
+
+//unitFilter
+Route::get('unitefilter',[UnitController::class, 'unitFilter'])->name('unites.filter');
 
 //Ads
     Route::get('allAds',[AddsController::class,'index']);
@@ -152,7 +157,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('my-reqs',[unitReqController::class,'myRequests'])->name('myRequests');
     //all Companies
     Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
-    //filter
+    //unitReqfilter
     Route::post('filter',[unitReqController::class,'filter'])->name('filter');
     // Profile Routes
     Route::get('profile', [ProfileController::class, 'profile'])->name('profile');

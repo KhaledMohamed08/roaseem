@@ -39,22 +39,5 @@ class UpdateUnitReqRequest extends FormRequest
             'companies'=>"nullable",
         ];
         
-        
-        // 'name'=>"required|string",
-        // 'phone'=>"required",
-        // 'email'=>"required|email",
-        // 'unitType_id'=>"required",
-        // 'city_id'=>"required",
-        // 'maxArea'=>"required|numeric",
-        // 'minArea'=>"required|numeric",
-        // 'maxPrice'=>"required|numeric",
-        // 'minPrice'=>"required|numeric",
-        // 'description'=>"",
-        // 'bedRooms' => "",
-        // 'bathRooms' => "",
-        // 'adPeriod'=>"nullable",
-        // 'entity_type'=>"required",
-        // 'companies'=>"nullable",
-    
     }
 }

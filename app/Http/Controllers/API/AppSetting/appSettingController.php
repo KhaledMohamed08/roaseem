@@ -4,11 +4,13 @@ namespace App\Http\Controllers\API\AppSetting;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\appSettingResource;
+use App\Http\Resources\privacyPolicyResource;
 use App\Http\Resources\RealEstateNewsResource;
 use App\Http\Resources\RegulationsLawsResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\AppSettings;
 use App\Models\Complain;
+use App\Models\PrivacyPolicy;
 use App\Models\RealEstateNews;
 use App\Models\RegulationsLaws;
 use Illuminate\Http\Request;
@@ -83,5 +85,17 @@ class appSettingController extends Controller
         }
 
         return ApiResponse::error('No News had been added.', 404);
+    }
+
+    public function privacyPolicies()
+    {
+        $privecyPolicies = PrivacyPolicy::all();
+
+        if ($privecyPolicies)
+        {
+            return ApiResponse::success([
+                'privecyPolicies' => privacyPolicyResource::collection($privecyPolicies)
+            ]);
+        }
     }
 }

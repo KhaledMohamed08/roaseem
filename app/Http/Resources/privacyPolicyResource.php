@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class appSettingResource extends JsonResource
+class privacyPolicyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +15,9 @@ class appSettingResource extends JsonResource
     public function toArray(Request $request): array
     {
         // return parent::toArray($request);
-        return[
-            'content' => $this->content ?? null,
-            'email' => $this->email ?? null,
-            'phone' => $this->phone ?? null,
-            'facebook' => $this->facebook ?? null,
-            'instagram' => $this->instgram ?? null,
+        return [
+            'title' => $this->title,
+            'description' => $this->description,
         ];
     }
 }

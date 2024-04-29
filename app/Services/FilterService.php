@@ -18,24 +18,45 @@ class FilterService
             $query->with($relationships);
         }
 
+        // foreach ($filters as $field => $value) {
+        //     if (!empty($value)) {
+        //         if (is_array($value)) 
+        //         {
+        //             // Handle range filters
+        //             $query->whereIn($field, $value);
+        //         } 
+        //         elseif((is_array($value) && count($value) == 2))
+        //         {
+        //             $query->whereBetween($field, [$value[1], $value[0]]);
+        //         }
+        //         else 
+        //         {
+        //             // Handle single value filters
+        //             $query->where($field, $value);
+        //         }
+        //     }
+        // }
+
         foreach ($filters as $field => $value) {
             if (!empty($value)) {
-                if (is_array($value)) 
-                {
-                    // Handle range filters
+                if ($field === 'price' || $field === 'area') {
+                    // Handle price or area range filter
+                    if (is_array($value) && count($value) == 2) {
+                        $query->whereBetween($field, [$value[1], $value[0]]);
+                    } else {
+                        // Handle single value filters for price or area
+                        $query->where($field, $value);
+                    }
+                } elseif (is_array($value)) {
+                    // Handle other array filters
                     $query->whereIn($field, $value);
-                } 
-                elseif((is_array($value) && count($value) == 2))
-                {
-                    $query->whereBetween($field, $value);
-                }
-                else 
-                {
+                } else {
                     // Handle single value filters
                     $query->where($field, $value);
                 }
             }
         }
+        
 
         //sorting
         if ($sortField && in_array(strtolower($sortDirection), ['asc', 'desc'])) {

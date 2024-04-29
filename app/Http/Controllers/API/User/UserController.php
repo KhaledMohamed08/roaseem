@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UnitResource;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -53,5 +55,20 @@ class UserController extends Controller
         } else {
             return ApiResponse::error('No Users found.', 404);
         }
+    }
+
+    public function getUser($id)
+    {
+        $user = User::where('id', $id)->first();
+        $units = Unit::where('user_id', $user->id)->get();
+
+        if($user)
+        {
+            return ApiResponse::success([
+                'user' => new UserResource($user),
+                'units' => UnitResource::collection($units)
+            ]);
+        }
+        return ApiResponse::error(['User Not Found'],404);
     }
 }

@@ -12,6 +12,7 @@ use App\Models\Notification;
 use App\Models\Service;
 use App\Models\Unit;
 use App\Models\UnitViews;
+use App\Services\FilterService;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,10 +26,14 @@ class UnitController extends Controller
      */
 
     protected $notificationsService;
+    protected $filterService;
 
-    public function __construct(NotificationService $notificationsService)
+
+    public function __construct(NotificationService $notificationsService, FilterService $filterService)
     {
         $this->notificationsService = $notificationsService;
+        $this->filterService = $filterService;
+
     }
 
     public function index()
@@ -196,5 +201,33 @@ class UnitController extends Controller
             'Image Deleted Successfully',
             200
         );
+    }
+
+    public function unitFilter(Request $request)
+    {
+        $sortField = "id";
+        $sortDirection = $request->input('sort_direction') ?? 'desc';
+        
+        $filters = [
+            'unit_status_id' => $request->input('status_id'),
+            'unit_purpose_id' => $request->input('purpose_id'),
+            'entity_type' => $request->input('entity_type'),
+            'unit_payment_id' => $request->input('unit_payment_id'),
+            'price' => $request->filled('maxPrice') && $request->filled('minPrice') ? [$request->maxPrice, $request->minPrice] : null,
+            'area' => $request->filled('maxArea') && $request->filled('minArea') ? [$request->maxArea, $request->minArea] : null,
+            'region_id' => $request->input('region_id'),
+            'unit_type_id' => $request->input('unit_types_id'),
+            'bedrooms' => $request->input('bedRooms'),
+            'bathrooms' => $request->input('bathRooms')
+        ];
+        
+        $filterService = $this->filterService->filter(Unit::class, $filters, $sortField, $sortDirection);
+
+        if ($filterService->isNotEmpty()) {
+            return ApiResponse::success([
+                'Units' => UnitResource::collection($filterService)
+            ]);
+        }
+        return ApiResponse::error('No unit found.', 404);
     }
 }
