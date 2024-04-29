@@ -5,14 +5,18 @@ namespace App\Http\Controllers\API\AppSetting;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\appSettingResource;
 use App\Http\Resources\privacyPolicyResource;
+use App\Http\Resources\PropertyRightsResource;
 use App\Http\Resources\RealEstateNewsResource;
 use App\Http\Resources\RegulationsLawsResource;
+use App\Http\Resources\termAndConditionsResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\AppSettings;
 use App\Models\Complain;
+use App\Models\IntellectualPropertyRightsPolicy;
 use App\Models\PrivacyPolicy;
 use App\Models\RealEstateNews;
 use App\Models\RegulationsLaws;
+use App\Models\TermAndCondition;
 use Illuminate\Http\Request;
 
 class appSettingController extends Controller
@@ -95,6 +99,30 @@ class appSettingController extends Controller
         {
             return ApiResponse::success([
                 'privecyPolicies' => privacyPolicyResource::collection($privecyPolicies)
+            ]);
+        }
+    }
+
+    public function termAndConditions()
+    {
+        $termAndConditions = TermAndCondition::all();
+
+        if($termAndConditions)
+        {
+            return ApiResponse::success([
+                'termAndConditions' => termAndConditionsResource::collection($termAndConditions)
+            ]);
+        }
+    }
+
+    public function intellectualPropertyRightsPolicies()
+    {
+        $intellectualPropertyRightsPolicies = IntellectualPropertyRightsPolicy::all();
+
+        if($intellectualPropertyRightsPolicies)
+        {
+            return ApiResponse::success([
+                'intellectualPropertyRightsPolicies' => PropertyRightsResource::collection($intellectualPropertyRightsPolicies)
             ]);
         }
     }

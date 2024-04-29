@@ -51,6 +51,8 @@ Route::post('complaintsStore',[appSettingController::class,'complaintsStore']);
 Route::get('regulations',[appSettingController::class,'regulations']);
 Route::get('News',[appSettingController::class,'news']);
 Route::get('privacyPolicy',[appSettingController::class,'privacyPolicies']);
+Route::get('termAndConditions',[appSettingController::class,'termAndConditions']);
+Route::get('PropertyRights',[appSettingController::class,'intellectualPropertyRightsPolicies']);
 //user Search
 Route::get('userSearch',[UserController::class,'search'])->name('userSearch');
 Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarketer');
