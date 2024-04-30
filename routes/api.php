@@ -23,6 +23,7 @@ use App\Models\Country;
 use App\Models\Rate;
 use App\Models\Region;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,29 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// Artisan commands
+Route::get('artisan-storage-link', function () {
+    Artisan::call('storage:link');
+    return Artisan::output();
+}); // php artisan storage:link
+Route::get('artisan-migrate', function () {
+    Artisan::call('migrate');
+    return Artisan::output();
+}); // php artisan migrate
+Route::get('artisan-migrate-fresh', function () {
+    Artisan::call('migrate:fresh --seed');
+    return Artisan::output();
+}); // php artisan migrate:fresh --seed
+
+Route::get('artisan-seed/{class?}', function ($class = null) {
+    $command = "db:seed";
+    if ($class) {
+        $command .= " --class=$class";
+    }
+    Artisan::call($command);
+    return Artisan::output();
 });
 
 // Global Routes
@@ -221,6 +245,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('mySubscriptiones', [subscriptionController::class, 'mysubscripe']);
 
 
+    Route::get('auction-details/{auction}', [AuctionController::class, 'auctionDetails'])->name('auction-details');
 });
 
 // Guest Protected Routes

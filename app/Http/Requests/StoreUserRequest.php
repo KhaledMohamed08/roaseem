@@ -57,11 +57,11 @@ class StoreUserRequest extends FormRequest
             ],
             'tax_number' => [
                 'required_if:role,company',
-                'numeric',
+                // 'numeric',
             ],
             'practicing_number' => [
                 'required_if:role,practiciner',
-                'numeric',
+                // 'numeric',
             ],
             'fcmToken' => "",
         ];

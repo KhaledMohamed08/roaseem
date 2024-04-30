@@ -35,11 +35,18 @@ class UserResource extends JsonResource
             'about' => $this->about,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'image' => $this->getFirstMediaUrl('logo') ?? 'no image',
+            // 'image' => $this->getFirstMediaUrl('logo'),
             'longitude' => $this->longitude ?? 'no longitude',
             'latitude' => $this->latitude ?? 'no latitude',
             'address' => $this->address ?? 'no address',
         ];
+
+        $image = $this->getFirstMediaUrl('logo');
+        if ($image == "") {
+            $user['image'] = 'https://placehold.co/400';
+        } else {
+            $user['image'] = $image;
+        }
 
         if ($this->role == 'marketer') {
             $user['permissions'] = $this->getAllPermissions();

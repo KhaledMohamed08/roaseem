@@ -34,9 +34,9 @@ class Auction extends Model implements HasMedia
         return $this->hasMany(Property::class);
     }
 
-    public function users()
+    public function subscibers()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Subscriper::class);
     }
 
     public function scopeOffline($query)

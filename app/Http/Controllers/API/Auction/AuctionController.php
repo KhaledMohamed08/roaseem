@@ -14,6 +14,7 @@ use App\Models\Property;
 use App\Models\Service;
 use App\Models\User;
 use App\Services\SendSms;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -166,6 +167,23 @@ class AuctionController extends Controller
                 'You did not subscibed in this Auction!'
             ]);
         }
+
+        $timeToPush = Carbon::now();
+        $auctionEndTime = $auction->end_date;
+
+        // if ($timeToPush->isAfter($auctionEndTime)) {
+        //     return ApiResponse::error(
+        //         'the auction has ended!',
+        //         400
+        //     );
+        // }
+
+        if ($timeToPush->isAfter($auctionEndTime)) {
+            return ApiResponse::error(
+                'the auction has ended!',
+                400
+            );
+        }
         
         if ($auction->details) {
             if (intval($request['mount']) >= (intval($auction->details->max_price) + intval($auction->minimum_bid))) {
@@ -187,5 +205,10 @@ class AuctionController extends Controller
                 );
             }
         }
+    }
+
+    public function auctionDetails(Auction $auction)
+    {
+        return $auction->user;
     }
 }

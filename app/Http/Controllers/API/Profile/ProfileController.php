@@ -124,6 +124,39 @@ class ProfileController extends Controller
         );
     }
 
+    public function userUnitesStatisticsForMobile() {
+        $user = Auth::user();
+        $numOfEachUnitType = $this->numOfEachUnitType($user->id);
+        $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
+        $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);
+        $numOfEachUnitCities = $this->numOfEachUnitCities($user->id);
+        // $numOfFavorites = $this->numOfFavorites($user->id);
+
+        return ApiResponse::success(
+            [
+                'numOfEachUnites' => [
+                    'total' => $user->unites->count(),
+                    'details' => $numOfEachUnitType,
+                ],
+                'numOfEachUnitStatus' => [
+                    'total' => count($numOfEachUnitStatus),
+                    'details' => $numOfEachUnitStatus,
+                ],
+                'numOfEachUnitPurpos' => [
+                    'total' => count($numOfEachUnitPurpos),
+                    'details' => $numOfEachUnitPurpos,
+                ],
+                'numOfEachUnitCities' => [
+                    'total' => count($numOfEachUnitCities),
+                    'details' => $numOfEachUnitCities,
+                ],
+                // 'numOfFavorites' => $numOfFavorites,
+            ],
+            'Unit Statistics',
+            200
+        );
+    }
+
     protected function numOfEachUnitType($id)
     {
         $user = User::find($id);
