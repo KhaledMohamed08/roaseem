@@ -64,6 +64,8 @@ Route::get('artisan-seed/{class?}', function ($class = null) {
     return Artisan::output();
 });
 
+Route::get('unit-property', [UnitController::class, 'unitProperty']);
+
 // Global Routes
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
@@ -173,7 +175,9 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('unit', UnitController::class)->only(['store', 'destroy']);
     Route::post('unit/{unit}', [UnitController::class, 'update']);
     Route::delete('delete-image/{id}', [UnitController::class, 'deleteImage'])->name('image.delete');
+    Route::get('unites-types-id/{user}', [ProfileController::class, 'userUnitesStatisticsById'])->name('unites.types.by.id');
     Route::get('unites-types', [ProfileController::class, 'userUnitesStatistics'])->name('unites.types');
+    Route::get('unites-types-for-mobile', [ProfileController::class, 'userUnitesStatisticsForMobile'])->name('unites.types.mobile');
     //unitReqs
     Route::get('unit-Reqs',[unitReqController::class,'index'])->name('unitReqs.index');
     Route::post('unitReqs',[unitReqController::class,'store'])->name('unitReqs.store');

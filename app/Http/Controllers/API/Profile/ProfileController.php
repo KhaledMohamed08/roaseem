@@ -124,8 +124,8 @@ class ProfileController extends Controller
         );
     }
 
-    public function userUnitesStatisticsForMobile() {
-        $user = Auth::user();
+    public function userUnitesStatisticsById(User $user) {
+        // $user = Auth::user();
         $numOfEachUnitType = $this->numOfEachUnitType($user->id);
         $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
         $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);
@@ -155,6 +155,54 @@ class ProfileController extends Controller
             'Unit Statistics',
             200
         );
+    }
+
+    public function userUnitesStatisticsForMobile() {
+        $user = Auth::user();
+        $numOfEachUnitType = $this->numOfEachUnitType($user->id);
+        dd($numOfEachUnitType);
+        $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
+        $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);
+        $numOfEachUnitCities = $this->numOfEachUnitCities($user->id);
+        
+
+        return response(
+            [
+                'numOfEachUnites' => [
+                    'total' => $user->unites->count(),
+                    'details' => $numOfEachUnitType,
+                    // 'details' => [
+                    //     'key' => array_keys($numOfEachUnitType),
+                    //     'value' => array_values($numOfEachUnitType),
+                    // ],
+                ],
+                'numOfEachUnitStatus' => [
+                    'total' => count($numOfEachUnitStatus),
+                    'details' => $numOfEachUnitStatus,
+                    // 'details' => [
+                    //     'key' => array_keys($numOfEachUnitStatus),
+                    //     'value' => array_values($numOfEachUnitStatus),
+                    // ],
+                ],
+                'numOfEachUnitPurpos' => [
+                    'total' => count($numOfEachUnitPurpos),
+                    'details' => $numOfEachUnitPurpos,
+                    // 'details' => [
+                    //     'key' => array_keys($numOfEachUnitPurpos),
+                    //     'value' => array_values($numOfEachUnitPurpos),
+                    // ],
+                ],
+                'numOfEachUnitCities' => [
+                    'total' => count($numOfEachUnitCities),
+                    'details' => $numOfEachUnitCities,
+                    // 'details' => [
+                    //     'key' => array_keys($numOfEachUnitCities),
+                    //     'value' => array_values($numOfEachUnitCities),
+                    // ],
+                ],
+                // 'numOfFavorites' => $numOfFavorites,
+            ]
+            );
     }
 
     protected function numOfEachUnitType($id)

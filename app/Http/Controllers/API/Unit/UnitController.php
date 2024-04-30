@@ -11,6 +11,11 @@ use App\Http\Responses\ApiResponse;
 use App\Models\Notification;
 use App\Models\Service;
 use App\Models\Unit;
+use App\Models\UnitInterface;
+use App\Models\UnitPayment;
+use App\Models\UnitPurpose;
+use App\Models\UnitStatus;
+use App\Models\UnitType;
 use App\Models\UnitViews;
 use App\Services\FilterService;
 use App\Services\NotificationService;
@@ -18,6 +23,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+use function PHPSTORM_META\map;
 
 class UnitController extends Controller
 {
@@ -231,6 +238,52 @@ class UnitController extends Controller
             ]);
         }
         return ApiResponse::error('No unit found.', 404);
+    }
+
+    public function unitProperty()
+    {
+        function format($case) {
+            $result = [];
+            foreach ($case as $key => $value) {
+                $result[] = [
+                    'id' => $value,
+                    'name' => $key,
+                ];
+            }
+            return $result;
+        }
+        
+        $status = UnitStatus::pluck('id', 'name');
+        $status = format($status);
+        
+        $interfaces = UnitInterface::pluck('id', 'name');
+        $interfaces = format($interfaces);
+        
+        $payments = UnitPayment::pluck('id', 'name');
+        $payments = format($payments);
+        
+        $purposes = UnitPurpose::pluck('id', 'name');
+        $purposes = format($purposes);
+        
+        // $views = UnitViews::pluck('id', 'name');
+        // $views = format($views);
+        
+        $types = UnitType::pluck('id', 'name');
+        $types = format($types);
+
+
+        return ApiResponse::success(
+            [
+                'status' => $status,
+                'interfaces' => $interfaces,
+                'payments' => $payments,
+                'purposes' => $purposes,
+                // 'views' => $views,
+                'types' => $types,
+            ],
+            'Unit Property',
+            200
+        );
     }
 
     private function convertToNullIfZero($maxValue, $minValue) {
