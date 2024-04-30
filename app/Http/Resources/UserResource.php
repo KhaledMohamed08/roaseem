@@ -48,6 +48,11 @@ class UserResource extends JsonResource
             $user['image'] = $image;
         }
 
+        if ($this->role == 'company') {
+            $user['unites'] = $this->unites;
+            $user['favorites'] = $this->favorites;
+        }
+
         if ($this->role == 'marketer') {
             $user['permissions'] = $this->getAllPermissions();
         }

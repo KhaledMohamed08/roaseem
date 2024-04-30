@@ -84,6 +84,18 @@ class UnitResource extends JsonResource
             // 'images' => $this->getMedia('images')->getUrl(),
             'images' => $originUrls,
             //'user' => $this->user,
+            'unit_description' => [
+                'price' => $this->price,
+                'bedrooms' => $this->bedrooms,
+                'living_rooms' => $this->living_rooms,
+                'bathrooms' => $this->bathrooms,
+                'kitchens' => $this->kitchens,
+                'created_year' => $this->created_year,
+                'area' => $this->area,
+                'street_width' => $this->street_width,
+                'interface' => $this->interface->name,
+                'floor_number' => $this->floor_number,
+            ]
         ];
     }
 }

@@ -160,7 +160,7 @@ class ProfileController extends Controller
     public function userUnitesStatisticsForMobile() {
         $user = Auth::user();
         $numOfEachUnitType = $this->numOfEachUnitType($user->id);
-        dd($numOfEachUnitType);
+        // dd($numOfEachUnitType);
         $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
         $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);
         $numOfEachUnitCities = $this->numOfEachUnitCities($user->id);
@@ -170,35 +170,29 @@ class ProfileController extends Controller
             [
                 'numOfEachUnites' => [
                     'total' => $user->unites->count(),
-                    'details' => $numOfEachUnitType,
-                    // 'details' => [
-                    //     'key' => array_keys($numOfEachUnitType),
-                    //     'value' => array_values($numOfEachUnitType),
-                    // ],
+                    'details' => collect(array_map(function ($key, $value) {
+                        return ['title' => $key, 'value' => $value];
+                    }, array_keys($numOfEachUnitType), array_values($numOfEachUnitType))),
+                    
                 ],
+                   
                 'numOfEachUnitStatus' => [
                     'total' => count($numOfEachUnitStatus),
-                    'details' => $numOfEachUnitStatus,
-                    // 'details' => [
-                    //     'key' => array_keys($numOfEachUnitStatus),
-                    //     'value' => array_values($numOfEachUnitStatus),
-                    // ],
+                    'details' => collect(array_map(function ($key, $value) {
+                        return ['title' => $key, 'value' => $value];
+                    }, array_keys($numOfEachUnitStatus), array_values($numOfEachUnitStatus))),
                 ],
                 'numOfEachUnitPurpos' => [
                     'total' => count($numOfEachUnitPurpos),
-                    'details' => $numOfEachUnitPurpos,
-                    // 'details' => [
-                    //     'key' => array_keys($numOfEachUnitPurpos),
-                    //     'value' => array_values($numOfEachUnitPurpos),
-                    // ],
+                    'details' => collect(array_map(function ($key, $value) {
+                        return ['title' => $key, 'value' => $value];
+                    }, array_keys($numOfEachUnitPurpos), array_values($numOfEachUnitPurpos))),
                 ],
                 'numOfEachUnitCities' => [
                     'total' => count($numOfEachUnitCities),
-                    'details' => $numOfEachUnitCities,
-                    // 'details' => [
-                    //     'key' => array_keys($numOfEachUnitCities),
-                    //     'value' => array_values($numOfEachUnitCities),
-                    // ],
+                    'details' => collect(array_map(function ($key, $value) {
+                        return ['title' => $key, 'value' => $value];
+                    }, array_keys($numOfEachUnitCities), array_values($numOfEachUnitCities))),
                 ],
                 // 'numOfFavorites' => $numOfFavorites,
             ]
@@ -211,20 +205,6 @@ class ProfileController extends Controller
         $unites = $user->unites;
         
         $numOfEachUnitType = [];
-
-        // foreach ($unites as $unit) {
-        //     switch ($unit->unit_type) {
-        //         case 'apartment':
-        //             $numOfEachUnitType['apartment'] = ($numOfEachUnitType['apartment'] ?? 0) + 1;
-        //             break;
-        //         case 'land':
-        //             $numOfEachUnitType['land'] = ($numOfEachUnitType['land'] ?? 0) + 1;
-        //             break;
-        //         case 'exhibition':
-        //             $numOfEachUnitType['exhibition'] = ($numOfEachUnitType['exhibition'] ?? 0) + 1;
-        //             break;
-        //     }
-        // }
 
         foreach ($unites as $unit) {
             $numOfEachUnitType[$unit->type->name] = ($numOfEachUnitType[$unit->type->name] ?? 0) + 1;
@@ -277,7 +257,6 @@ class ProfileController extends Controller
         foreach ($unites as $unit) {
             $numOfEachUnitPurpos[$unit->purpose->name] = ($numOfEachUnitPurpos[$unit->purpose->name] ?? 0) + 1;
         }
-
 
         return $numOfEachUnitPurpos;
     }
