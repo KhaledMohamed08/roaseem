@@ -59,7 +59,7 @@ Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarke
 Route::get('getUser/{id}',[UserController::class,'getUser']);
 
 //unitFilter
-Route::get('unitefilter',[UnitController::class, 'unitFilter'])->name('unites.filter');
+Route::post('unitefilter',[UnitController::class, 'unitFilter'])->name('unites.filter');
 
 //Ads
     Route::get('allAds',[AddsController::class,'index']);
