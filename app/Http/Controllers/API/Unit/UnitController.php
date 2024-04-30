@@ -216,7 +216,7 @@ class UnitController extends Controller
             'price' => $request->filled('maxPrice') && $request->filled('minPrice') ? [$request->maxPrice, $request->minPrice] : null,
             'area' => $request->filled('maxArea') && $request->filled('minArea') ? [$request->maxArea, $request->minArea] : null,
             'region_id' => $request->input('region_id'),
-            'unit_type_id' => $request->input('unit_types_id'),
+            'unit_type_id' => $request->input('unit_types'),
             'bedrooms' => $request->input('bedRooms'),
             'bathrooms' => $request->input('bathRooms')
         ];
