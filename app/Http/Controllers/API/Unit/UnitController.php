@@ -218,7 +218,6 @@ class UnitController extends Controller
         $filters = [
             'unit_status_id' => $request->input('status_id'),
             'unit_purpose_id' => $request->input('purpose_id'),
-            'entity_type' => $request->input('entity_type'),
             'unit_payment_id' => $request->input('unit_payment_id'),
             // 'price' => $request->filled('maxPrice') && $request->filled('minPrice') ? [$request->maxPrice, $request->minPrice] : null,
             // 'area' => $request->filled('maxArea') && $request->filled('minArea') ? [$request->maxArea, $request->minArea] : null,
