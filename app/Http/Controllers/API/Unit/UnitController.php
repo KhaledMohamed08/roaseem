@@ -213,10 +213,12 @@ class UnitController extends Controller
             'unit_purpose_id' => $request->input('purpose_id'),
             'entity_type' => $request->input('entity_type'),
             'unit_payment_id' => $request->input('unit_payment_id'),
-            'price' => $request->filled('maxPrice') && $request->filled('minPrice') ? [$request->maxPrice, $request->minPrice] : null,
-            'area' => $request->filled('maxArea') && $request->filled('minArea') ? [$request->maxArea, $request->minArea] : null,
+            // 'price' => $request->filled('maxPrice') && $request->filled('minPrice') ? [$request->maxPrice, $request->minPrice] : null,
+            // 'area' => $request->filled('maxArea') && $request->filled('minArea') ? [$request->maxArea, $request->minArea] : null,
+            'price' => $this->convertToNullIfZero($request->input('maxPrice'), $request->input('minPrice')),
+            'area' => $this->convertToNullIfZero($request->input('maxArea'), $request->input('minArea')),   
             'region_id' => $request->input('region_id'),
-            'unit_type_id' => $request->input('unit_types_id'),
+            'unit_type_id' => $request->input('unit_types'),
             'bedrooms' => $request->input('bedRooms'),
             'bathrooms' => $request->input('bathRooms')
         ];
@@ -229,5 +231,9 @@ class UnitController extends Controller
             ]);
         }
         return ApiResponse::error('No unit found.', 404);
+    }
+
+    private function convertToNullIfZero($maxValue, $minValue) {
+        return ($maxValue == 0 && $minValue == 0) ? null : [$maxValue, $minValue];
     }
 }
