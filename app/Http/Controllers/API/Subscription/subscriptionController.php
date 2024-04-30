@@ -16,7 +16,6 @@ class subscriptionController extends Controller
     {
         $subscription_fee = Auction::where('id', $id)->pluck('subscription_fee');
 
-        
         if($subscription_fee)
         {
             return ApiResponse::success([
@@ -75,6 +74,5 @@ class subscriptionController extends Controller
         else {
             return ApiResponse::error('No subscripe Auctions.', 404);
         }
-
     }
 }
