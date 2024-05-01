@@ -31,7 +31,7 @@ return new class extends Migration
             $table->decimal('street_width', 8, 2);
             $table->foreignId('unit_payment_id')->constrained('unit_payments');
             $table->decimal('price', 11, 2);
-            $table->longText('descreption');
+            $table->longText('descreption')->nullable();
             // $table->longText('services');
             $table->integer('bedrooms');
             $table->integer('living_rooms');

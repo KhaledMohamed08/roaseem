@@ -85,7 +85,8 @@ class UpdateUnitRequest extends FormRequest
                 'numeric',
             ],
             'descreption' => [
-                'required',
+                '',
+                // 'required',
             ],
             'services' => [
                 'required',
