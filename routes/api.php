@@ -83,13 +83,18 @@ Route::get('PropertyRights',[appSettingController::class,'intellectualPropertyRi
 Route::get('userSearch',[UserController::class,'search'])->name('userSearch');
 Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarketer');
 Route::get('getUser/{id}',[UserController::class,'getUser']);
+//all Companies
+Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
 
 //unitFilter
 Route::post('unitefilter',[UnitController::class, 'unitFilter'])->name('unites.filter');
 
 //Ads
-    Route::get('allAds',[AddsController::class,'index']);
+Route::get('allAds',[AddsController::class,'index']);
 
+//VerificationServices
+Route::get('verificationServices',[VerificationServiceController::class,'index']);
+Route::get('search',[VerificationServiceController::class,'search']);
 
 Route::get('countries', function () {
     $countries = Country::all();
@@ -185,8 +190,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::put('unitReqs',[unitReqController::class,'update'])->name('unitReqs.update');
     Route::delete('unitReqs/{id}',[unitReqController::class,'delete'])->name('unitReqs.destroy');
     Route::get('my-reqs',[unitReqController::class,'myRequests'])->name('myRequests');
-    //all Companies
-    Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
+
     //unitReqfilter
     Route::post('filter',[unitReqController::class,'filter'])->name('filter');
     // Profile Routes
@@ -228,10 +232,6 @@ Route::middleware('auth:sanctum')->group( function () {
     // block
     Route::get('block-user/{user}', [BlockController::class, 'blockUser'])->name('block.user');
     Route::get('unblock-user/{user}', [BlockController::class, 'unblockUser'])->name('unblock.user');
-
-    //VerificationServices
-    Route::get('verificationServices',[VerificationServiceController::class,'index']);
-    Route::get('search',[VerificationServiceController::class,'search']);
 
     //rate
     Route::get('index',[rateController::class,'index']);
