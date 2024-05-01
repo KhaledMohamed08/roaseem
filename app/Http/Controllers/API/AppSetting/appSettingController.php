@@ -79,7 +79,9 @@ class appSettingController extends Controller
             {
                 foreach($new->getMedia('images') as $image)
                 {
-                    $image = $image->original_url;
+                    // $image = $image->original_url;
+                    $dashUrl = "https://dash.roaseem.magdsofteg.xyz/storage";
+                    $image = "$dashUrl/$image->id/$image->file_name";
                     $new->image = $image;
                 }
             }
