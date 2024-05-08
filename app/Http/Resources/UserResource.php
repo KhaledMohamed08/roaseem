@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -43,18 +44,22 @@ class UserResource extends JsonResource
 
         $image = $this->getFirstMediaUrl('logo');
         if ($image == "") {
-            $user['image'] = 'https://placehold.co/400';
+            $user['image'] = 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png';
         } else {
             $user['image'] = $image;
         }
 
         if ($this->role == 'company') {
-            $user['unites'] = $this->unites;
+            $user['unites'] = UserResource::collection($this->unites);
             $user['favorites'] = $this->favorites;
         }
 
         if ($this->role == 'marketer') {
             $user['permissions'] = $this->getAllPermissions();
+        }
+
+        if ($this->role === 'marketer') {
+            $user['company'] = User::where('id', $this->company_id)->first();
         }
         
         return $user;

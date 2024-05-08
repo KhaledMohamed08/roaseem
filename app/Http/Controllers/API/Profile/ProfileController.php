@@ -164,6 +164,7 @@ class ProfileController extends Controller
         $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
         $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);
         $numOfEachUnitCities = $this->numOfEachUnitCities($user->id);
+        $numOfFavorites = $this->numOfFavorites($user->id);
         
 
         return response(
@@ -194,7 +195,7 @@ class ProfileController extends Controller
                         return ['title' => $key, 'value' => $value];
                     }, array_keys($numOfEachUnitCities), array_values($numOfEachUnitCities))),
                 ],
-                // 'numOfFavorites' => $numOfFavorites,
+                'numOfFavorites' => $numOfFavorites,
             ]
             );
     }
@@ -280,16 +281,15 @@ class ProfileController extends Controller
     protected function numOfFavorites($id)
     {
         $user = User::find($id);
-        $unites = $user->unites;
-        $numOfFavorites = 0;
-        foreach ($unites as $unit) {
-            if ($unit->favoritedBy != null) {
-                $numOfFavorites += $unit->favoritedBy->count(); 
-            }
-        }
+        $numOfFavorites = $user->unites->filter(function ($unit) {
+            return $unit->favoritedBy !== null;
+        })->sum(function ($unit) {
+            return $unit->favoritedBy->count();
+        });
 
         return $numOfFavorites;
     }
+
 
     public function resetPassword(Request $request)
     {
