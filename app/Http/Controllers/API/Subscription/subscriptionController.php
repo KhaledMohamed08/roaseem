@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Subscription;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuctionResource;
+use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Auction;
 use App\Models\AuctionUser;
@@ -51,6 +52,28 @@ class subscriptionController extends Controller
         } else {
             return ApiResponse::error('Auction not found.', 404);
         }
+    }
+
+    public function auctionSubscripers($id)
+    {
+        $auctionSubscripers = AuctionUser::where('auction_id', $id)->get();
+
+        if($auctionSubscripers->isEmpty())
+        {
+            return ApiResponse::error([
+                'error' => "No Subscripers in this Auction till now.",
+            ]);
+        }
+
+        $subscripers = [];
+        foreach($auctionSubscripers as $subscriper)
+        {
+           $subscripers[] = $subscriper->user()->first();
+        }
+
+            return ApiResponse::success([
+                'subscripers' => UserResource::collection($subscripers)
+            ],"subscripersAuction");
     }
 
     public function mysubscripe() 

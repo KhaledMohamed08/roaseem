@@ -14,6 +14,7 @@ use App\Models\Unit;
 use App\Models\UnitInterface;
 use App\Models\UnitPayment;
 use App\Models\UnitPurpose;
+use App\Models\UnitService;
 use App\Models\UnitStatus;
 use App\Models\UnitType;
 use App\Models\UnitViews;
@@ -263,6 +264,9 @@ class UnitController extends Controller
         
         $purposes = UnitPurpose::pluck('id', 'name');
         $purposes = format($purposes);
+
+        $services =  UnitService::pluck('id' , 'name');
+        $services = format($services);
         
         // $views = UnitViews::pluck('id', 'name');
         // $views = format($views);
@@ -279,6 +283,7 @@ class UnitController extends Controller
                 'purposes' => $purposes,
                 // 'views' => $views,
                 'types' => $types,
+                'services' => $services
             ],
             'Unit Property',
             200

@@ -9,6 +9,7 @@ use App\Http\Resources\AuctionResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Auction;
 use App\Models\AuctionDetails;
+use App\Models\AuctionUser;
 use App\Services\FilterService;
 use App\Models\Property;
 use App\Models\Service;
@@ -157,26 +158,77 @@ class AuctionController extends Controller
         );
     }
 
-    public function pushAmountInAuction(Request $request, Auction $auction)
+    // public function pushAmountInAuction(Request $request, Auction $auction)
+    // {
+    //     $user = Auth::user();
+    //     $userAuctions = $user->auctions;
+        
+    //     if (!$userAuctions->contains($auction)) {
+    //         return ApiResponse::error([
+    //             'You did not subscibed in this Auction!'
+    //         ]);
+    //     }
+
+    //     $timeToPush = Carbon::now();
+    //     $auctionEndTime = $auction->end_date;
+
+    //     // if ($timeToPush->isAfter($auctionEndTime)) {
+    //     //     return ApiResponse::error(
+    //     //         'the auction has ended!',
+    //     //         400
+    //     //     );
+    //     // }
+
+    //     if ($timeToPush->isAfter($auctionEndTime)) {
+    //         return ApiResponse::error(
+    //             'the auction has ended!',
+    //             400
+    //         );
+    //     }
+
+    //     if ($auction->details) {
+    //         if (intval($request['mount']) >= (intval($auction->details->max_price) + intval($auction->minimum_bid))) {
+    //             $auction->details->max_price = $request['mount'];
+    //             $auction->details->max_user = Auth::id();
+    //             $auction->details->save();
+
+    //             return ApiResponse::success(
+    //                 [
+    //                     'auction' => new AuctionResource($auction),
+    //                 ],
+    //                 'Mount Pushed Successfully',
+    //                 200,
+    //             );
+    //         } else {
+    //             return ApiResponse::error(
+    //                 'Failed push. Min price you can push is ' . (intval($auction->details->max_price) + intval($auction->minimum_bid)),
+    //                 400
+    //             );
+    //         }
+    //     }
+    // }
+
+    public function pushAmountInAuction(Request $request)
     {
         $user = Auth::user();
-        $userAuctions = $user->auctions;
-        
-        if (!$userAuctions->contains($auction)) {
+
+        $maxPrice = AuctionDetails::max('max_price');
+        $pastpush = AuctionDetails::where('auction_id', $request->auctionId)->where('max_user', $user->id)->first();
+
+        $subscription = AuctionUser::where('user_id', $user->id)
+        ->where('auction_id', $request->auctionId)
+        ->first();
+
+        if(!$subscription)
+        {
             return ApiResponse::error([
                 'You did not subscibed in this Auction!'
             ]);
         }
 
         $timeToPush = Carbon::now();
+        $auction = $subscription->auction;
         $auctionEndTime = $auction->end_date;
-
-        // if ($timeToPush->isAfter($auctionEndTime)) {
-        //     return ApiResponse::error(
-        //         'the auction has ended!',
-        //         400
-        //     );
-        // }
 
         if ($timeToPush->isAfter($auctionEndTime)) {
             return ApiResponse::error(
@@ -184,27 +236,41 @@ class AuctionController extends Controller
                 400
             );
         }
-        
-        if ($auction->details) {
-            if (intval($request['mount']) >= (intval($auction->details->max_price) + intval($auction->minimum_bid))) {
-                $auction->details->max_price = $request['mount'];
-                $auction->details->max_user = Auth::id();
-                $auction->details->save();
 
-                return ApiResponse::success(
-                    [
-                        'auction' => new AuctionResource($auction),
-                    ],
-                    'Mount Pushed Successfully',
-                    200,
-                );
-            } else {
+        if($pastpush)
+        {
+            if ($request->mount < $auction->minimum_bid || $request->mount <= $maxPrice) {
+
                 return ApiResponse::error(
-                    'Failed push. Min price you can push is ' . (intval($auction->details->max_price) + intval($auction->minimum_bid)),
+                    "Failed push. Min price you can push is " . $maxPrice + $auction->minimum_bid,
                     400
                 );
             }
         }
+        elseif ($maxPrice > $request->mount && $request->mount <= $auction->opening_price + $auction->minimum_bid)
+        {
+
+            return ApiResponse::error(
+                "Failed push. Min price you can push is" . $maxPrice + $auction->minimum_bid,
+                400
+            );
+        } 
+        // else {
+        AuctionDetails::updateOrCreate(
+            ['auction_id' => $request->auctionId , 'max_user' => $user->id],
+            [
+                'auction_id' => $request->auctionId,
+                'max_price'=> $request->mount,
+                'max_user'=> $user->id,
+            ]
+        );
+
+        return ApiResponse::successWithoutData(
+            'Mount Pushed Successfully',
+            200,
+        );
+        // }
+
     }
 
     public function auctionDetails(Auction $auction)

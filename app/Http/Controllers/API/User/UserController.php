@@ -16,11 +16,12 @@ class UserController extends Controller
     {
         $companies = User::companies()->get();
 
-        if($companies->isNotEmpty())
-        {
+        if($companies->isNotEmpty()) {
+
             return ApiResponse::success([
                 'Companies' => UserResource::collection($companies)
             ]);
+            
         } else {
             return ApiResponse::error('No Companies found.', 404);
         }
@@ -30,8 +31,7 @@ class UserController extends Controller
     {
         $marketers = User::marketer()->get();
 
-        if($marketers->isNotEmpty())
-        {
+        if ($marketers->isNotEmpty()) {
             return ApiResponse::success([
                 'marketers' => UserResource::collection($marketers)
             ]);
@@ -42,13 +42,18 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
- 
-        $users = User::where('name', 'like' ,"%$request->search%")
-        ->where('role', 'like' ,$request->role)
-        ->get();
+        $search = $request->input('search');
+        $role = $request->input('role');
 
-        if($users->isNotEmpty())
-        {
+        if (empty($role)) {
+            $role = '%'; 
+        }
+
+        $users = User::where('name', 'like', "%$search%")
+            ->where('role', 'like', $role)
+            ->get();
+
+        if ($users->isNotEmpty()) {
             return ApiResponse::success([
                 'Users' => UserResource::collection($users)
             ]);
@@ -62,13 +67,12 @@ class UserController extends Controller
         $user = User::where('id', $id)->first();
         $units = Unit::where('user_id', $user->id)->get();
 
-        if($user)
-        {
+        if ($user) {
             return ApiResponse::success([
                 'user' => new UserResource($user),
                 'units' => UnitResource::collection($units)
             ]);
         }
-        return ApiResponse::error(['User Not Found'],404);
+        return ApiResponse::error(['User Not Found'], 404);
     }
 }

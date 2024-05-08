@@ -247,6 +247,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('auctionSubscripe/{id}', [subscriptionController::class, 'auctionSubscripe']);
     Route::post('subscripeStore', [subscriptionController::class, 'subscripeStore']);
     Route::get('mySubscriptiones', [subscriptionController::class, 'mysubscripe']);
+    Route::get('subscripers/{id}', [subscriptionController::class, 'auctionSubscripers']);
 
 
     Route::get('auction-details/{auction}', [AuctionController::class, 'auctionDetails'])->name('auction-details');

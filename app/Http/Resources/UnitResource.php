@@ -78,8 +78,8 @@ class UnitResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'main_image' => [
-                'id' => $this->getFirstMedia('unit-Main-image')->id ?? '',
-                'url' => $this->getFirstMediaUrl('unit-Main-image'),
+                'id' => $this->getFirstMedia('unit-Main-image')->id ?? null,
+                'url' => !empty($this->getFirstMediaUrl('unit-Main-image'))?$this->getFirstMediaUrl('unit-Main-image'):null,
             ],
             // 'images' => $this->getMedia('images')->getUrl(),
             'images' => $originUrls,

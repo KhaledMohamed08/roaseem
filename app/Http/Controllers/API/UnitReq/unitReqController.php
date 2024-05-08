@@ -77,7 +77,11 @@ class unitReqController extends Controller
         $unitReqData = $this->createUnitRequest($request, $user);
 
         if ($unitReqData) {
-            $this->saveUserRequest($unitReqData, $user, $request->companies);
+
+            if($unitReqData->entity_type == 'companies' || 'marketers')
+            {
+                $this->saveUserRequest($unitReqData, $user, $request->companies);
+            }
 
             return ApiResponse::success([
                 'Unitrequest' => new unitReqResource($unitReqData)
@@ -115,11 +119,33 @@ class unitReqController extends Controller
     protected function saveUserRequest($unitReqData, $user, $companies)
     {
         if ($companies) {
-            foreach ($companies as $company) {
-                UnitReqUser::create([
-                    "unit_req_id" => $unitReqData->id,
-                    "user_id" => $company
-                ]);
+            
+            if($companies == [0])
+            {
+                if ($unitReqData->entity_type == "marketers") {
+                    $companies = User::Marketer()->get();
+                } else {
+                    $companies = User::companies()->get();
+                }
+
+                if($companies->isNotEmpty())
+                {
+                    foreach ($companies as $company) {
+                        UnitReqUser::create([
+                            "unit_req_id" => $unitReqData->id,
+                            "user_id" => $company->id
+                        ]);
+                    }
+                }
+            }
+            else
+            {
+                foreach ($companies as $company) {
+                    UnitReqUser::create([
+                        "unit_req_id" => $unitReqData->id,
+                        "user_id" => $company
+                    ]);
+                }
             }
         }
     }
@@ -169,16 +195,40 @@ class unitReqController extends Controller
 
         $unitReqData = $this->updateUnitRequest($unitReq, $request, $user);
 
-        if ($request->companies) {
-            $unitReq->unitReqUser()->delete();
+        if($request->entity_type == 'companies' || 'marketers') {
 
-            foreach ($request->companies as $company) {
-                $unitReq->unitReqUser()->create([
-                    'user_id' => $company,
-                    'unit_req_id' => $request->id,
-                ]);
+            if ($request->companies) {
+                $unitReq->unitReqUser()->delete();
+
+                if($request->companies == [0])
+                {
+                    if ($request->entity_type == "marketers") {
+                        $companies = User::Marketer()->get();
+                    } else {
+                        $companies = User::companies()->get();
+                    }
+    
+                    if($companies->isNotEmpty())
+                    {
+                        foreach ($companies as $company) {
+                            $unitReq->unitReqUser()->create([
+                                'user_id' => $company,
+                                'unit_req_id' => $request->id,
+                            ]);
+                        }
+                    }
+                } else {
+                    foreach ($request->companies as $company) {
+                        $unitReq->unitReqUser()->create([
+                            'user_id' => $company,
+                            'unit_req_id' => $request->id,
+                        ]);
+                    }
+                }
+             
             }
         }
+   
 
         return ApiResponse::success([
             'Unitrequest' => new unitReqResource($unitReq)
