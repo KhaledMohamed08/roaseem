@@ -281,11 +281,13 @@ class ProfileController extends Controller
     protected function numOfFavorites($id)
     {
         $user = User::find($id);
+        dd($user);
         $numOfFavorites = $user->unites->filter(function ($unit) {
             return $unit->favoritedBy !== null;
         })->sum(function ($unit) {
             return $unit->favoritedBy->count();
         });
+        dd($numOfFavorites);
 
         return $numOfFavorites;
     }

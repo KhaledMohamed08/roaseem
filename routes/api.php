@@ -17,11 +17,13 @@ use App\Http\Controllers\API\Unit\unitFeaturesController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\VerificationServices\VerificationServiceController;
+use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Rate;
 use App\Models\Region;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -167,7 +169,19 @@ Route::get('regions', function () {
         ]
     );
 });
+Route::get('ll-marketers-company', function () {
+    $marketers = User::where('role', 'marketer')->get();
+    $companies = User::where('role', 'company')->get();
 
+    return ApiResponse::success(
+        [
+            'marketers' => UserResource::collection($marketers),
+            'companies' => UserResource::collection($companies),
+        ],
+        'Success',
+        200
+    );
+});
 // Auth Protected Routes
 Route::middleware('auth:sanctum')->group( function () {
     // Auth Routes
