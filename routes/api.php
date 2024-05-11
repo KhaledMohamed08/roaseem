@@ -250,6 +250,7 @@ Route::middleware('auth:sanctum')->group( function () {
 
     //rate
     Route::get('index',[rateController::class,'index']);
+    Route::get('getOne/{id}',[rateController::class,'getOne']);
     Route::post('createRate',[rateController::class,'store']);
     Route::delete('deleteRate/{id}',[rateController::class,'delete']);
 

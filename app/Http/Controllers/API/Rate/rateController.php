@@ -26,6 +26,22 @@ class rateController extends Controller
         ], 404);
     }
 
+    public function getOne($id)
+    {
+        $rate = Rate::where('id', $id)->first();
+
+        if(!$rate)
+        {
+            return ApiResponse::error([
+                'message' => 'Rate Not found',
+            ], 404);
+        }
+
+        return ApiResponse::success([
+            'rate' =>new RateResource($rate),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
