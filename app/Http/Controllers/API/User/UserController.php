@@ -75,4 +75,15 @@ class UserController extends Controller
         }
         return ApiResponse::error(['User Not Found'], 404);
     }
+
+    public function companiesMarketers()
+    {
+        $companies = User::companies()->select('id', 'name')->get();
+        $marketers = User::marketer()->select('id', 'name')->get();
+
+        return ApiResponse::success([
+            'companies' => $companies,
+            'marketers' => $marketers
+        ]);
+    }
 }
