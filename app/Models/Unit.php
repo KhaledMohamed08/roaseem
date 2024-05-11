@@ -49,7 +49,7 @@ class Unit extends Model implements HasMedia
 
     public function favoritedBy()
     {
-        return $this->belongsToMany(User::class, 'favorites', 'item_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'favorites', 'unit_id', 'user_id')->withTimestamps();
     }
 
     public function region()

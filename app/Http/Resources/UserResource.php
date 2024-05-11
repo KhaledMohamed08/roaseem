@@ -52,6 +52,7 @@ class UserResource extends JsonResource
         if ($this->role == 'company') {
             $user['unites'] = UserResource::collection($this->unites);
             $user['favorites'] = $this->favorites;
+            $user['marketers'] = $this->marketers;
         }
 
         if ($this->role == 'marketer') {
