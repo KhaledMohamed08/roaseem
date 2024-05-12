@@ -34,7 +34,7 @@ class StoreUnitReqRequest extends FormRequest
             'description'=>"",
             'bedRooms' => "",
             'bathRooms' => "",
-            'adPeriod'=>"nullable",
+            'adPeriod'=>"required|integer",
             'entity_type'=>"required",
             'companies'=>"nullable",
         ];

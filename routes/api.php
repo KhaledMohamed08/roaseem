@@ -17,6 +17,7 @@ use App\Http\Controllers\API\Unit\unitFeaturesController;
 use App\Http\Controllers\API\UnitReq\unitReqController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\VerificationServices\VerificationServiceController;
+use App\Http\Controllers\SocialMedia\socialMediaController;
 use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\City;
@@ -81,6 +82,9 @@ Route::get('News',[appSettingController::class,'news']);
 Route::get('privacyPolicy',[appSettingController::class,'privacyPolicies']);
 Route::get('termAndConditions',[appSettingController::class,'termAndConditions']);
 Route::get('PropertyRights',[appSettingController::class,'intellectualPropertyRightsPolicies']);
+
+//socialMedia
+Route::get('socialMedia',[socialMediaController::class,'index']);
 //user Search
 Route::get('userSearch',[UserController::class,'search'])->name('userSearch');
 Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarketer');
@@ -205,6 +209,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::put('unitReqs',[unitReqController::class,'update'])->name('unitReqs.update');
     Route::delete('unitReqs/{id}',[unitReqController::class,'delete'])->name('unitReqs.destroy');
     Route::get('my-reqs',[unitReqController::class,'myRequests'])->name('myRequests');
+    Route::get('adPeriods',[unitReqController::class,'adPeriodIndex']);
 
     //unitReqfilter
     Route::post('filter',[unitReqController::class,'filter'])->name('filter');
@@ -258,6 +263,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('auction', AuctionController::class)->only(['store', 'destroy', 'update']);
     Route::get('my-auctions-orders', [AuctionController::class, 'showMyOrders'])->name('my-auctions');
     Route::post('push-amount/{auction}', [AuctionController::class, 'pushAmountInAuction'])->name('amount.push');
+    Route::get('winnerPay', [AuctionController::class, 'winnerPay']);
 
     //Subscripe
     Route::get('auctionSubscripe/{id}', [subscriptionController::class, 'auctionSubscripe']);

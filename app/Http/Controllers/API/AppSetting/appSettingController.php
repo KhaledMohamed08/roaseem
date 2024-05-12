@@ -99,6 +99,7 @@ class appSettingController extends Controller
 
         if ($privecyPolicies)
         {
+            // return ApiResponse::success(privacyPolicyResource::collection($privecyPolicies));
             return ApiResponse::success([
                 'privecyPolicies' => privacyPolicyResource::collection($privecyPolicies)
             ]);
@@ -111,6 +112,7 @@ class appSettingController extends Controller
 
         if($termAndConditions)
         {
+            // return ApiResponse::success(termAndConditionsResource::collection($termAndConditions));
             return ApiResponse::success([
                 'termAndConditions' => termAndConditionsResource::collection($termAndConditions)
             ]);
@@ -123,6 +125,7 @@ class appSettingController extends Controller
 
         if($intellectualPropertyRightsPolicies)
         {
+            // return ApiResponse::success(PropertyRightsResource::collection($intellectualPropertyRightsPolicies));
             return ApiResponse::success([
                 'intellectualPropertyRightsPolicies' => PropertyRightsResource::collection($intellectualPropertyRightsPolicies)
             ]);

@@ -34,7 +34,7 @@ class UpdateUnitReqRequest extends FormRequest
             'maxPrice'=>"required|numeric",
             'minPrice'=>"required|numeric",
             'description'=>"",
-            'adPeriod'=>"",
+            'adPeriod'=>"required|integer",
             'entity_type'=>"required",
             'companies'=>"nullable",
         ];

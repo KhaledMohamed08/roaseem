@@ -8,10 +8,12 @@ use App\Http\Requests\UpdateUnitReqRequest;
 use App\Http\Requests\UpdateUnitRequest;
 use App\Http\Resources\unitReqResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\AdPeriod;
 use App\Models\UnitReq;
 use App\Models\UnitReqUser;
 use App\Models\User;
 use App\Services\FilterService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -74,7 +76,13 @@ class unitReqController extends Controller
             ], 301);
         }
 
-        $unitReqData = $this->createUnitRequest($request, $user);
+        $adPeriod = AdPeriod::where('id', $request->adPeriod_id)->first();
+        $daysToAdd = $adPeriod->days_num;
+        
+        $now = Carbon::now();
+        $adPeriod = $now->addDays($daysToAdd);
+
+        $unitReqData = $this->createUnitRequest($request, $user, $adPeriod);
 
         if ($unitReqData) {
 
@@ -93,7 +101,7 @@ class unitReqController extends Controller
         ], 301);
     }
 
-    protected function createUnitRequest($request, $user)
+    protected function createUnitRequest($request, $user, $adPeriod)
     {
         return UnitReq::create([
             "name" => $request->name,
@@ -110,7 +118,7 @@ class unitReqController extends Controller
             "description" => $request->description,
             'bed_rooms' => $request->bedRooms,
             'bath_rooms' => $request->bathRooms,
-            "ad_period" => $request->adPeriod,
+            "ad_period" => $adPeriod,
             "entity_type" => $request->entity_type,
             "user_id" => $user->id,
         ]);
@@ -191,9 +199,13 @@ class unitReqController extends Controller
             ], 301);
         }
 
-        
+        $adPeriod = AdPeriod::where('id', $request->adPeriod_id)->first();
+        $daysToAdd = $adPeriod->days_num;
 
-        $unitReqData = $this->updateUnitRequest($unitReq, $request, $user);
+        $now = Carbon::now();
+        $adPeriod = $now->addDays($daysToAdd);
+
+        $unitReqData = $this->updateUnitRequest($unitReq, $request, $user, $adPeriod);
 
         if($request->entity_type == 'companies' || 'marketers') {
 
@@ -235,7 +247,7 @@ class unitReqController extends Controller
         ], 'Unit Request updated successfully', 201);
     }
 
-    protected function updateUnitRequest($unitReq, $request, $user)
+    protected function updateUnitRequest($unitReq, $request, $user, $adPeriod)
     {
         return $unitReq->update([
             "name" => $request->name,
@@ -252,7 +264,7 @@ class unitReqController extends Controller
             "description" => $request->description,
             'bed_rooms' => $request->bedRooms,
             'bath_rooms' => $request->bathRooms,
-            "ad_period" => $request->adPeriod,
+            "ad_period" => $adPeriod,
             "entity_type" => $request->entity_type,
         ]);
     }
@@ -309,5 +321,19 @@ class unitReqController extends Controller
             ], 'UnitRequest updated successfully', 201);
         }
         return ApiResponse::error('No unit requests found.', 404);
+    }
+
+    public function adPeriodIndex()
+    {
+        $adPeriods = AdPeriod::select('id', 'name', 'days_num')->get();
+
+        if($adPeriods->isEmpty())
+        {
+            return ApiResponse::error([
+                'message' => 'No periods Found',
+            ], 404);
+        }
+        
+        return ApiResponse::success($adPeriods);
     }
 }

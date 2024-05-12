@@ -273,6 +273,19 @@ class AuctionController extends Controller
 
     }
 
+    public function winnerPay()
+    {
+        $winningPrice = AuctionDetails::get()->max('max_price');
+
+        $tax = $winningPrice * 0.05 ;
+        $tax2 = $winningPrice * 0.025;
+        $tax3 = $tax * 0.15; 
+
+        $finalPrice = $winningPrice + $tax + $tax2 + $tax3;
+
+        dd($winningPrice,$finalPrice);
+    }
+
     public function auctionDetails(Auction $auction)
     {
         return $auction->user;
