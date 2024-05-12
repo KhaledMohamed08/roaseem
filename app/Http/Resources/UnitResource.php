@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\UnitService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class UnitResource extends JsonResource
 {
@@ -35,8 +36,7 @@ class UnitResource extends JsonResource
                 'name' => $service->name
             ]);
         }
-
-        return [
+        $unit = [
             'id' => $this->id,
             'user_name' => $this->user->name,
             'country' => $this->region->city->country->name,
@@ -81,6 +81,7 @@ class UnitResource extends JsonResource
                 'id' => $this->getFirstMedia('unit-Main-image')->id ?? null,
                 'url' => !empty($this->getFirstMediaUrl('unit-Main-image'))?$this->getFirstMediaUrl('unit-Main-image'):null,
             ],
+            'is_favorite' => false,
             // 'images' => $this->getMedia('images')->getUrl(),
             'images' => $originUrls,
             //'user' => $this->user,
@@ -97,5 +98,18 @@ class UnitResource extends JsonResource
                 'floor_number' => $this->floor_number,
             ]
         ];
+
+        if (auth()->guard('sanctum')->check()) {
+            $user = auth()->guard('sanctum')->user();
+            $favorites = $user->favorites;
+
+            if ($favorites->contains($this->id)) {
+                $unit['is_favorite'] = true;
+            }
+        }
+        
+        
+
+        return $unit;
     }
 }

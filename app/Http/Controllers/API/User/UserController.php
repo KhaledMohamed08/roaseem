@@ -78,12 +78,12 @@ class UserController extends Controller
 
     public function companiesMarketers()
     {
-        $companies = User::companies()->select('id', 'name')->get();
-        $marketers = User::marketer()->select('id', 'name')->get();
+        $companies = User::companies()->get();
+        $marketers = User::marketer()->get();
 
         return ApiResponse::success([
-            'companies' => $companies,
-            'marketers' => $marketers
+            'companies' => UserResource::collection($companies),
+            'marketers' => UserResource::collection($marketers)
         ]);
     }
 }
