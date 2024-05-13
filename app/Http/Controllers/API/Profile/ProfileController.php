@@ -160,7 +160,6 @@ class ProfileController extends Controller
     public function userUnitesStatisticsForMobile() {
         $user = Auth::user();
         $numOfEachUnitType = $this->numOfEachUnitType($user->id);
-        // dd($numOfEachUnitType);
         $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
         $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);
         $numOfEachUnitCities = $this->numOfEachUnitCities($user->id);

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -52,7 +53,7 @@ class UserResource extends JsonResource
         if ($this->role == 'company') {
             $user['unites'] = UserResource::collection($this->unites);
             $user['favorites'] = $this->favorites;
-            $user['marketers'] = User::where('role', 'marketer')->where('company_id', $this->id)->get();
+            $user['marketers'] = User::where('role', 'marketer')->where('company_id', $this->id)->get(); 
         }
 
         if ($this->role == 'marketer') {
