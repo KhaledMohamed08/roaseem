@@ -26,9 +26,9 @@ class rateController extends Controller
         ], 404);
     }
 
-    public function getOne($id)
+    public function getOne($ratedId)
     {
-        $rate = Rate::where('id', $id)->first();
+        $rate = Rate::where('rated_user_id', $ratedId)->first();
 
         if(!$rate)
         {

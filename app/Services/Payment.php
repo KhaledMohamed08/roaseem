@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use GuzzleHttp\Client;
@@ -51,4 +52,34 @@ class Payment
             dd($e->getMessage());
         }
     }
+
+    public function createInvoice($invoiceData)
+    {
+        try {
+            $response = $this->client->post('invoice', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->token,
+                    'accept' => 'application/json',
+                    'content-type' => 'application/json'
+                ],
+                'json' => $invoiceData
+            ]);
+
+            $data = json_decode($response->getBody(), true);
+
+            // Check if invoice creation was successful
+            if (isset($data['success']) && $data['success']) {
+                // Redirect user to the mobileUrl
+                return $data['mobileUrl'];
+            } else {
+                throw new \Exception("Failed to create invoice: " . $data['error']);
+            }
+        } catch (\Exception $e) {
+            // Handle invoice creation error
+            // You might want to log the error or throw an exception
+            dd($e->getMessage());
+        }
+    }
+
+    // Other methods for payment handling...
 }
