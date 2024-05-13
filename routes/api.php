@@ -89,6 +89,7 @@ Route::get('socialMedia',[socialMediaController::class,'index']);
 Route::get('userSearch',[UserController::class,'search'])->name('userSearch');
 Route::get('allMarketers',[UserController::class,'allMarketer'])->name('allmarketer');
 Route::get('companiesMarketers',[UserController::class,'companiesMarketers']);
+Route::get('companiesMarketersNames',[UserController::class,'companiesMarketersNames']);
 Route::get('getUser/{id}',[UserController::class,'getUser']);
 //all Companies
 Route::get('Companies',[UserController::class,'companyFilter'])->name('allCompanies');
