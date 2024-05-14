@@ -111,7 +111,10 @@ class AuthController extends Controller
         if ($otp && $otp->used_at != null) {
             $user = User::create($validatedData);
             $token = $user->createToken('user_token')->plainTextToken;
-            $fcmToken = $this->fcmToken->fcmSave($validatedData['fcmToken'], $user->id);
+            if($validatedData['fcmToken'])
+            {
+                $fcmToken = $this->fcmToken->fcmSave($validatedData['fcmToken'], $user->id);
+            }
         } else {
             return ApiResponse::error(
                 'Phone Number Not Verified!',

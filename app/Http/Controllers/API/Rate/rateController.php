@@ -28,9 +28,9 @@ class rateController extends Controller
 
     public function getOne($ratedId)
     {
-        $rate = Rate::where('rated_user_id', $ratedId)->first();
+        $rate = Rate::where('rated_user_id', $ratedId)->get();
 
-        if(!$rate)
+        if($rate->isEmpty())
         {
             return ApiResponse::error([
                 'message' => 'Rate Not found',
@@ -38,7 +38,7 @@ class rateController extends Controller
         }
 
         return ApiResponse::success([
-            'rate' =>new RateResource($rate),
+            'rate' =>RateResource::collection($rate),
         ]);
     }
 
