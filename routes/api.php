@@ -191,6 +191,8 @@ Route::get('ll-marketers-company', function () {
 Route::middleware('auth:sanctum')->group( function () {
     // Auth Routes
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    //Fcm-Token
+    Route::post('fcmCreate',[AuthController::class,'fcmToken']);
     // Register Employee For Company
     Route::post('create-employee', [ProfileController::class, 'addMarketerForCompany'])->name('employee.create');
     // Favorite Routes

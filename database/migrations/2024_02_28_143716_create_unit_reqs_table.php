@@ -30,9 +30,11 @@ return new class extends Migration
             $table->enum('entity_type',['companies','marketers','all']);
             $table->unsignedBigInteger('city_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('ad_period_id');
             $table->timestamps();
 
             //foregin Keys
+            $table->foreign('ad_period_id')->references('id')->on('ad_periods');
             $table->foreign('city_id')->references('id')->on('cities');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('unit_types_id')->references('id')->on('unit_types');

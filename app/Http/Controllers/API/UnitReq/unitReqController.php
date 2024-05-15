@@ -119,6 +119,7 @@ class unitReqController extends Controller
             'bed_rooms' => $request->bedRooms,
             'bath_rooms' => $request->bathRooms,
             "ad_period" => $adPeriod,
+            "ad_period_id" => $request->adPeriod_id,
             "entity_type" => $request->entity_type,
             "user_id" => $user->id,
         ]);
@@ -187,6 +188,8 @@ class unitReqController extends Controller
 
         $unitReq = UnitReq::with('unitReqUser')->find($request->id);
 
+        
+
         if (!$unitReq) {
             return ApiResponse::error([
                 'message' => 'Unit request not found',
@@ -199,13 +202,22 @@ class unitReqController extends Controller
             ], 301);
         }
 
-        $adPeriod = AdPeriod::where('id', $request->adPeriod_id)->first();
-        $daysToAdd = $adPeriod->days_num;
+        if($unitReq->ad_period_id != $request->adPeriod_id)
+        {
 
-        $now = Carbon::now();
-        $adPeriod = $now->addDays($daysToAdd);
+            $adPeriod = AdPeriod::where('id', $request->adPeriod_id)->first();
+            $daysToAdd = $adPeriod->days_num;
+            
+            $now = Carbon::now();
+            $adPeriod = $now->addDays($daysToAdd);
+        }
+        else {
+            $adPeriod = $unitReq->ad_period;
+            // return $adPeriod ;
+        }
+        $adPeriodId = $request->adPeriod_id;
 
-        $unitReqData = $this->updateUnitRequest($unitReq, $request, $user, $adPeriod);
+        $unitReqData = $this->updateUnitRequest($unitReq, $request, $user, $adPeriod, $adPeriodId);
 
         if($request->entity_type == 'companies' || 'marketers') {
 
@@ -247,7 +259,7 @@ class unitReqController extends Controller
         ], 'Unit Request updated successfully', 201);
     }
 
-    protected function updateUnitRequest($unitReq, $request, $user, $adPeriod)
+    protected function updateUnitRequest($unitReq, $request, $user, $adPeriod, $adPeriodId)
     {
         return $unitReq->update([
             "name" => $request->name,
@@ -265,6 +277,7 @@ class unitReqController extends Controller
             'bed_rooms' => $request->bedRooms,
             'bath_rooms' => $request->bathRooms,
             "ad_period" => $adPeriod,
+            "ad_period_id" => $adPeriodId,
             "entity_type" => $request->entity_type,
         ]);
     }

@@ -44,6 +44,10 @@ class unitReqResource extends JsonResource
             'bedRooms' => $this->bed_rooms,
             'bathRooms' => $this->bath_rooms,
             "adPeriod"=>Carbon::parse($this->ad_period)->format('Y/m/d'),
+            "adPeriodDetails"=> [
+                "id" => $this->adPeriod->id ?? null,
+                "name" => $this->adPeriod->name ?? null,
+            ] ?? null,
             "entityType"=>$this->entity_type,
             "city"=>[
                 "id"=>$this->city->id,

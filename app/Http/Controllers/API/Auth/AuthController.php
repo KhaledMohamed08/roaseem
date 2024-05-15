@@ -220,4 +220,14 @@ class AuthController extends Controller
             200
         );
     }
+
+    public function fcmToken(Request $request)
+    {
+        $user = Auth::user();
+
+        if($request->fcmToken)
+        {
+            $fcmToken = $this->fcmToken->fcmSave($request->fcmToken, $user->id);
+        }
+    }
 }

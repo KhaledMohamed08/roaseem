@@ -24,6 +24,7 @@ class UnitReq extends Model
         'bed_rooms',
         'bath_rooms',
         'ad_period',
+        'ad_period_id',
         'entity_type',
         'city_id',
         'user_id',
@@ -57,5 +58,10 @@ class UnitReq extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function adPeriod()
+    {
+        return $this->belongsTo(AdPeriod::class);
     }
 }
