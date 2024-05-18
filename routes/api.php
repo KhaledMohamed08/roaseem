@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Ads\AddsController;
 use App\Http\Controllers\API\AppSetting\appSettingController;
 use App\Http\Controllers\API\Auction\AuctionController;
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Auth\nafathAuthController;
 use App\Http\Controllers\API\Block\BlockController;
 use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
@@ -277,6 +278,8 @@ Route::middleware('auth:sanctum')->group( function () {
 
     Route::get('auction-details/{auction}', [AuctionController::class, 'auctionDetails'])->name('auction-details');
 });
+
+Route::post('nafathAuth',[nafathAuthController::class, 'test']);
 
 // Guest Protected Routes
 Route::middleware('guest:sanctum')->group( function () {

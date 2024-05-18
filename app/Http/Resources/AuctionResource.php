@@ -41,8 +41,8 @@ class AuctionResource extends JsonResource
                 'id' => $this->getFirstMedia('main_auction_image')->id ?? '',
                 'url' => $this->getFirstMediaUrl('main_auction_image'),
             ],
-            'max_price' => $this->details->max_price ?? '0',
-            'max_user' => new UserResource(User::find($this->details->max_user)) ?? '0',
+            'max_price' => $this->details->max_price ?? null,
+            'max_user' => new UserResource(User::find($this->details->max_user)) ?? null,
             'properties' => PropertyResource::collection($this->properties),
         ];
     }

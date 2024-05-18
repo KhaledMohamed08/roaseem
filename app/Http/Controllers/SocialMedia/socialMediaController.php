@@ -18,7 +18,7 @@ class socialMediaController extends Controller
         {
             foreach($socialMedia as $social)
             {
-                $icon = $social->getMedia('icon');
+                $icon = $social->getMedia('images');
                 $social->icon = $icon;
         
                 // $dashUrl = "https://dash.roaseem.magdsofteg.xyz/storage";

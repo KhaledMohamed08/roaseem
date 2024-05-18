@@ -140,4 +140,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(AuctionUser::class);
     }
+
+    public function getImageUrl()
+    {
+        return $this->getFirstMediaUrl('logo');
+    }
 }
