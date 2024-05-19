@@ -30,6 +30,15 @@ class rateController extends Controller
     {
         $rate = Rate::where('rated_user_id', $ratedId)->get();
 
+        $totalRates = $rate->sum('rate');
+        $countRates = $rate->count();
+        
+        if ($countRates > 0) {
+            $averageRate = $totalRates / $countRates;
+        } else {
+            $averageRate = 0;
+        }
+
         if($rate->isEmpty())
         {
             return ApiResponse::error([
@@ -38,6 +47,7 @@ class rateController extends Controller
         }
 
         return ApiResponse::success([
+            'averageRate' => $averageRate,
             'rate' =>RateResource::collection($rate),
         ]);
     }
