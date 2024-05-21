@@ -41,9 +41,10 @@ class rateController extends Controller
 
         if($rate->isEmpty())
         {
-            return ApiResponse::error([
-                'message' => 'Rate Not found',
-            ], 404);
+            return ApiResponse::success([
+                'message' => 'No rate added yet',
+                'data' => [],
+            ]);
         }
 
         return ApiResponse::success([

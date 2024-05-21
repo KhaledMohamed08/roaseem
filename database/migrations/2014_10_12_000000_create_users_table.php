@@ -33,6 +33,7 @@ return new class extends Migration
             $table->decimal('latitude', 11, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->string('address')->nullable();
+            $table->boolean('auth_mazad')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
