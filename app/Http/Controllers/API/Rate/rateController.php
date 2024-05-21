@@ -78,8 +78,10 @@ class rateController extends Controller
                 "rater_user_id" => $rater->id,
             ]);
 
-        return ApiResponse::successWithoutData([
+        return ApiResponse::success([
             'message' => 'Your rate has been saved successfully',
+            'rate' =>new RateResource($rate),
+
         ], 201);
     }
 
