@@ -11,23 +11,23 @@ class Payment
     protected $secretKey;
     protected $token;
 
-    public function __construct($apiId, $secretKey)
+    public function __construct()
     {
-        // Initialize Guzzle HTTP client
+        // Initialize Guzzle HTTP client with the corrected base URI
         $this->client = new Client([
-            'base_uri' => 'https://restpilot.paylink.sa.', // Example base URI for Paylink API
+            'base_uri' => 'https://restpilot.paylink.sa/api/auth', // Corrected base URI for Paylink API
             'timeout'  => 10, // Adjust timeout as needed
         ]);
 
         // Set API credentials
-        $this->apiId = $apiId;
-        $this->secretKey = $secretKey;
+        $this->apiId = env('API_ID');
+        $this->secretKey = env('API_Secret_key');
 
         // Authenticate and obtain token
-        $this->authenticate();
+        return $this->authenticate();
     }
 
-    protected function authenticate()
+    public function authenticate()
     {
         try {
             $response = $this->client->post('auth', [
@@ -43,6 +43,7 @@ class Payment
             // Check if authentication was successful and token is received
             if (isset($data['id_token'])) {
                 $this->token = $data['id_token'];
+                return $this->token;
             } else {
                 throw new \Exception("Authentication failed. No token received.");
             }
@@ -55,10 +56,16 @@ class Payment
 
     public function createInvoice($invoiceData)
     {
+        // Initialize Guzzle HTTP client with the corrected base URI
+        $addInvoice = new Client([
+            'base_uri' => 'https://restpilot.paylink.sa/api/addInvoice', // Corrected base URI for Paylink API
+            'timeout'  => 10, // Adjust timeout as needed
+        ]);
+
         try {
-            $response = $this->client->post('invoice', [
+            $response = $addInvoice->post('invoice', [
                 'headers' => [
-                    'Authorization' => 'Bearer ' . $this->token,
+                    'Authorization' => $this->token,
                     'accept' => 'application/json',
                     'content-type' => 'application/json'
                 ],

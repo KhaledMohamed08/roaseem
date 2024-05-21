@@ -8,11 +8,19 @@ use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Auction;
 use App\Models\AuctionUser;
+use App\Services\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class subscriptionController extends Controller
 {
+    protected $payment;
+
+    public function __construct(Payment $payment)
+    {
+        $this->payment = $payment;
+    }
+
     public function auctionSubscripe($id)
     {
         $subscription_fee = Auction::where('id', $id)->pluck('subscription_fee');
@@ -31,17 +39,41 @@ class subscriptionController extends Controller
     public function subscripeStore(Request $request)
     {
         $auction = Auction::find($request->auction_id);
-        $userId = Auth::id();
+        // $userId = Auth::id();
+        $user = Auth::user();
         
         if($auction)
         {
-            $auctionUser = AuctionUser::where('user_id', $userId)->where('auction_id', $request->auction_id)->first();
+            $auctionUser = AuctionUser::where('user_id', $user->id)->where('auction_id', $request->auction_id)->first();
             if($auctionUser) 
             {
                 return ApiResponse::error("You can't Subscripe to the auction more than one time", 403);
             }
+            $token = $this->payment->__construct();
+            return $token;
+            $invoice = [
+                "orderNumber"=> rand(8,9),
+                "amount"=> 100,
+                "callBackUrl"=> "",
+                "cancelUrl"=> "",
+                "clientName"=> $user->name,
+                "clientEmail"=> $user->email,
+                "clientMobile"=> "$user->phone",
+                "currency"=> "SAR",
+                "products"=> [
+                    "title"=> "$auction->title",
+                    "price"=> $auction->subscription_fee,
+                    "qty"=> 1,
+                    // "description"=> "Book Description",
+                    "isDigital"=> true,
+                    // "imageSrc"=> "https://example.com/book.png",
+                    // "specificVat"=> 15,
+                    "productCost"=> $auction->subscription_fee
+                ]
+            ];
+            // $addInvoice = 
             AuctionUser::create([
-                'user_id' => $userId,
+                'user_id' => $user->id,
                 'auction_id' => $request->auction_id,
             ]);
 
@@ -52,6 +84,11 @@ class subscriptionController extends Controller
         } else {
             return ApiResponse::error('Auction not found.', 404);
         }
+    }
+
+    public function callBack()
+    {
+        
     }
 
     public function auctionSubscripers($id)

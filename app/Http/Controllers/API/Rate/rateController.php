@@ -56,10 +56,18 @@ class rateController extends Controller
     {
         $request->validate([
             'rate'=>"required|numeric",
-            'comment'=>"string",
+            'comment'=>"string|nullable",
             'rated_id'=>"required",
         ]);
         $rater = Auth::user();
+
+        if($rater->id == $request->rated_id)
+        {
+            return ApiResponse::error([
+                'message' => 'Rate failed',
+            ], 403);
+        }
+
 
         $rate = Rate::updateOrCreate(
             ['id' => $request->id],

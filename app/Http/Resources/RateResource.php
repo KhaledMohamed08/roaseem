@@ -19,7 +19,10 @@ class RateResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'rater' => $this->rater->name,
+            'rater' =>[
+                'id' => $this->rater->id,
+                'name' => $this->rater->name,
+            ],
             'image' => $this->rater->getFirstMediaUrl('logo') ?? null,
             'rate' => $this->rate,
             'comment' => $this->comment,

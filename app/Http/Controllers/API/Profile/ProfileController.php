@@ -199,6 +199,48 @@ class ProfileController extends Controller
             );
     }
 
+    public function userUnitesStatisticsForMobileById($id) {
+        $user = User::find($id);
+        $numOfEachUnitType = $this->numOfEachUnitType($user->id);
+        $numOfEachUnitStatus = $this->numOfEachUnitStatus($user->id);
+        $numOfEachUnitPurpos = $this->numOfEachUnitPurpos($user->id);
+        $numOfEachUnitCities = $this->numOfEachUnitCities($user->id);
+        $numOfFavorites = $this->numOfFavorites($user->id);
+        
+
+        return response(
+            [
+                'numOfEachUnites' => [
+                    'total' => $user->unites->count(),
+                    'details' => collect(array_map(function ($key, $value) {
+                        return ['title' => $key, 'value' => $value];
+                    }, array_keys($numOfEachUnitType), array_values($numOfEachUnitType))),
+                    
+                ],
+                   
+                'numOfEachUnitStatus' => [
+                    'total' => count($numOfEachUnitStatus),
+                    'details' => collect(array_map(function ($key, $value) {
+                        return ['title' => $key, 'value' => $value];
+                    }, array_keys($numOfEachUnitStatus), array_values($numOfEachUnitStatus))),
+                ],
+                'numOfEachUnitPurpos' => [
+                    'total' => count($numOfEachUnitPurpos),
+                    'details' => collect(array_map(function ($key, $value) {
+                        return ['title' => $key, 'value' => $value];
+                    }, array_keys($numOfEachUnitPurpos), array_values($numOfEachUnitPurpos))),
+                ],
+                'numOfEachUnitCities' => [
+                    'total' => count($numOfEachUnitCities),
+                    'details' => collect(array_map(function ($key, $value) {
+                        return ['title' => $key, 'value' => $value];
+                    }, array_keys($numOfEachUnitCities), array_values($numOfEachUnitCities))),
+                ],
+                'numOfFavorites' => $numOfFavorites,
+            ]
+        );
+    }
+
     protected function numOfEachUnitType($id)
     {
         $user = User::find($id);

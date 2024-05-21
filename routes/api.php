@@ -74,6 +74,7 @@ Route::get('unit-property', [UnitController::class, 'unitProperty']);
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::apiResource('unit', UnitController::class)->except(['store', 'update', 'destroy']);
 Route::apiResource('auction', AuctionController::class)->except(['store', 'update', 'destroy']);
+Route::get('unites-types-for-mobile-byId/{id}', [ProfileController::class, 'userUnitesStatisticsForMobileById'])->name('unites.types.mobile');
 
 //app Settings
 Route::get('appSetting',[appSettingController::class,'index']);
