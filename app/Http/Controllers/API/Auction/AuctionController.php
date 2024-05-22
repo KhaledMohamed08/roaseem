@@ -101,9 +101,8 @@ class AuctionController extends Controller
      */
     public function show(Auction $auction)
     {
-        $properties = Property::where('auction_id', $auction->id)->paginate(1);
-        $auction->properties = $properties;
- 
+        // $properties = Property::where('auction_id', $auction->id)->paginate(1);
+        // $auction->properties = $properties;
         return ApiResponse::success(
             [
                 'Auction' => new AuctionResource($auction),
@@ -295,23 +294,20 @@ class AuctionController extends Controller
         return $auction->user;
     }
 
-    // public function showPropertyAuction($id)
-    // {
-    //     $properties = Property::where('auction_id', $id)->paginate(1);
+    public function showPropertyAuction($id)
+    {
+        $properties = Property::where('auction_id', $id)->paginate(1);
 
-    //     if($properties)
-    //     {
-    //         dd($properties);
-    //         return ApiResponse::success(
-    //             [
-    //                 'properties' => PropertyResource::collection($properties),
-    //                 'pagination' => [
+        if($properties)
+        {
 
-    //                 ]
-    //             ],
-    //             'properties',
-    //             200,
-    //         );
-    //     }
-    // }
+            return ApiResponse::success(
+                [
+                    'properties' => PropertyResource::collection($properties),
+                ],
+                'properties',
+                200,
+            );
+        }
+    }
 }

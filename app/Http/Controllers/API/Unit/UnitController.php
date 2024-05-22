@@ -293,4 +293,21 @@ class UnitController extends Controller
     private function convertToNullIfZero($maxValue, $minValue) {
         return ($maxValue == 0 && $minValue == 0) ? null : [$maxValue, $minValue];
     }
+
+    public function unitUser($id)
+    {
+        $unites = Unit::where('user_id', $id)->get();
+
+        if($unites->isEmpty())
+        {
+            return ApiResponse::success([
+                'message' => 'No units found',
+                'data' => [],
+            ]);
+        }
+
+        return ApiResponse::success([
+            'units' => UnitResource::collection($unites)
+        ]);
+    }
 }
