@@ -24,7 +24,7 @@ class RateResource extends JsonResource
                 'name' => $this->rater->name,
             ],
             'image' => $this->rater->getFirstMediaUrl('logo') ?? null,
-            'rate' => $this->rate,
+            'rate' => intval($this->rate),
             'comment' => $this->comment,
             'created_at' => Carbon::parse($this->created_at)->format('Y M d'),
         ];
