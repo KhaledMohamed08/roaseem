@@ -26,6 +26,7 @@ class User extends Authenticatable implements HasMedia
         'phone',
         'whatsapp',
         'land_line',
+        'nid',
         'password',
         'about',
         // 'otp',
@@ -35,6 +36,7 @@ class User extends Authenticatable implements HasMedia
         'practicing_number',
         'company_id',
         'address',
+        'auth_mazad',
         'latitude',
 		'longitude',
     ];

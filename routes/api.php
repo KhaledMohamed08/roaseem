@@ -10,6 +10,7 @@ use App\Http\Controllers\API\Chat\ChatController;
 use App\Http\Controllers\API\Favorite\FavoriteController;
 use App\Http\Controllers\API\Home\HomeController;
 use App\Http\Controllers\API\Notification\notificationController;
+use App\Http\Controllers\API\Profile\MazadProfileController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Rate\rateController;
 use App\Http\Controllers\API\Subscription\subscriptionController;
@@ -265,11 +266,24 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('createRate',[rateController::class,'store']);
     Route::delete('deleteRate/{id}',[rateController::class,'delete']);
 
+
+});
+
+Route::post('nafathAuth',[nafathAuthController::class, 'test']);
+
+Route::middleware(['auth:sanctum', 'mazad.auth'])->group( function () {
+
+    //profile
+    Route::get('mazad.profile', [MazadProfileController::class, 'profile']);
+    Route::post('mazad.edit.profile', [MazadProfileController::class, 'edit']);
+
     // Auction Routes
     Route::apiResource('auction', AuctionController::class)->only(['store', 'destroy', 'update']);
     Route::get('my-auctions-orders', [AuctionController::class, 'showMyOrders'])->name('my-auctions');
     Route::post('push-amount/{auction}', [AuctionController::class, 'pushAmountInAuction'])->name('amount.push');
     Route::get('winnerPay', [AuctionController::class, 'winnerPay']);
+
+    Route::get('auction-details/{auction}', [AuctionController::class, 'auctionDetails'])->name('auction-details');
 
     //Subscripe
     Route::get('auctionSubscripe/{id}', [subscriptionController::class, 'auctionSubscripe']);
@@ -278,10 +292,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('subscripers/{id}', [subscriptionController::class, 'auctionSubscripers']);
 
 
-    Route::get('auction-details/{auction}', [AuctionController::class, 'auctionDetails'])->name('auction-details');
-});
 
-Route::post('nafathAuth',[nafathAuthController::class, 'test']);
+});
 
 // Guest Protected Routes
 Route::middleware('guest:sanctum')->group( function () {
@@ -294,3 +306,4 @@ Route::middleware('guest:sanctum')->group( function () {
     Route::put('forget-password', [AuthController::class, 'forgoetPassword'])->name('forget.password');
     Route::put('update-password', [AuthController::class, 'updatePassword'])->name('update.password');
 });
+

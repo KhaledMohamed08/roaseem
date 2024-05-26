@@ -27,6 +27,8 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
+            'nid' => $this->nid ?? null,
+            'nidImage' => $this->getFirstMediaUrl('nidImage') ?? null,
             'whatsapp' => $this->whatsapp,
             'land_line' => $this->land_line,
             // 'role' => $this->role,
@@ -41,6 +43,7 @@ class UserResource extends JsonResource
             'longitude' => $this->longitude ?? 'no longitude',
             'latitude' => $this->latitude ?? 'no latitude',
             'address' => $this->address ?? 'no address',
+            'auth_mazad' => $this->auth_mazad
         ];
 
         $image = $this->getFirstMediaUrl('logo');

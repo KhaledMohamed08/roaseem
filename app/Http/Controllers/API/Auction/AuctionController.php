@@ -300,7 +300,6 @@ class AuctionController extends Controller
 
         if($properties)
         {
-
             return ApiResponse::success(
                 [
                     'properties' => PropertyResource::collection($properties),
