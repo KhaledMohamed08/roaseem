@@ -213,8 +213,10 @@ class UnitController extends Controller
 
     public function unitFilter(Request $request)
     {
-        $sortField = "id";
-        $sortDirection = $request->input('sort_direction') ?? 'desc';
+        // $sortField = "id";
+        $sortField = $request->input('sort_field') ?? 'id';
+        // $sortDirection = $request->input('sort_direction' , 'desc');
+        $sortDirection = $request->input('sort_direction') ??  'desc';
         
         $filters = [
             'unit_status_id' => $request->input('status_id'),

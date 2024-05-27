@@ -57,11 +57,21 @@ class FilterService
             }
         }
         
-
-        //sorting
-        if ($sortField && in_array(strtolower($sortDirection), ['asc', 'desc'])) {
-            $query->orderBy($sortField, $sortDirection);
+        // Sorting logic
+        if (in_array(strtolower($sortDirection), ['asc', 'desc'])) {
+            if ($sortField === 'maxPrice') {
+                $query->orderBy('price', 'desc');
+            } elseif ($sortField === 'minPrice') {
+                $query->orderBy('price', 'asc');
+            } else {
+                $query->orderBy($sortField, $sortDirection);
+            }
         }
+
+        // //sorting
+        // if ($sortField && in_array(strtolower($sortDirection), ['asc', 'desc'])) {
+        //     $query->orderBy($sortField, $sortDirection);
+        // }
 
         $results = $query->get();
 

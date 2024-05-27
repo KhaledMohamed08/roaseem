@@ -18,11 +18,13 @@ class socialMediaController extends Controller
         {
             foreach($socialMedia as $social)
             {
-                $icon = $social->getMedia('images');
-                $social->icon = $icon;
-        
-                // $dashUrl = "https://dash.roaseem.magdsofteg.xyz/storage";
-                // $icon = "$dashUrl/$icon->id/$icon->file_name";
+                foreach($social->getMedia('images') as $icon) {
+                    // $icon = $icon->getMedia('images');
+                    // $social->icon = $icon;
+                    $dashUrl = "https://dash.roaseem.magdsofteg.xyz/storage";
+                    $icon = "$dashUrl/$icon->id/$icon->file_name";
+                    $social->icon = $icon;
+                }
             }
             return ApiResponse::success(SocialMediaResource::collection($socialMedia));   
         }

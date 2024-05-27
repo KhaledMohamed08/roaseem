@@ -63,7 +63,7 @@ class UnitResource extends JsonResource
             'street_width' => $this->street_width,
             'payment_method' => $this->payment_method,
             'payment_id' => $this->unit_payment_id,
-            'price' => $this->price,
+            'price' => intval($this->price),
             'descreption' => $this->descreption,
             // 'services' => $this->services,
             'services' => $services,
