@@ -110,6 +110,9 @@ class StoreUnitRequest extends FormRequest
             'licensor_name' => [
                 'required',
             ],
+            'unit_category' => [
+                'required'
+            ],
             'advertising_license_number' => [
                 'required',
                 'numeric'

@@ -96,6 +96,7 @@ class UnitResource extends JsonResource
                 'street_width' => $this->street_width,
                 'interface' => $this->interface->name,
                 'floor_number' => $this->floor_number,
+                'unit_category' => $this->unit_category,
             ]
         ];
 

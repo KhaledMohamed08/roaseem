@@ -78,6 +78,7 @@ Route::apiResource('auction', AuctionController::class)->except(['store', 'updat
 Route::get('propertyAuction/{id}', [AuctionController::class, 'showPropertyAuction']);
 Route::get('unites-types-for-mobile-byId/{id}', [ProfileController::class, 'userUnitesStatisticsForMobileById'])->name('unites.types.mobile');
 Route::get('userUnit/{id}',[UnitController::class,'unitUser']);
+Route::get('complaintsModels',[appSettingController::class,'complaintsModels']);
 //app Settings
 Route::get('appSetting',[appSettingController::class,'index']);
 Route::post('complaintsStore',[appSettingController::class,'complaintsStore']);

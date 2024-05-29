@@ -13,7 +13,10 @@ class Complain extends Model
         'name',
         'email',
         'phone',
-        'message'
+        'message',
+        'user_id',
+        'reported_type',
+        'reported_id',
     ];
 
 }

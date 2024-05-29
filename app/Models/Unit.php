@@ -37,6 +37,7 @@ class Unit extends Model implements HasMedia
         'bathrooms',
         'kitchens',
         'licensor_name',
+        'unit_category',
         'advertising_license_number',
         'brokerage_documentation_license_number',
         'rights_and_obligations',

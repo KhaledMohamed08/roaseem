@@ -37,6 +37,7 @@ return new class extends Migration
             $table->integer('living_rooms');
             $table->integer('bathrooms');
             $table->integer('kitchens');
+            $table->enum('unit_category',['F', 'S']);
             $table->string('licensor_name');
             $table->string('advertising_license_number');
             $table->string('brokerage_documentation_license_number');

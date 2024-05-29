@@ -229,7 +229,8 @@ class UnitController extends Controller
             'region_id' => $request->input('region_id'),
             'unit_type_id' => $request->input('unit_types'),
             'bedrooms' => $request->input('bedRooms'),
-            'bathrooms' => $request->input('bathRooms')
+            'bathrooms' => $request->input('bathRooms'),
+            'unit_category' => $request->input('unit_category'),
         ];
         
         $filterService = $this->filterService->filter(Unit::class, $filters, $sortField, $sortDirection);

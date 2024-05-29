@@ -18,6 +18,7 @@ use App\Models\RealEstateNews;
 use App\Models\RegulationsLaws;
 use App\Models\TermAndCondition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class appSettingController extends Controller
 {
@@ -43,11 +44,15 @@ class appSettingController extends Controller
             "message" =>"required|string"
         ]);
 
+        $user = Auth::user();
         Complain::create([
             'name' =>$request->name,
             'email' =>$request->email,
             'phone' =>$request->phone,
-            'message' =>$request->message
+            'message' =>$request->message,
+            'user_id' =>$user->id ?? null,
+            'reported_type' =>$request->reported_type,
+            'reported_id' => $request->reported_id
         ]);
 
         return ApiResponse::successWithoutData([
@@ -130,5 +135,17 @@ class appSettingController extends Controller
                 'intellectualPropertyRightsPolicies' => PropertyRightsResource::collection($intellectualPropertyRightsPolicies)
             ]);
         }
+    }
+
+    public function complaintsModels()
+    {
+        $models = [
+            'unit' => "App\\Models\\Unit",
+            'users' => 'App\\Models\\User'
+        ];
+
+        return ApiResponse::success([
+            'models' => $models,
+        ]);
     }
 }

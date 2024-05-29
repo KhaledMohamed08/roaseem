@@ -56,7 +56,15 @@ class FilterService
                 }
             }
         }
-        
+
+        if ($sortField == 'price' && $sortDirection) {
+            if ($sortDirection == "price_desc") {
+                $sortDirection = 'desc';
+            } elseif ($sortDirection == "price_asc") {
+                $sortDirection = 'asc';
+            }
+        }
+
         // Sorting logic
         if (in_array(strtolower($sortDirection), ['asc', 'desc'])) {
             if ($sortField === 'maxPrice') {
