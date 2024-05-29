@@ -59,7 +59,7 @@ class UnitResource extends JsonResource
             'created_year' => $this->created_year,
             'license_start' => $this->license_start,
             'license_end' => $this->license_end,
-            'area' => $this->area,
+            'area' =>intval($this->area),
             'street_width' => $this->street_width,
             'payment_method' => $this->payment_method,
             'payment_id' => $this->unit_payment_id,

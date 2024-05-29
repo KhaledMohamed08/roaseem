@@ -31,6 +31,7 @@ class AuctionResource extends JsonResource
             'admin_status' => $this->admin_status,
             'status' => $this->status,
             'auctioneer_name' => $this->auctioneer_name,
+            'auctioneer' =>new UserResource($this->user),
             'id_number' => $this->id_number,
             'auction_license_number' => $this->auction_license_number,
             'pdf_file' => [
